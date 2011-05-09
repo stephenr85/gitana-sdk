@@ -1,0 +1,188 @@
+$(function() {
+    // Enable source view buttons
+    $.each($("div[id^='field'],table[id^='field']"), function() {
+        var currentId = $(this).attr('id');
+
+        $(this).after('<div class="clear" style="min-height:10px;"></div><span><small><button id="' + currentId + '-code-button">Source Code</button></small></span><pre id="' + currentId + '-pre" style="margin: -15px 0px 0px 5px;"><code id="' + currentId + '-code" style="margin: 15px 0px 0px 5px;"></code></pre>').after('<div class="gitana-clear"></div>');
+        $('#' + currentId + '-pre').hide();
+        $('#' + currentId + '-code-button').button({
+            icons: {
+                primary: "ui-icon-circle-arrow-e"
+            }
+        }).click(function() {
+            var code = $.trim($('#' + currentId + '-script').html());
+            $('#' + currentId + '-code').html(code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+            $('#' + currentId + '-pre').toggle();
+            $('.ui-icon', this).toggleClass("ui-icon-circle-arrow-e").toggleClass("ui-icon-circle-arrow-s");
+        });
+    });
+
+    // Example JSON
+    var examples = [
+        {
+            "title":"Gitana + jQuery Templating",
+            "examples" : [
+                {
+                    "title": "Content Display",
+                    "examples": [
+                        {
+                            "id":"promotion-display-single",
+                            "title":"Promotion Item",
+                            "link":"../../html/general/PromotionDisplaySingle.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Query",
+                    "examples": [
+                        {
+                            "id":"frontpage-products",
+                            "title":"Front Page Products",
+                            "link":"../../html/general/FrontPageProducts.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Traverse",
+                    "examples": [
+                        {
+                            "id":"related-products",
+                            "title":"Related Products",
+                            "link":"../../html/general/RelatedProducts.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Full-Text Search",
+                    "examples": [
+                        {
+                            "id":"search-results",
+                            "title":"Search by Keyword",
+                            "link":"../../html/general/SearchResults.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Users and Groups",
+                    "examples": [
+                        {
+                            "id":"user-details",
+                            "title":"User Details",
+                            "link":"../../html/general/UserDetails.html"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title":"Gitana + Alpaca",
+            "examples" : [
+                {
+                    "title": "In-Context Editing",
+                    "examples": [
+                        {
+                            "id":"promotion-incontext-editing-full",
+                            "title":"Promotion with Full Form",
+                            "link":"../../html/alpaca/PromotionInContextEditingFullForm.html"
+                        },
+                        {
+                            "id":"promotion-incontext-editing-simple",
+                            "title":"Promotion with Simple Form",
+                            "link":"../../html/alpaca/PromotionInContextEditingSimpleForm.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Advanced Content Modeling",
+                    "examples": [
+                        {
+                            "id":"user-reviews",
+                            "title":"Promotion With User Reviews",
+                            "link":"../../html/alpaca/UserReviews.html"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title":"Sample Applications",
+            "examples" : [
+                {
+                    "title": "Social Graph",
+                    "examples": [
+                        {
+                            "id":"social-graph-app",
+                            "title":"Social Graph Application",
+                            "link":"../../html/alpaca/SocialGraph.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Ratchet Driven Site",
+                    "examples": [
+                        {
+                            "id":"the-office-site",
+                            "title":"The Office Site",
+                            "link":"../../html/ratchet/index.html"
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
+
+    var currentExampleId = $('.gitana-example-header').attr('id');
+
+    function _renderSideBar(container, items) {
+        var bar = $('<ul>' + items.title + '</span></ul>');
+        $.each(items.examples, function(i, item) {
+            var itemBar = $('<li></li>');
+            if (item.examples) {
+                _renderSideBar(itemBar, item);
+            } else {
+                var listItem = $('<span><span class="ui-icon ui-icon-document" style="float:left"></span><a href="' + item.link + '">' + item.title + '</a></span>');
+                itemBar.append(listItem);
+                if (item.id == currentExampleId) {
+                    itemBar.addClass('ui-state-highlight');
+                }
+                itemBar.hover(function() {
+                    $(this).addClass('ui-state-hover');
+                }, function() {
+                    $(this).removeClass('ui-state-hover');
+                });
+            }
+            itemBar.appendTo(bar);
+        });
+        bar.appendTo(container);
+    }
+
+    ;
+
+    function renderSideBar(container) {
+        $.each(examples, function(i, items) {
+            container.append('<h3><a href="#">' + items.title + '</a></h3>');
+            var bar = $('<ul></ul>');
+            $.each(items.examples, function(i, item) {
+                var itemBar = $('<li></li>');
+                _renderSideBar(itemBar, item);
+                itemBar.appendTo(bar);
+            });
+            bar.wrap('<div></div>');
+            bar.appendTo(container);
+        });
+    }
+
+    ;
+
+    if (!Alpaca.isValEmpty(currentExampleId)) {
+        var sideBar = $('<div id="sidebar"></div>');
+        renderSideBar(sideBar);
+        $('.gitana-example-body').prepend(sideBar).prepend('<div style="clear:both"></div>');
+        $('#sidebar').wrap('<div class="gitana-example-sidebar"></div>');
+        $('#sidebar').accordion({
+            autoHeight: false,
+            navigation: true
+        });
+        $('.gitana-example-header h2').prepend('<a href="../../index.html">SDK</a><span> :: </span>');
+    }
+});

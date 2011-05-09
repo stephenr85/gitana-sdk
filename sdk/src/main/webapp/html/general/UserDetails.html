@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gitana SDK - Users and Groups</title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-general-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='user-details'>
+        <h2>Traverse</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>User Details</h3>
+            <h4>User Details.</h4>
+
+            <div id="field1">
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var gitanaConnector = window.gitanaConnector;
+                        var templateId = "../../templates/SocialGraphUserDetails";
+                        var el = $('#field1');
+                        var userId = 'jhalpert_theoffice';
+
+                        var getUserDetails = function () {
+                            var data = {};
+                            gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                                data.avatar = '/proxy/security/users/' + userId + '/attachment/avatar?ticket=' + gitanaConnector.ticket;
+                                data.name = user.firstName + ' ' + user.lastName;
+                                data.email = user.email;
+                                var branch = gitanaConnector.branch;
+                                branch.nodes().readPerson(userId, function(personNode) {
+                                    var personNodeId = personNode._doc;
+                                    data.currentPosition = personNode.currentPosition;
+                                    data.gender = personNode.gender;
+                                    data.biography = personNode.biography;
+                                    personNode.traverse({
+                                        "associations": {
+                                            "theoffice:isManager": "BOTH"
+                                        },
+                                        "depth": 1
+                                    }, function(response) {
+                                        var nodes = response.nodes;
+                                        var associations = response.associations;
+                                        var supervisors = [];
+                                        var subordinates = [];
+                                        for (var key in response.associations) {
+                                            var type = response.associations[key]["_type"];
+                                            var direction = response.associations[key]["direction"];
+                                            var sourceId = response.associations[key]["source"];
+                                            var targetId = response.associations[key]["target"];
+                                            var targetNode = nodes[response.associations[key]["target"]];
+                                            var sourceNode = nodes[response.associations[key]["source"]];
+                                            if (type == 'theoffice:isManager') {
+                                                if (personNodeId == sourceId) {
+                                                    subordinates.push({
+                                                        "userId": targetNode["userId"]
+                                                    });
+                                                }
+                                                if (personNodeId == targetId) {
+                                                    supervisors.push({
+                                                        "userId": sourceNode["userId"]
+                                                    });
+                                                }
+                                            }
+                                        }
+                                        data.supervisors = supervisors;
+                                        data.subordinates = subordinates;
+                                        personNode.traverse({
+                                            "associations": {
+                                                "theoffice:hasRelation": "BOTH"
+                                            },
+                                            "depth": 1
+                                        }, function(response) {
+                                            var nodes = response.nodes;
+                                            var associations = response.associations;
+                                            var relationships = []
+                                            for (var key in response.associations) {
+                                                var type = response.associations[key]["_type"];
+                                                var direction = response.associations[key]["direction"];
+                                                var sourceId = response.associations[key]["source"];
+                                                var targetId = response.associations[key]["target"];
+                                                var targetNode = nodes[response.associations[key]["target"]];
+                                                var sourceNode = nodes[response.associations[key]["source"]];
+
+                                                var relationship = {};
+                                                if (personNodeId == sourceId) {
+                                                    relationship.userId = targetNode["userId"];
+                                                }
+                                                if (personNodeId == targetId) {
+                                                    relationship.userId = sourceNode["userId"];
+                                                }
+                                                relationship.type = response.associations[key].details.type;
+                                                relationships.push(relationship);
+
+                                            }
+                                            data.relationships = relationships;
+
+                                            new Gitana.jQueryTemplateEngine('UserDetails').render(el, templateId, {
+                                                "data": data
+                                            }, function() {
+                                                $('.supervisor', el).each(function(index) {
+                                                    var userId = $(this).attr('id');
+                                                    var _this = this;
+                                                    gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                                                        $(_this).html(user.firstName + ' ' + user.lastName);
+                                                    });
+
+                                                });
+                                                $('.subordinate', el).each(function(index) {
+                                                    var userId = $(this).attr('id');
+                                                    var _this = this;
+                                                    gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                                                        $(_this).html(user.firstName + ' ' + user.lastName);
+                                                    });
+
+                                                });
+                                                $('.relationship', el).each(function(index) {
+                                                    var userId = $(this).attr('id');
+                                                    var _this = this;
+                                                    gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                                                        $(_this).html(user.firstName + ' ' + user.lastName + ' ' + $(_this).html());
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        };
+
+
+                        gitanaConnector.connect(getUserDetails, function(error) {
+                            gitanaConnector.connectorErrorCallback(error, function() {
+                                getUserDetails();
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

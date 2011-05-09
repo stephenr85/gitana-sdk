@@ -1,0 +1,23 @@
+<script id="productDetailsTemplate" type="text/x-jquery-tmpl">
+    <span id="product_details">
+{{if data}}
+        <div id="product_details_header">
+            <h1>${data.product}</h1>
+
+            <h2>${data.SKU}</h2>
+        </div>
+        <div id="product_details_image">
+            <img src="/proxy${data._url}/attachment/image_full?ticket=${data._ticket}" width="167" alt="Sub Item Name"/>
+        </div>
+        <div id="product_details_text">
+            <p>${data.details}</p>
+        </div>
+        <div class="price">
+            <h2>${data.price.price} (${data.price.unit})</h2>
+        </div>
+        <div gadget="related_products_gadget" id="related_products">
+        </div>
+{{/if}}
+        <div class="clearthis">&nbsp;</div>
+    </span>
+</script>

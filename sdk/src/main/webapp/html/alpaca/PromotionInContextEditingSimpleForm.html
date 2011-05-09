@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gitana SDK - In-Context Editing</title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-alpaca-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='promotion-incontext-editing-simple'>
+        <h2>In-context Editing</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Promotion In-context Editing</h3>
+            <h4>Promotion in-context editing with simple form.</h4>
+
+            <div id="field1">
+            </div>
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var gitanaConnector = window.gitanaConnector;
+                        var el = $('#field1');
+                        var connector = new Alpaca.Connectors.GitanaConnector('gitana', {
+                            "userName": "admin",
+                            "password": "admin",
+                            "repositoryId": {
+                                "title" : "Dunder Mifflin sample repository",
+                                "tags":["Demo",
+                                    "The office"]
+                            }
+                        });
+                        connector.connect(function (success) {
+                            el.alpaca({
+                                "view" : {
+                                    "globalTemplate": '../../templates/LatestPromotion.html'
+                                },
+                                "data": "theoffice:binderpromotion",
+                                "connector" : connector,
+                                "postRender": function (renderedField) {
+                                    var editButton = $("<button>Edit</button>").button(({
+                                        icons: {
+                                            primary: "ui-icon-pencil"
+                                        }
+                                    }));
+                                    editButton.click(function() {
+                                        editButton.removeClass("ui-state-focus ui-state-hover");
+                                        var editDialog = $('<div id="alpaca-edit-form" title="Edit latest promotion"></div>');
+                                        var _this = this;
+                                        connector.connect(function (success2) {
+                                            editDialog.alpaca({
+                                                "data": "theoffice:binderpromotion",
+                                                "options": "simple",
+                                                "schema": "theoffice:promotion",
+                                                "view":{
+                                                    "parent":"VIEW::WEB_EDIT_LIST",
+                                                    "displayReadonly": false
+                                                },
+                                                "connector": connector,
+                                                "postRender": function(renderedNewFieldControl) {
+                                                    var saveButton = renderedNewFieldControl.form.saveButton;
+                                                    saveButton.hide();
+                                                    editDialog.dialog({
+                                                        resizable: true,
+                                                        height: 550,
+                                                        width: 650,
+                                                        modal: true,
+                                                        buttons: {
+                                                            "Save": function() {
+                                                                saveButton.field.click();
+                                                            }
+                                                        }
+                                                    });
+                                                    $('.ui-dialog').css("overflow", "hidden");
+                                                    $('.ui-dialog-buttonpane').css("overflow", "hidden");
+                                                    // add call backs to save button
+                                                    if (saveButton) {
+                                                        saveButton.success = function (updatedData) {
+                                                            el.empty();
+                                                            el.alpaca({
+                                                                "view" : {
+                                                                    "globalTemplate": '../../templates/LatestPromotion.html'
+                                                                },
+                                                                "data": updatedData
+                                                            });
+                                                            alert("Promotion updated!");
+                                                        };
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                    el.after(editButton);
+                                }
+                            });
+                        }, function(loadedError) {
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

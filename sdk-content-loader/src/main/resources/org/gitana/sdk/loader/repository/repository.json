@@ -1,0 +1,264 @@
+{
+    "title":"Dunder Mifflin sample repository",
+    "description":"Sample repository for Dunder Mifflin Paper Company, Inc.",
+    "tags": ["Demo","The office"],
+    "master":
+    {
+        "definitions":[
+            {
+                "qname" : "theoffice:promotion",
+                "path": "org/gitana/sdk/loader/repository/definitions/promotion.json"
+            },
+            {
+                "qname" : "theoffice:product",
+                "path": "org/gitana/sdk/loader/repository/definitions/product.json"
+            },
+            {
+                "qname" : "theoffice:review",
+                "path": "org/gitana/sdk/loader/repository/definitions/review.json"
+            },
+            {
+                "qname" : "theoffice:reviewmetrics",
+                "path": "org/gitana/sdk/loader/repository/definitions/review_metrics.json"
+            }
+        ],
+        "forms": {
+            "theoffice:promotion" : [
+                {
+                    "formKey" : "full",
+                    "path" : "org/gitana/sdk/loader/repository/forms/promotion_full.json"
+                },
+                {
+                    "formKey" : "simple",
+                    "path" : "org/gitana/sdk/loader/repository/forms/promotion_simple.json"
+                }
+            ],
+            "theoffice:review" : [
+                {
+                    "formKey" : "five_star",
+                    "path" : "org/gitana/sdk/loader/repository/forms/review_five_star.json"
+                }
+            ]
+        },
+        "associationTypes":[
+            "theoffice:isRelatedTo",
+            "theoffice:hasReview",
+            "theoffice:hasReviewMetrics"
+        ],
+        "files":[
+            {
+                "name":"Dunder_Mifflin_HR_Policy.pdf",
+                "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_HR_Policy.pdf",
+                "mimeType":"application/pdf"
+            },
+            {
+                "name":"Dunder_Mifflin_Holidays.doc",
+                "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_Holidays.doc",
+                "mimeType":"application/msword"
+            }
+        ],
+        "folders" : [
+            {
+                "qname":"theoffice:root",
+                "title": "The Office",
+                "description": "Root folder of the office",
+                "folders" :[
+                    {
+                        "qname":"theoffice:sales",
+                        "title": "Sales Department",
+                        "description": "Dunder Mifflin Paper Company Sales Department",
+                        "content":[
+                            {
+                                "qname":"theoffice:Dunder_Mifflin_HR_Policy.pdf",
+                                "title":"Dunder_Mifflin_HR_Policy.pdf",
+                                "description":"Dunder Mifflin Human Resource Policy",
+                                "attachments": [
+                                    {
+                                        "name":"Dunder_Mifflin_Sales_Regions_Map.ppt",
+                                        "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_Sales_Regions_Map.ppt",
+                                        "mimeType" : "application/vnd.ms-powerpoint"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:Dunder_Mifflin_Sales_Quota.doc",
+                                "title":"Dunder_Mifflin_Sales_Quota.doc",
+                                "description":"Dunder Mifflin Sales Quota",
+                                "attachments": [
+                                    {
+                                        "name":"Dunder_Mifflin_Sales_Quota.doc",
+                                        "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_Sales_Quota.doc",
+                                        "mimeType":"application/msword"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:management",
+                        "title": "Management",
+                        "description": "Dunder Mifflin Paper Company management",
+                        "content":[
+                            {
+                                "qname":"theoffice:Dunder_Mifflin_HR_Policy2.pdf",
+                                "title":"Dunder_Mifflin_HR_Policy.pdf",
+                                "description":"Dunder Mifflin Human Resource Policy",
+                                "attachments": [
+                                    {
+                                        "name":"Dunder_Mifflin__Policy.pdf",
+                                        "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_HR_Policy.pdf",
+                                        "mimeType":"application/pdf"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:Dunder_Mifflin_Holidays2.doc",
+                                "title":"Dunder_Mifflin_Holidays.doc",
+                                "description":"Dunder Mifflin Holidays",
+                                "attachments": [
+                                    {
+                                        "name":"Dunder_Mifflin_Sales_Quota.doc",
+                                        "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_Holidays.doc",
+                                        "mimeType":"application/msword"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "content" :[
+                    {
+                        "qname":"theoffice:binderpromotion",
+                        "type":"theoffice:promotion",
+                        "title":"Wilson Jones Basic Round-Ring Binder Promotion",
+                        "description" : "Wilson Jones Basic Round-Ring Binder Promotion.",
+                        "path":"org/gitana/sdk/loader/repository/content/Binder_Promotion.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Wilson_Jones_Basic_Round_Ring_Binder_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Wilson_Jones_Basic_Round_Ring_Binder_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:wilsonjonesbinder",
+                        "type":"theoffice:product",
+                        "title":"Wilson Jones Basic Round-Ring Binder",
+                        "description" : "Wilson Jones Basic Round-Ring Binder.",
+                        "path":"org/gitana/sdk/loader/repository/content/Wilson_Jones_Basic_Round_Ring_Binder.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Wilson_Jones_Basic_Round_Ring_Binder_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Wilson_Jones_Basic_Round_Ring_Binder_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:hammermillcopypluspaper",
+                        "type":"theoffice:product",
+                        "title":"Hammermill Copy Plus Paper",
+                        "description" : "Hammermill Copy Plus Paper.",
+                        "path":"org/gitana/sdk/loader/repository/content/Hammermill_Copy_Plus_Paper.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Hammermill_Copy_Plus_Paper_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Hammermill_Copy_Plus_Paper_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:papermateballpointstickpens",
+                        "type":"theoffice:product",
+                        "title":"Paper Mate Ballpoint Stick Pens",
+                        "description" : "Paper Mate Ballpoint Stick Pens.",
+                        "path":"org/gitana/sdk/loader/repository/content/Paper_Mate_Ballpoint_Stick_Pens.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Paper_Mate_Ballpoint_Stick_Pens_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Paper_Mate_Ballpoint_Stick_Pens_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:Dunder_Mifflin_HR_Policy3.pdf",
+                        "title":"Dunder_Mifflin_HR_Policy.pdf",
+                        "description":"Dunder Mifflin Human Resource Policy",
+                        "attachments": [
+                            {
+                                "name":"file",
+                                "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_HR_Policy.pdf",
+                                "mimeType":"application/pdf"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:Dunder_Mifflin_Holidays3.doc",
+                        "title":"Dunder_Mifflin_Holidays.doc",
+                        "description":"Dunder Mifflin Holidays",
+                        "attachments": [
+                            {
+                                "name":"file",
+                                "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_Holidays.doc",
+                                "mimeType":"application/msword"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "associations" : [
+            {
+                "associationType" : "theoffice:isRelatedTo",
+                "source":"theoffice:papermateballpointstickpens",
+                "target":"theoffice:hammermillcopypluspaper",
+                "direction":"BOTH"
+            },
+            {
+                "associationType" : "theoffice:isRelatedTo",
+                "source":"theoffice:papermateballpointstickpens",
+                "target":"theoffice:wilsonjonesbinder",
+                "direction":"BOTH"
+            }
+        ],
+        "branches" : [
+            {
+                "title" : "Michael's Branch",
+                "description" : "Michael's Branch",
+                "branches" : [
+                    {
+                        "name" : "Dwight's Branch",
+                        "description" : "Dwight's Branch"
+                    }
+                ]
+            },
+            {
+                "title" : "Michael's Super New Branch",
+                "description" : "Michael's Super New Branch"
+            }
+        ]
+    }
+}

@@ -1,0 +1,356 @@
+{
+    "users": {
+        "mscott_theoffice" : {
+            "currentPosition" :"Regional Manager",
+            "gender" : "male",
+            "nickname": "World's best boss",
+            "biography": "Michael was born on March 15, 1965 at 11:23 AM, in Scranton, Pennsylvania."
+        },
+        "dschrute_theoffice" : {
+            "currentPosition" :"Original Assistant to the Regional Manager",
+            "gender" : "male",
+            "nickname": "Dwight \"Danger\" Schrute",
+            "biography": "Dwight Schrute is a competent salesman, despite lacking general knowledge, at the Scranton branch of the paper-goods distribution company."
+        },
+        "phalpert_theoffice" : {
+            "currentPosition" :"Sales Representative",
+            "gender" : "female",
+            "biography": "Pam Halpert is one of the office employees at the Scranton branch of the fictitious paper-distributor Dunder Mifflin. Many episodes of the series revolve around her desire to be more assertive and have an artistic career, as well as her relationship with co-worker and husband Jim Halpert."
+        },
+        "jhalpert_theoffice" : {
+            "currentPosition" :"Assistant to the Regional Manager",
+            "gender" : "male",
+            "biography": "Jim has noted that basketball was kind of [his] thing in high school."
+        },
+        "rhoward_theoffice" : {
+            "currentPosition" :"Vice President",
+            "gender" : "male",
+            "nickname" : "Fire Guy",
+            "biography": "Ryan grew up in Scranton."
+        },
+        "amartin_theoffice" : {
+            "currentPosition" :"Senior Accountant",
+            "gender" : "female",
+            "biography": "Angela Martin is the head of the accounting department."
+        },
+        "kmalone_theoffice" : {
+            "currentPosition" :"Accountant",
+            "gender" : "male",
+            "biography": "Kevin is typically quite subdued with his face, although he is known for making blunt or offensive comments regarding the other employees."
+        },
+        "omartinez_theoffice" : {
+            "currentPosition" :"Accountant",
+            "gender" : "male",
+            "biography": "Oscar Martinez is an accountant at the paper distributor Dunder Mifflin. He is a first generation Mexican-American. "
+        },
+        "abernard_theoffice" : {
+            "currentPosition" :"Sales Representative",
+            "gender" : "male",
+            "nickname": "The 'Nard-Dog",
+            "biography": "His birth name was Walter Bernard Jr., but his parents later decided that his new brother better embodied that name and should have it instead."
+        },
+        "plapinvance_theoffice" : {
+            "currentPosition" :"Sales Representative",
+            "gender" : "female",
+            "nickname": "The 'Nard-Dog",
+            "biography": "Phyllis is often insulted and embarrassed by branch manager Michael Scott. Michael frequently describes her as non-feminine and older than she looks, despite having been classmates with her in high school."
+        },
+        "shudson_theoffice" : {
+            "currentPosition" :"Sales Representative",
+            "gender" : "male",
+            "biography": "Stanley sits across from fellow employee, Phyllis Vance. Michael often refers to him as \"Stanley the Manly\". Generally, when bored and unhappy (particularly when forced to listen to Michael), Stanley simply props his elbows on a table and rests his face between his hands in protest."
+        },
+        "cbratton_theoffice" : {
+            "currentPosition" :"Quality Assurance Director",
+            "gender" : "male",
+            "biography": "Creed is a mysterious figure who is prone to making bizarre or confusing statements on a regular basis. As a result of drug use during his career as a rock musician in the 1960s, Creed has a phenomenally poor memory."
+        },
+        "mpalmer_theoffice" : {
+            "currentPosition" :"Supplier Relations Representative",
+            "gender" : "female",
+            "biography": "Meredith is an alcoholic and complains that people talk too loudly and that the office lights are too bright in the morning. She is even seen ingesting hand sanitizer for alcohol."
+        },
+        "kkapoor_theoffice" : {
+            "currentPosition" :"Customer Service Representative",
+            "gender" : "female",
+            "biography": "Kelly is an Indian American, but frequently professes incorrect knowledge about her heritage or religion."
+        },
+        "ehannon_theoffice" : {
+            "currentPosition" :"Receptionist",
+            "gender" : "female",
+            "biography": "Erin is seen repeatedly following Dwight's insane directions. Dwight and Andy both admit to being attracted to Erin."
+        },
+        "kfilippelli_theoffice" : {
+            "currentPosition" :"Regional Manager",
+            "gender" : "female",
+            "biography": "Karen's ethnic heritage is ambiguous. The Italian ancestry implied by her last name is confirmed in \"The Merger.\" Prior to that in the same episode, Dwight suggests that she may be Filipino due to the sound and spelling of her name."
+        },
+        "hflax_theoffice" : {
+            "currentPosition" :"Human Resources Representative",
+            "gender" : "female",
+            "biography": "Not much is known about Holly's past, except that she is originally from Des Moines, Iowa, and her parents now live in Colorado."
+        }
+    },
+    "associationTypes" : [
+        "theoffice:isManager",
+        "theoffice:hasRelation"
+    ],
+    "associations" : [
+        {
+            "source": {
+                "type":"user",
+                "id":"rhoward_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"mscott_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"mscott_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"dschrute_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"jhalpert_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"phalpert_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"mscott_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"jhalpert_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"jhalpert_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"phalpert_theoffice"
+            },
+            "associationType" : "theoffice:hasRelation",
+            "direction":"BOTH",
+            "associationDetails": {
+                "type" : "Married",
+                "startDate" : "2/2/2002"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"jhalpert_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"amartin_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"amartin_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"kmalone_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"amartin_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"omartinez_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"jhalpert_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"abernard_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"abernard_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"plapinvance_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"abernard_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"shudson_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"mscott_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"cbratton_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"cbratton_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"mpalmer_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"cbratton_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"kkapoor_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"mscott_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"ehannon_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"rhoward_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"kfilippelli_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        },
+        {
+            "source": {
+                "type":"user",
+                "id":"mscott_theoffice"
+            },
+            "target": {
+                "type":"user",
+                "id":"hflax_theoffice"
+            },
+            "associationType" : "theoffice:isManager",
+            "direction":"OUTGOING",
+            "associationDetails": {
+                "startDate" : "10/10/2006"
+            }
+        }
+    ]
+}

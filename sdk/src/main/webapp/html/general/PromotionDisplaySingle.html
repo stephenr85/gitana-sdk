@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gitana SDK - Content Item Display</title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-general-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='promotion-display-single'>
+        <h2>Content Item Display</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Promotion Single Item Display</h3>
+            <h4>Promotion Single Item Display.</h4>
+
+            <div id="field1">
+            </div>
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var gitanaConnector = window.gitanaConnector;
+                        var templateId = "../../templates/LatestPromotion";
+                        var el = $('#field1');
+                        gitanaConnector.readNode("theoffice:binderpromotion", function(node) {
+                            new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
+                                "data": node
+                            });
+                        }, function(loadedError) {
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

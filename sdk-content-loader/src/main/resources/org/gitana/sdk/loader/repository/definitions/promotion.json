@@ -1,0 +1,115 @@
+{
+    "title":"Weekly Promotion",
+    "description":"Dunder Mifflin Paper Company weekly promotion for a single product.",
+    "type":"object",
+    "properties":{
+        "code":{
+            "title":"Promotion Code",
+            "description":"Product promotion code.",
+            "type":"string",
+            "pattern": "^(\\d{4}-\\d{3}-\\d{4})?$"
+        },
+        "details":{
+            "title":"Promotion Details",
+            "description":"Detailed information of this weekly promotion.",
+            "type":"string"
+        },
+        "product":{
+            "title":"Product Name",
+            "description":"Name of the product for weekly promotion.",
+            "type":"string"
+        },
+        "start_date":{
+            "title":"Start Date",
+            "description":"Promotion start date.",
+            "type":"string",
+            "format":"date"
+        },
+        "end_date":{
+            "title":"End Date",
+            "description":"Promotion end date.",
+            "type":"string",
+            "format":"date"
+        },
+        "original_price":{
+            "title":"Original Price",
+            "description":"Product original price.",
+            "type":"object",
+            "properties":{
+                "price" : {
+                    "title":"Price",
+                    "description":"Product price.",
+                    "type":"number"
+                },
+                "unit" : {
+                    "title":"Unit",
+                    "description":"Unit for product price.",
+                    "type":"string"
+                }
+            }
+        },
+        "promotion_price":{
+            "title":"Promotion Price",
+            "description":"Product promotion price.",
+            "type":"object",
+            "properties":{
+                "price" : {
+                    "title":"Price",
+                    "description":"Product price.",
+                    "type":"number"
+                },
+                "unit" : {
+                    "title":"Unit",
+                    "description":"Unit for product price.",
+                    "type":"string"
+                }
+            }
+        },
+        "photos":{
+            "title":"Product Photos",
+            "description":"Product photos for promotion",
+            "type":"array",
+            "items": {
+                "title": "Product Photo",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "title": "Photo Type",
+                        "description": "Photo type.",
+                        "type": "string",
+                        "enum": [
+                            "thumbnail",
+                            "full"
+                        ]
+                    },
+                    "title": {
+                        "title": "Photo Title",
+                        "description": "Short description of the photo.",
+                        "type": "string"
+                    },
+                    "image": {
+                        "title": "Image",
+                        "description": "Image file for this photo",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "stores":{
+            "title":"Promotion Locations",
+            "description":"List of stores that will participate this promotion.",
+            "type":"array",
+            "items": {
+                "title": "Store Name",
+                "description": "Store name.",
+                "type": "string",
+                "enum" : [
+                    "Scranton, PA",
+                    "Utica, NY",
+                    "Stamford, CT",
+                    "Nashua, NH"
+                ]
+            }
+        }
+    }
+}

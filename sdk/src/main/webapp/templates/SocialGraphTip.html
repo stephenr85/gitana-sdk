@@ -1,0 +1,64 @@
+<script id="socialGraphTipTemplate" type="text/x-jquery-tmpl">
+    {{if data.isAssociation}}
+        {{if data.associationType == "theoffice:isManager"}}
+            <div class='tip-title'>Manage</div>
+            <div class='tip-text'>
+                <span class='sub-title'>Supervisor:</span>
+                <span class='sub-text'>${data.sourceUser}</span>
+            </div>
+            <div class='tip-text'>
+                <span class='sub-title'>Subordinate:</span>
+                <span class='sub-text'>${data.targetUser}</span>
+            </div>
+            {{if data.details.startDate}}
+                <div class='tip-text'>
+                    <span class='sub-title'>Start Date:</span>
+                    <span class='sub-text'>${data.details.startDate}</span>
+                </div>
+            {{/if}}
+            {{if data.details.endDate}}
+                <div class='tip-text'>
+                    <span class='sub-title'>End Date:</span>
+                    <span class='sub-text'>${data.details.endDate}</span>
+                </div>
+            {{/if}}
+        {{/if}}
+        {{if data.associationType == "theoffice:hasRelation"}}
+            <div class='tip-title'>Relation</div>
+            <div class='tip-text'>
+                <span class='sub-title'>Party A:</span>
+                <span class='sub-text'>${data.sourceUser}</span>
+            </div>
+            <div class='tip-text'>
+                <span class='sub-title'>Party B:</span>
+                <span class='sub-text'>${data.targetUser}</span>
+            </div>
+            {{if data.details.type}}
+                <div class='tip-text'>
+                    <span class='sub-title'>Type:</span>
+                    <span class='sub-text'>${data.details.type}</span>
+                </div>
+            {{/if}}
+            {{if data.details.startDate}}
+                <div class='tip-text'>
+                    <span class='sub-title'>Start Date:</span>
+                    <span class='sub-text'>${data.details.startDate}</span>
+                </div>
+            {{/if}}
+            {{if data.details.endDate}}
+                <div class='tip-text'>
+                    <span class='sub-title'>End Date:</span>
+                    <span class='sub-text'>${data.details.endDate}</span>
+                </div>
+            {{/if}}
+        {{/if}}
+    {{else}}
+        <div class='tip-title'>${data.name}</div>
+        {{if data.currentPosition}}
+            <div class='tip-text'>${data.currentPosition}</div>
+        {{/if}}
+        {{if data.avatar}}
+            <div class='tip-text'><img src='${data.avatar}'/></div>
+        {{/if}}
+    {{/if}}
+</script>

@@ -1,0 +1,97 @@
+{
+    "title":"Product",
+    "description":"Dunder Mifflin Paper Company product detailed information.",
+    "type":"object",
+    "properties":{
+        "product":{
+            "title":"Product Name",
+            "description":"Name of the product.",
+            "type":"string"
+        },
+        "details":{
+            "title":"Product details",
+            "description":"Detailed description of this product.",
+            "type":"string"
+        },
+        "SKU":{
+            "title":"Product SKU",
+            "description":"Product SKU number.",
+            "type":"string",
+            "pattern": "^([A-Z]{3}\\d{7})?$"
+        },
+        "price":{
+            "title":"Product Price",
+            "description":"Product price.",
+            "type":"object",
+            "properties":{
+                "price" : {
+                    "title":"Price",
+                    "description":"Product price.",
+                    "type":"number"
+                },
+                "unit" : {
+                    "title":"Unit",
+                    "description":"Unit for product price.",
+                    "type":"string"
+                }
+            }
+        },
+        "photos":{
+            "title":"Product Photos",
+            "description":"Product photos",
+            "type":"array",
+            "items": {
+                "title": "Product Photo",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "title": "Photo Type",
+                        "description": "Photo type.",
+                        "type": "string",
+                        "enum": [
+                            "thumbnail",
+                            "full"
+                        ]
+                    },
+                    "title": {
+                        "title": "Photo Title",
+                        "description": "Short description of the photo.",
+                        "type": "string"
+                    },
+                    "image": {
+                        "title": "Image",
+                        "description": "Image file for this photo",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "categories":{
+            "title":"Product Categories",
+            "description":"List of categories that this product belongs to.",
+            "type":"array",
+            "items": {
+                "title": "Category Name",
+                "description": "Name of the category.",
+                "type": "string",
+                "enum" : [
+                    "Paper",
+                    "Binder",
+                    "Laptop",
+                    "Printer",
+                    "Pen"
+                ]
+            }
+        },
+        "tags":{
+            "title":"Product Tags",
+            "description":"List of tags associated with this product",
+            "type":"array",
+            "items": {
+                "title": "Tag",
+                "description": "Tag Name",
+                "type": "string"
+            }
+        }
+    }
+}

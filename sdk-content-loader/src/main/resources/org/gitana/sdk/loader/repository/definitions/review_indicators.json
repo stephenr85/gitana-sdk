@@ -1,0 +1,25 @@
+{
+    "title":"Review Indicators",
+    "description":"Indicators for review.",
+    "type":"object",
+    "properties":{
+        "isSpam":{
+            "title":"Spam Indicator",
+            "description":"Indicate whether this review is spam or offensive.",
+            "type":"boolean",
+            "default": false
+        },
+        "helpfulCounter":{
+            "title":"Helpful Counter",
+            "description":"Number of people who think this review is helpful.",
+            "type":"number",
+            "default": 0
+        },
+        "unhelpfulCounter":{
+            "title":"Unhelpful Counter",
+            "description":"Number of people who think this review is unhelpful.",
+            "type":"number",
+            "default": 0
+        }
+    }
+}

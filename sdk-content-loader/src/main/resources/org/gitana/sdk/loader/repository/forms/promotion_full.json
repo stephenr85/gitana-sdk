@@ -1,0 +1,15 @@
+{
+    "renderForm":true,
+    "form":{
+        "buttons":{
+            "save":true,
+            "submit":false,
+            "reset":false
+        }
+    },
+    "fields":{
+        "details":{
+            "type":"textarea"
+        }
+    }
+}

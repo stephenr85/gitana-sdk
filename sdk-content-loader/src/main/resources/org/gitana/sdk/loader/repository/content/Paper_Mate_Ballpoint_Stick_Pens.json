@@ -1,0 +1,27 @@
+{
+    "product":"Paper Mate Ballpoint Stick Pens",
+    "details":"1.0 mm, Medium Point, Red Barrel, Red Ink, Pack Of 12",
+    "SKU":"PEN89747456",
+    "price":{
+        "price" : "1.99",
+        "unit" : "dozen"
+    },
+    "photos":[
+        {
+            "type": "thumbnail",
+            "title": "Paper Mate Ballpoint Stick Pens Thumbnail View",
+            "image": "image_thumbnail"
+        },
+        {
+            "type": "full",
+            "title": "Paper Mate Ballpoint Stick Pens Full View",
+            "image": "image_full"
+        }
+    ],
+    "categories":[
+        "Pen"
+    ],
+    "tags":[
+        "Front Page"
+    ]
+}

@@ -1,0 +1,16 @@
+<script id="userReviewsTemplate" type="text/x-jquery-tmpl">
+    <div class="userreviews">
+        <h1>Reviews:</h1>
+        {{each data.nodes}}
+        {{if _type == 'theoffice:review'}}
+        <div id="${_doc}">
+            <div>${_system.modified_by} @ ${_system.modified_on.timestamp}:</div>
+            <div>Rating: ${rating} out of 5</div>
+            <div>${reviewTitle}</div>
+            <div>${reviewDetails}</div>
+        </div>
+        {{/if}}
+        <hr>
+        {{/each}}
+    </div>
+</script>
