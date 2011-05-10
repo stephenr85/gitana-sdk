@@ -20,15 +20,25 @@ $(function() {
     // Example JSON
     var examples = [
         {
-            "title":"Gitana + jQuery Templating",
+            "title":"Gitana",
             "examples" : [
                 {
-                    "title": "Content Display",
+                    "title": "Security",
                     "examples": [
                         {
-                            "id":"promotion-display-single",
-                            "title":"Promotion Item",
-                            "link":"../../html/general/PromotionDisplaySingle.html"
+                            "id":"security-login",
+                            "title":"Login",
+                            "link":"../../html/general/Login.html"
+                        },
+                        {
+                            "id":"security-userinfo",
+                            "title":"User Info",
+                            "link":"../../html/general/UserInfo.html"
+                        },
+                        {
+                            "id":"security-groupinfo",
+                            "title":"Group Info",
+                            "link":"../../html/general/GroupInfo.html"
                         }
                     ]
                 },
@@ -59,6 +69,61 @@ $(function() {
                             "id":"search-results",
                             "title":"Search by Keyword",
                             "link":"../../html/general/SearchResults.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Users and Groups",
+                    "examples": [
+                        {
+                            "id":"user-details",
+                            "title":"User Details",
+                            "link":"../../html/general/UserDetails.html"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title":"Gitana + jQuery Templating",
+            "examples" : [
+                {
+                    "title": "Content Display",
+                    "examples": [
+                        {
+                            "id":"promotion-display-single",
+                            "title":"Promotion Item",
+                            "link":"../../html/templating/PromotionDisplaySingle.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Query",
+                    "examples": [
+                        {
+                            "id":"frontpage-products",
+                            "title":"Front Page Products",
+                            "link":"../../html/templating/FrontPageProducts.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Traverse",
+                    "examples": [
+                        {
+                            "id":"related-products",
+                            "title":"Related Products",
+                            "link":"../../html/templating/RelatedProducts.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Full-Text Search",
+                    "examples": [
+                        {
+                            "id":"search-results",
+                            "title":"Search by Keyword",
+                            "link":"../../html/templating/SearchResults.html"
                         }
                     ]
                 },

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gitana SDK - Security</title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='security-groupinfo'>
+        <h2>Security</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Group Info</h3>
+            <h4>Group information from group object.</h4>
+
+            <div id="field1">
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var driver = new Gitana.Driver();
+                        driver.security().authenticate("mscott_theoffice", "password", function(success) {
+                            driver.groups().read("dunder_mifflin_scranton_theoffice", function(group) {
+                                $('#field1').append('<div><img src="' + '/proxy/security/groups/' + group.getId() + '/attachment/avatar"/></div>')
+                                        .append('<div>Title: ' + group.title + '</div>')
+                                        .append('<div>Description: ' + group.description + '</div>');
+                                $('#field1').append('<div>Members:</div>');
+                                group.listUsers(false, function(response) {
+                                    $.each(response.list, function(index, groupUser) {
+                                        $('#field1').append('<div>' + groupUser.firstName + ' ' + groupUser.lastName + '(' + groupUser.getId() + ')' + '</div>');
+                                    });
+                                    $('#field1').append('<div>Sub Groups:</div>');
+                                    group.listGroups(false, function(response) {
+                                        $.each(response.list, function(index, subGroup) {
+                                            $('#field1').append('<div>' + subGroup.title + '(' + subGroup.getId() + ')' + '</div>');
+                                        });
+                                    });
+                                });
+                            });
+                        }, function(error) {
+                            $('#field1').html("Failed to authenticate with status " + error.status);
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>
