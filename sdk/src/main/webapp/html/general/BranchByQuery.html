@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gitana SDK - Branch</title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet"/>
+    <style>
+        .result-item {
+            padding-bottom: 4px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .total-results {
+            padding: 4px 0 4px 0;
+            text-decoration: underline;
+        }
+
+        .field {
+            padding: 2px 0 2px 0;
+        }
+
+        .field ul {
+            list-style-type: none;
+            padding-left: 0px;
+        }
+
+        .field ul li {
+            padding-bottom: 4px;
+        }
+
+        .field ul li span {
+            float: left;
+            width: 80px;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='branch-by-query'>
+        <h2>Security</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Branch</h3>
+            <h4>Find a branch through query.</h4>
+
+            <div id="field1">
+                <div class="field">
+                    <ul>
+                        <li>
+                            <textarea id="query" rows="10" cols="75"></textarea>
+                        </li>
+                        <li>
+                            <button id="query-button">Query</button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="query-results"></div>
+                <div id="query-error"></div>
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var errorHandler = function(error) {
+                            $('#query-error').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
+                        var repo = null;
+                        // Issue: can't use "mscott_theoffice" since he doesn't seem to be able to read master branch.
+                        // Issue: the trap call doesn't seem to catches 403.
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            repo = this;
+                            $('#query').val(JSON.stringify({
+                                "title" : "Michael's Super New Branch"
+                            }, null, ' '));
+                            $('#query-button').click(function() {
+                                repo.chain().queryBranches(JSON.parse($('#query').val())).then(function() {
+                                    this.count(function(count) {
+                                        $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
+                                    });
+                                    var index = 0;
+                                    this.each(function() {
+                                        var branch = this;
+                                        var title = branch.get('title') ? branch.get('title') : branch.getId();
+                                        var description = branch.get('description') ? branch.get('description') : "";
+                                        $('<div class="result-item"><div class="item-title" id="' + branch.getId() + '">' + (index + 1)
+                                                + '. ' + title + '</div><div class="item-description">'
+                                                + description + '</div></div>').click(
+                                                function() {
+                                                    var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
+                                                    var _this = this;
+                                                    sourceViewDialog.alpaca({
+                                                        "data": [
+                                                            {
+                                                                "title": "JSON Source",
+                                                                "text": JSON.stringify(branch.object, null, '&nbsp;')
+                                                            }
+                                                        ],
+                                                        "view": {
+                                                            "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
+                                                        },
+                                                        "postRender": function(renderedNewFieldControl) {
+                                                            sourceViewDialog.dialog({
+                                                                resizable: true,
+                                                                height: 550,
+                                                                width: 800,
+                                                                modal: false
+                                                            });
+                                                        }
+                                                    });
+                                                }).appendTo($('#query-results'));
+                                        index ++;
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

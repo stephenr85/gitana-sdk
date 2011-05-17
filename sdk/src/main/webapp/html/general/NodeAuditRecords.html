@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <style type="text/css" title="currentStyle">
+        @import "http://www.datatables.net/release-datatables/media/css/demo_page.css";
+        @import "http://www.datatables.net/release-datatables/media/css/demo_table_jui.css";
+        @import "http://www.datatables.net/release-datatables/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css";
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+    <script type="text/javascript" language="javascript"
+            src="http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='node-audit-records'>
+        <h2>Node</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Node Audit Records</h3>
+            <h4>Node Audit Records.</h4>
+
+            <div id="field1">
+                <div style="margin-bottom:10px;">
+                    Node ID: <input type="text" id="node-id" size="60" value="theoffice:wilsonjonesbinder"/>
+                    <button id="audit-button">Get Audit Records</button>
+                </div>
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="audit-records"></table>
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var errorHandler = function(error) {
+                            $('#field1').html("Error message: " + error.msg);
+                        };
+                        var getAuditRecords = function (nodeId, branch) {
+                            var records = [];
+                            branch.chain().readNode(nodeId).listAuditRecords().each(
+                                    function() {
+                                        records.push([this.getScope(),this.getAction(),this.getPrincipalId(),this.getMethod(),this.getHandler(),this.getSystemMetadata().getModifiedOn()['timestamp']]);
+                                    }).then(function() {
+                                $('#audit-records').dataTable({
+                                    "aaData": records,
+                                    "aoColumns": [
+                                        { "sTitle": "Scope" },
+                                        { "sTitle": "Action" },
+                                        { "sTitle": "Principal ID" },
+                                        { "sTitle": "Method" },
+                                        { "sTitle": "Handler" },
+                                        { "sTitle": "Timestamp" }
+                                    ],
+                                    "bJQueryUI": true,
+                                    "sPaginationType": "full_numbers",
+                                    "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                                        $('td', nRow).attr('nowrap', 'nowrap');
+                                        return nRow;
+                                    },
+                                    "bDestroy":true
+                                });
+                            });
+                        };
+                        var gitana = new Gitana();
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            this.readBranch('master').then(function() {
+                                var branch = this;
+                                $('#audit-button').click(function() {
+                                    getAuditRecords($('#node-id').val(), branch);
+                                });
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

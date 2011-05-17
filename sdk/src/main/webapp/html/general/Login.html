@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Security</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
@@ -31,15 +31,57 @@
             <h4>Login.</h4>
 
             <div id="field1">
+                <div id="form"></div>
+                <div id="status"></div>
+                <div>
+                    <button id="login-button">Login</button>
+                    <button id="logout-button">Logout</button>
+                </div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        new Gitana.Driver().security().authenticate("mscott_theoffice", "password", function(success) {
-                            $('#field1').html("Authenticated as mscott_theoffice with ticket "+success.ticket);
-                        },function(error) {
-                            $('#field1').html("Failed to authenticate with status "+error.status);
+                        // Render login form using Alpaca
+                        $('#form').alpaca({
+                            "data" : {
+                                "username" : "mscott_theoffice"
+                            },
+                            "schema": {
+                                "type" : "object",
+                                "properties" : {
+                                    "username" : {
+                                        "title" :"User Name"
+                                    },
+                                    "password" : {
+                                        "title" :"Password",
+                                        "format" : "password"
+                                    }
+                                }
+                            },
+                            "view" : "VIEW::WEB_EDIT_LIST",
+                            "postRender" : function (form) {
+                                var loginButton = $('#login-button').button().click(function() {
+                                    var value = form.getValue();
+                                    var gitana = new Gitana();
+                                    gitana.authenticate(value.username, value.password).trap(
+                                            function(error) {
+                                                $('#field1').html("Error message: " + error.msg);
+                                            }).then(function() {
+                                        $('#form').hide();
+                                        $('#status').empty().html("Authenticated as " + gitana.authenticatedUsername + " with ticket " + gitana.ticket);
+                                        loginButton.hide();
+                                        logoutButton.show();
+                                    });
+                                });
+                                var logoutButton = $('#logout-button').button().hide().click(function() {
+                                    //TODO: add logout.
+                                    $('#form').show();
+                                    $('#status').empty();
+                                    loginButton.show();
+                                    logoutButton.hide();
+                                });
+                            }
                         });
                     });
                 });

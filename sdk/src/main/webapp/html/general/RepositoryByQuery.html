@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title></title>
+    <title>Gitana SDK - Repository</title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
@@ -22,39 +22,37 @@
 </head>
 <body>
 <div class='gitana-example-container'>
-    <div class='gitana-example-header' id='security-userinfo'>
+    <div class='gitana-example-header' id='repository-by-query'>
         <h2>Security</h2>
     </div>
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
-            <h3>User Info</h3>
-            <h4>Basic user information from user object.</h4>
+            <h3>Repository</h3>
+            <h4>Find a repository through query.</h4>
 
             <div id="field1">
-                <div id="form"></div>
-                <div id="social-details"></div>
+                <ul id="repo-list"></ul>
+                <div id="repo-details"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        new Gitana().authenticate("mscott_theoffice", "password").trap(
-                                function(error) {
-                                    $('#field1').html("Error message: " + error.msg);
-                                }).readUser("mscott_theoffice").then(
-                                function() {
-                                    $('#social-details').append('<div class="user-avatar"><img src="' + '/proxy/security/users/' + this.getId() + '/attachment/avatar"/></div>')
-                                            .append('<div class="user-name">' + this.get('firstName') + ' ' + this.get('lastName') + '</div>')
-                                            .append('<div class="user-email">' + this.get('email') + '</div>')
-                                            .append('<div class="user-company">' + this.get('companyName') + '</div>');
-                                    this.listMemberships().then(
-                                            function() {
-                                                $('#social-details').append('<div class="user-memberships">Memberships</div>');
-                                                this.each(function() {
-                                                    $('#social-details').append('<div class="user-group">' + this.get('title') + '(' + this.getId() + ')</div>');
-                                                });
-                                            });
+                        var driver = new Gitana.Driver();
+                        driver.security().authenticate("mscott_theoffice", "password", function(success) {
+                            driver.repositories().query({
+                                "title" : "Dunder Mifflin sample repository",
+                                "tags":["Demo","The office"]
+                            }, function(response) {
+                                $.each(response.rows, function(index, repository) {
+                                    $('<li>' + repository._doc + '</li>').appendTo($('#repo-list'));
+                                    $('#repo-details').empty().append('<div>' + repository.title + '</div>')
+                                            .append('<div>' + repository.description + '</div>');
                                 });
+                            });
+                        }, function(error) {
+                            $('#field1').html("Failed to authenticate with status " + error.status);
+                        });
                     });
                 });
             </script>

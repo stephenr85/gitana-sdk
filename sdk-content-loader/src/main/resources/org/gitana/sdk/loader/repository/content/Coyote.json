@@ -1,0 +1,21 @@
+{
+    "name":"Coyote",
+    "details":"The name coyote is borrowed from Mexican Spanish, ultimately derived from the Nahuatl word cóyotl.[10] Its scientific name, Canis latrans, means \"barking dog\" in Latin.[11] Preliminary genetic evidence, however, has shown that \"coyotes\" in some areas are, genetically speaking, 85–90% Canis latrans, and from 10 to 15% Canis lupus, along with some domestic dog DNA; this prompted one researcher to suggest, jokingly, that they be called \"Canis soupus,\" as they are a \"soup\" (mixture) of canid species.[12]",
+    "trophicLevel":"Tertiary Consumer",
+    "lifeExpectancy":10,
+    "attackHumans": true,
+    "classification":{
+        "Kingdom":     "Animalia",
+        "Phylum":     "Chordata",
+        "Class":     "Mammalia",
+        "Infraclass":     "Eutheria",
+        "Order":     "Carnivora",
+        "Family":     "Canidae",
+        "Genus":     "Canis",
+        "Species":     "C. latrans"
+    },
+    "range":[
+        "USA",
+        "Canada"
+    ]
+}

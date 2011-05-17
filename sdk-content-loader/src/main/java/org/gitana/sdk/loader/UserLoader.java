@@ -68,12 +68,15 @@ public class UserLoader extends AbstractLoader {
                     logger.info("User exists. Delete it and then create a new one.");
                     user.delete();
                     user = gitana.users().create(userId, "password");
+                    gitana.server().grant(userId, "collaborator");
                 } else {
                     logger.info("User exists. Update it.");
+                    gitana.server().grant(userId, "collaborator");
                 }
             } else {
                 logger.info("User doesn't exist. Create a new one.");
                 user = gitana.users().create(userId, "password");
+                gitana.server().grant(userId, "collaborator");
             }
             // Update user attributes
             if (userObj.get("firstName") != null) {
@@ -119,6 +122,10 @@ public class UserLoader extends AbstractLoader {
             logger.info("Updated user last name  :: " + user.getLastName());
             logger.info("Updated user email  :: " + user.getEmail());
             logger.info("Updated user company name  :: " + user.getCompanyName());
+
+            for (String authority : gitana.server().getAuthorities(userId)) {
+                logger.info("User authority  :: " + authority);
+            }
         }
     }
 

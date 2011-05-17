@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <style>
+        .folder-node {
+            background: url('../../images/folder.png') no-repeat;
+            min-height: 48px;
+            margin-left: 48px;
+        }
+
+        .content-node {
+            background: url('../../images/document.png') no-repeat;
+            min-height: 48px;
+            margin-left: 48px;
+        }
+
+        .content-title {
+            padding: 2px 0 0 50px;
+            font-size: 1.2em;
+            min-height: 24px;
+        }
+
+        .folder-title {
+            padding: 2px 0 0 50px;
+            font-size: 1.2em;
+            text-decoration: underline;
+            min-height: 24px;
+            cursor: pointer;
+        }
+
+        .content-description, .folder-description {
+            padding: 2px 0 0 50px;
+            font-size: 1.0em;
+            min-height: 16px;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='folder-node'>
+        <h2>Node</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Folder</h3>
+            <h4>Folder Node</h4>
+
+            <div id="field1">
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var errorHandler = function(error) {
+                            $('#field1').html("Error message: " + error.msg);
+                        };
+                        var findChildren = function (parentNode, insertPoint) {
+                            var folderElem = $('<div class="folder-node" id="' + parentNode.getId() + '"><div class="folder-title">' + parentNode.get('title') + '</div><div  class="folder-description">' + parentNode.get('description') + '</div></div>');
+                            insertPoint.append(folderElem);
+                            $('.folder-title', folderElem).click(function() {
+                                $('.folder-node', folderElem).remove();
+                                $('.content-node', folderElem).remove();
+                                parentNode.chain().listChildren().each(function() {
+                                    if (this.isContainer()) {
+                                        findChildren(this, $('#field1 #' + parentNode.getId()));
+                                    } else {
+                                        $('#field1 #' + parentNode.getId()).append('<div class="content-node"><div class="content-title">' + this.get('title') + '</div><div class="content-description">' + this.get('description') + '</div></div>');
+                                    }
+                                });
+                            });
+                        };
+                        var gitana = new Gitana();
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            this.readBranch('master').readNode('theoffice:root').then(function() {
+                                findChildren(this, $('#field1'));
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

@@ -2,8 +2,47 @@
     "title":"Dunder Mifflin sample repository",
     "description":"Sample repository for Dunder Mifflin Paper Company, Inc.",
     "tags": ["Demo","The office"],
+    "authorities": {
+        "manager":["mscott_theoffice",
+            "kfilippelli_theoffice"],
+        "collaborator":["phalpert_theoffice",
+            "jhalpert_theoffice",
+            "dschrute_theoffice",
+            "abernard_theoffice",
+            "shudson_theoffice"],
+        "editor":["plapinvance_theoffice",
+            "amartin_theoffice",
+            "kmalone_theoffice",
+            "omartinez_theoffice",
+            "mpalmer_theoffice",
+            "kkapoor_theoffice"],
+        "contributor":["cbratton_theoffice",
+            "ehannon_theoffice",
+            "rhoward_theoffice",
+            "hflax_theoffice"]
+    },
     "master":
     {
+        "authorities": {
+            "manager":["mscott_theoffice",
+                "kfilippelli_theoffice"],
+            "collaborator":["phalpert_theoffice",
+                "jhalpert_theoffice",
+                "dschrute_theoffice",
+                "abernard_theoffice",
+                "shudson_theoffice"],
+            "editor":["plapinvance_theoffice",
+                "amartin_theoffice",
+                "kmalone_theoffice",
+                "omartinez_theoffice",
+                "mpalmer_theoffice",
+                "kkapoor_theoffice"],
+            "contributor":["cbratton_theoffice",
+                "ehannon_theoffice",
+                "rhoward_theoffice",
+                "hflax_theoffice"],
+            "consumer":["guest_theoffice"]
+        },
         "definitions":[
             {
                 "qname" : "theoffice:promotion",
@@ -20,6 +59,10 @@
             {
                 "qname" : "theoffice:reviewmetrics",
                 "path": "org/gitana/sdk/loader/repository/definitions/review_metrics.json"
+            },
+            {
+                "qname" : "theoffice:creature",
+                "path": "org/gitana/sdk/loader/repository/definitions/creature.json"
             }
         ],
         "forms": {
@@ -43,7 +86,8 @@
         "associationTypes":[
             "theoffice:isRelatedTo",
             "theoffice:hasReview",
-            "theoffice:hasReviewMetrics"
+            "theoffice:hasReviewMetrics",
+            "theoffice:isEatenBy"
         ],
         "files":[
             {
@@ -120,6 +164,55 @@
                                         "name":"Dunder_Mifflin_Sales_Quota.doc",
                                         "path":"org/gitana/sdk/loader/repository/files/Dunder_Mifflin_Holidays.doc",
                                         "mimeType":"application/msword"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:foodweb",
+                        "title": "Food Web Studies",
+                        "description": "Dunder Mifflin Paper Company food web studies.",
+                        "content":[
+                            {
+                                "qname":"theoffice:coyote",
+                                "type":"theoffice:creature",
+                                "title":"Creature Coyote",
+                                "description" : "Coyote.",
+                                "path":"org/gitana/sdk/loader/repository/content/Coyote.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Coyote.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:jackrabbit",
+                                "type":"theoffice:creature",
+                                "title":"Creature Jackrabbit",
+                                "description" : "Jackrabbit.",
+                                "path":"org/gitana/sdk/loader/repository/content/Jackrabbit.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Jackrabbit.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:squirrel",
+                                "type":"theoffice:creature",
+                                "title":"Creature Squirrel",
+                                "description" : "Squirrel.",
+                                "path":"org/gitana/sdk/loader/repository/content/Squirrel.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Squirrel.jpg",
+                                        "mimeType":"image/jpg"
                                     }
                                 ]
                             }
@@ -226,6 +319,19 @@
                                 "mimeType":"application/msword"
                             }
                         ]
+                    },
+                    {
+                        "qname":"theoffice:fortunecookiemessages",
+                        "title":"Fortune Cookie Messages",
+                        "description":"Fortune Cookie Messages.",
+                        "path":"org/gitana/sdk/loader/repository/content/Fortune_Cookie_Messages.json",
+                        "attachments": [
+                            {
+                                "name":"background",
+                                "path":"org/gitana/sdk/loader/repository/content/attachments/Fortune_Cookie.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
                     }
                 ]
             }
@@ -242,6 +348,26 @@
                 "source":"theoffice:papermateballpointstickpens",
                 "target":"theoffice:wilsonjonesbinder",
                 "direction":"BOTH"
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:jackrabbit",
+                "target":"theoffice:coyote",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Coyote eats Jackrabbit",
+                    "favorite": 7
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:squirrel",
+                "target":"theoffice:jackrabbit",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Jackrabbit sometimes eats squirrel",
+                    "favorite": 5
+                }
             }
         ],
         "branches" : [
@@ -250,7 +376,7 @@
                 "description" : "Michael's Branch",
                 "branches" : [
                     {
-                        "name" : "Dwight's Branch",
+                        "title" : "Dwight's Branch",
                         "description" : "Dwight's Branch"
                     }
                 ]

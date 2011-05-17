@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.gitana.repo.client.SecurityPrincipal;
 import org.gitana.repo.client.SecurityUser;
+import org.gitana.repo.client.nodes.Association;
 import org.gitana.repo.client.nodes.Node;
 import org.gitana.repo.client.services.Branches;
 import org.gitana.repo.client.services.Definitions;
@@ -122,6 +123,25 @@ public class RepositoryLoader extends AbstractLoader {
         logger.info("Updated repository description  :: " + this.repository.getDescription());
         logger.info("Updated repository tags  :: " + this.repository.get("tags").toString());
 
+        // Manage authorities
+        if (repositoryObj.get("authorities") != null) {
+            JsonNode authoritiesNode = repositoryObj.get("authorities");
+            if (authoritiesNode != null) {
+                Iterator<String> it = authoritiesNode.getFieldNames();
+                while (it.hasNext()) {
+                    String authority = it.next();
+                    logger.info("Add users with authority " + authority);
+                    for (JsonNode userNode : authoritiesNode.get(authority)) {
+                        String userId = userNode.getTextValue();
+                        if (userId != null) {
+                            this.repository.grant(userId, authority);
+                            logger.info("Grant user " + userId + " with authority " + authority);
+                        }
+                    }
+                }
+            }
+        }
+
         // Load master branch
         if (repositoryObj.get("master") != null) {
             this.loadBranch(repositoryObj.get("master"), repository.branches().read("master"));
@@ -145,19 +165,23 @@ public class RepositoryLoader extends AbstractLoader {
     }
 
     /**
-     * @param parentBranch
      * @param title
      * @param description
      * @return
      */
-    public Branch getBranch(Branch parentBranch, String title, String description) {
-        Branches branches = repository.branches();
-        for (Branch existingBranch : branches.list()) {
-            if (existingBranch.getRootBranchId().equals(parentBranch.getId())) {
-                if (title.equals(existingBranch.getTitle()) && description.equals(existingBranch.getDescription())) {
-                    return existingBranch;
-                }
-            }
+    public Branch getBranch(String title, String description) {
+
+        QueryBuilder builder = QueryBuilder.start("title").is(title).and("description").is(description);
+
+        ObjectNode query = builder.get();
+        Map<String, Branch> results = repository.branches().query(query);
+
+        if (results.size() > 0) {
+            Branch branch = results.values().iterator().next();
+            logger.info("Existing branch ::" + branch.getId());
+            logger.info("Existing repo title ::" + branch.getTitle());
+            logger.info("Existing repo description ::" + branch.getDescription());
+            return branch;
         }
         return null;
     }
@@ -222,14 +246,16 @@ public class RepositoryLoader extends AbstractLoader {
                         logger.info("Create content  :: " + content.getId());
                         logger.info("Create content  :: " + content.getQName());
                         // Manage attachments
-                        for (JsonNode attachmentObj : contentObj.get("attachments")) {
-                            if (attachmentObj.get("name") != null && attachmentObj.get("path") != null && attachmentObj.get("mimeType") != null) {
-                                try {
-                                    byte[] bytes = ClasspathUtil.bytesFromClasspath(attachmentObj.get("path").getTextValue());
-                                    content.uploadAttachment(attachmentObj.get("name").getTextValue(), bytes, attachmentObj.get("mimeType").getTextValue());
-                                    logger.info("Add attachment  :: " + attachmentObj.get("name").getTextValue());
-                                } catch (Exception e1) {
-                                    logger.error("Failed to add attachment.", e1);
+                        if (contentObj.get("attachments") != null) {
+                            for (JsonNode attachmentObj : contentObj.get("attachments")) {
+                                if (attachmentObj.get("name") != null && attachmentObj.get("path") != null && attachmentObj.get("mimeType") != null) {
+                                    try {
+                                        byte[] bytes = ClasspathUtil.bytesFromClasspath(attachmentObj.get("path").getTextValue());
+                                        content.uploadAttachment(attachmentObj.get("name").getTextValue(), bytes, attachmentObj.get("mimeType").getTextValue());
+                                        logger.info("Add attachment  :: " + attachmentObj.get("name").getTextValue());
+                                    } catch (Exception e1) {
+                                        logger.error("Failed to add attachment.", e1);
+                                    }
                                 }
                             }
                         }
@@ -303,6 +329,28 @@ public class RepositoryLoader extends AbstractLoader {
             }
 
         }
+        // Manage authorities
+        if (branchObj.get("authorities") != null) {
+            JsonNode authoritiesNode = branchObj.get("authorities");
+            if (authoritiesNode != null) {
+                Iterator<String> it = authoritiesNode.getFieldNames();
+                while (it.hasNext()) {
+                    String authority = it.next();
+                    logger.info("Add users with authority " + authority);
+                    for (JsonNode userNode : authoritiesNode.get(authority)) {
+                        String userId = userNode.getTextValue();
+                        if (userId != null) {
+                            branch.grant(userId, authority);
+                            logger.info("Grant user " + userId + " with authority " + authority + " to branch " + branch.getId());
+                            // Now check
+                            for (String myAuthority : branch.getAuthorities(userId)) {
+                                logger.info("User " + userId + " has authority " + myAuthority);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         // Manage forms
         if (branchObj.get("forms") != null) {
@@ -320,7 +368,7 @@ public class RepositoryLoader extends AbstractLoader {
                             if (formKey != null && path != null) {
                                 try {
                                     ObjectNode formNode = this.loadJsonFromClasspath(path);
-                                    definition.forms().create(formKey,formNode);
+                                    definition.forms().create(formKey, formNode);
                                     logger.info("Add form :: " + formKey);
                                 } catch (IOException e) {
                                     logger.error("Failed to load form from " + path, e);
@@ -363,8 +411,18 @@ public class RepositoryLoader extends AbstractLoader {
                 Node sourceNode = branch.nodes().read(sourceQnameStr);
                 Node targetNode = branch.nodes().read(targetQnameStr);
                 if (sourceNode != null && targetNode != null) {
-                    sourceNode.associate(targetNode, typeQname, direction);
+                    Association association = sourceNode.associate(targetNode, typeQname, direction);
                     logger.info("Create " + typeQnameStr + " Association :: " + sourceQnameStr + "<=>" + targetQnameStr + " (" + direction + ")");
+                    JsonNode associationDetailsObj = associationObj.get("associationDetails");
+                    if (associationDetailsObj != null) {
+                        Iterator<String> it = associationDetailsObj.getFieldNames();
+                        while (it.hasNext()) {
+                            String fieldName = it.next();
+                            association.set(fieldName, associationDetailsObj.get(fieldName));
+                        }
+                        association.update();
+                        logger.info("Updated Association ::" + association.toJSONString(true));
+                    }
                 }
             }
         }
@@ -376,6 +434,27 @@ public class RepositoryLoader extends AbstractLoader {
         logger.info("Updated branch description  :: " + branch.getDescription());
 
         // Load sub branches
+        if (branchObj.get("branches") != null) {
+            for (JsonNode subBranchObj : branchObj.get("branches")) {
+                String subBranchTitle = subBranchObj.get("title").getTextValue();
+                String subBranchDescription = subBranchObj.get("description").getTextValue();
+                Branch subBranch = this.getBranch(subBranchTitle, subBranchDescription);
+                if (subBranch != null) {
+                    /*
+                    if (this.repositoryLoadMode.equals("overwrite")) {
+                        logger.info("Branch exists. Delete it and then create a new one.");
+                    } else {
+                        logger.info("Branch exists. ID :: " + subBranch.getId());
+                    }
+                    */
+                    logger.info("Branch exists. ID :: " + subBranch.getId());
+                } else {
+                    logger.info("branch doesn't exist. Create a new one.");
+                    subBranch = this.repository.branches().create(branch.getTipChangesetId());
+                }
+                this.loadBranch(subBranchObj, subBranch);
+            }
+        }
 
         return branch;
     }

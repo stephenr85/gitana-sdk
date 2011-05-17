@@ -1,0 +1,93 @@
+{
+    "title":"Creature",
+    "description":"Dunder Mifflin Paper Company creature detailed information.",
+    "type":"object",
+    "properties":{
+        "name":{
+            "title":"Creature Name",
+            "description":"Name of the creature.",
+            "type":"string"
+        },
+        "details":{
+            "title":"Creature details",
+            "description":"Detailed description of this Creature.",
+            "type":"string"
+        },
+        "trophicLevel":{
+            "title":"Trophic Level",
+            "description":"Creature trophic level.",
+            "type":"string",
+            "enum":[
+                "Primary Producer","Primary Consumer","Secondary Consumer","Tertiary Consumer","Quarternary Consumer"
+            ]
+        },
+        "lifeExpectancy": {
+            "title":"Average Life Expectancy",
+            "description":"Creature average life expectancy in years.",
+            "type":"number"
+        },
+        "attackHumans": {
+            "title":"Attack Humans",
+            "description":"Whether the creature attacks humans or not.",
+            "type":"boolean"
+        },
+        "classification" : {
+            "title":"Scientific classification",
+            "description":"Creature scientific classification.",
+            "type" : "object",
+            "properties" : {
+                "Kingdom": {
+                    "title":"Kingdom Level",
+                    "description":"Creature kingdom classification.",
+                    "type":"string"
+                },
+                "Phylum": {
+                    "title":"Phylum Level",
+                    "description":"Creature phylum classification.",
+                    "type":"string"
+                },
+                "Class": {
+                    "title":"Class Level",
+                    "description":"Creature class classification.",
+                    "type":"string"
+                },
+                "Infraclass": {
+                    "title":"Infraclass Level",
+                    "description":"Creature infraclass classification.",
+                    "type":"string"
+                },
+                "Order": {
+                    "title":"Order Level",
+                    "description":"Creature order classification.",
+                    "type":"string"
+                },
+                "Family": {
+                    "title":"Family Level",
+                    "description":"Creature family classification.",
+                    "type":"string"
+                },
+                "Genus": {
+                    "title":"Genus Level",
+                    "description":"Creature genus classification.",
+                    "type":"string"
+                },
+                "Species": {
+                    "title":"Species Level",
+                    "description":"Creature species classification.",
+                    "type":"string"
+                }
+            }
+        },
+        "range" : {
+            "title":"Creature Range",
+            "description":"Creature range.",
+            "type" : "array",
+            "items": {
+                "title": "Country",
+                "description": "Country",
+                "type": "string"
+            }
+        }
+
+    }
+}

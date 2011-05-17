@@ -1,0 +1,21 @@
+{
+    "name":"Douglas Squirrel",
+    "details":"The Douglas Squirrel (Tamiasciurus douglasii) is a pine squirrel found in the Pacific coastal states and provinces of North America. It is sometimes known as the Chickaree or Pine Squirrel, but since Chickaree is also used for the American Red Squirrel and Pine Squirrel for the genus Tamiasciurus, these alternative names are better avoided. Variant spellings of the common name are Douglas' Squirrel and Douglas's Squirrel. The Native Americans of Kings River called it the \"Pillillooeet\", in imitation of its characteristic alarm call.",
+    "trophicLevel":"Primary Consumer",
+    "lifeExpectancy":7,
+    "attackHumans": false,
+    "classification":{
+        "Kingdom":     "Animalia",
+        "Phylum":     "Chordata",
+        "Class":     "Mammalia",
+        "Order":     "Rodentia",
+        "Family":     "Sciuridae",
+        "Genus":     "Tamiasciurus",
+        "Species":     "T. douglasii"
+    },
+    "range":[
+        "USA",
+        "Mexico",
+        "Canada"
+    ]
+}

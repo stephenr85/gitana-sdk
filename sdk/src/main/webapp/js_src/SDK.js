@@ -2,7 +2,7 @@
 
     var Gitana = window.Gitana;
 
-    Gitana.SDK = Gitana.Abstract.extend(
+    Gitana.SDK = Gitana.extend(
     /** @lends Gitana.SDK.prototype */
     {
         /**

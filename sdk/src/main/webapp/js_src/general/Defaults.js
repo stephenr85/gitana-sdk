@@ -4,8 +4,7 @@
         "password": "admin",
         "repositoryId" : {
             "title" : "Dunder Mifflin sample repository",
-            "tags":"Demo",
-            "tags":"The office"
+            "tags":["Demo","The office"]
         }
     });
     window.gitanaConnector = gitanaConnector;

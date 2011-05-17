@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet"/>
+    <style>
+        .result-item {
+            padding-bottom: 4px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .total-results {
+            padding: 4px 0 4px 0;
+            text-decoration: underline;
+        }
+
+        .field {
+            padding: 2px 0 2px 0;
+        }
+
+        .field ul {
+            list-style-type: none;
+            padding-left: 0px;
+        }
+
+        .field ul li {
+            padding-bottom: 4px;
+        }
+
+        .field ul li span {
+            float: left;
+            width: 80px;
+        }
+
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='search-spatial'>
+        <h2>Search</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Spatial Search</h3>
+            <h4>Spatial Search</h4>
+
+            <div id="field1">
+                <div style="margin-bottom:10px;">
+                    <div class="field">
+                        <ul>
+                            <li><span class="field-key">Node</span><input type="text" id="source-node" size="60"
+                                                                          value="theoffice:root"/></li>
+                            <li><span class="field-key">Keyword</span><input type="text" id="keyword" size="60"
+                                                                             value=""/></li>
+                            <li><span class="field-key">Depth</span><input type="text" id="depth" size="10" value="1"/>
+                            </li>
+                            <li>
+                                <button id="search-button">Search</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="search-results"></div>
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var errorHandler = function(error) {
+                            $('#field1').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            this.readBranch('master').then(function() {
+                                var branch = this;
+                                $('#search-button').click(function() {
+                                    branch.chain().readNode($('#source-node').val()).search({
+                                        "search": $('#keyword').val(),
+                                        "traverse": {
+                                            "depth": parseInt($('#depth').val())
+                                        }
+                                    }).count(
+                                            function(count) {
+                                                $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
+                                            }).each(
+                                            function(key, node, index) {
+                                                var title = node.get('title') ? node.get('title') : node.getId();
+                                                var description = node.get('description') ? node.get('description') : "";
+                                                $('#search-results').append('<div class="result-item"><div class="item-title" id="' + this.getQName() + '">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>');
+                                            }).then(function() {
+                                        $('.item-title').click(function() {
+                                            $('#source-node').val($(this).attr('id'));
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                        /*
+                         var driver = new Gitana.Driver();
+                         driver.security().authenticate("admin", "admin", function(success) {
+                         driver.repositories().query({
+                         "title" : "Dunder Mifflin sample repository",
+                         "tags":["Demo","The office"]
+                         }, function(response) {
+                         if (response.total_rows > 0) {
+                         var respositoryId = response.rows[0]._doc;
+                         driver.repositories().read(respositoryId, function(repository) {
+                         repository.branches().read('master', function(branch) {
+                         $('#search-button').click(function() {
+                         branch.nodes().read($('#source-node').val(), function(node) {
+                         node.search({
+                         "search": $('#keyword').val(),
+                         "traverse": {
+                         "depth": parseInt($('#depth').val())
+                         }
+                         }, function(response) {
+                         $('#search-results').empty().append('<div class="total-results">Total ' + response.list.length + ' search results.</div>');
+                         $.each(response.list, function(index, node) {
+                         var title = node.title ? node.title : node.getId();
+                         var description = node.description ? node.description : "";
+                         $('#search-results').append('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>');
+                         });
+                         $('.item-title').click(function() {
+                         $('#source-node').val($(this).attr('id'));
+                         });
+                         });
+                         });
+                         });
+                         });
+                         });
+                         }
+                         });
+                         }, function(error) {
+                         $('#field1').html("Failed to authenticate with status " + error.status);
+                         });
+                         */
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

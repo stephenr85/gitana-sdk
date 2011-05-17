@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Gitana SDK - Branch</title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='branch-crud'>
+        <h2>Security</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Branch</h3>
+            <h4>Find a repository through query.</h4>
+
+            <div id="field1">
+                <ul id="branch-list"></ul>
+                <div id="branch-details"></div>
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var driver = new Gitana.Driver();
+                        driver.security().authenticate("admin", "admin", function(success) {
+                            driver.repositories().query({
+                                "title" : "Dunder Mifflin sample repository",
+                                "tags":["Demo","The office"]
+                            }, function(response) {
+                                if (response.total_rows > 0) {
+                                    var respositoryId = response.rows[0]._doc;
+                                    driver.repositories().read(respositoryId, function(repository) {
+                                        repository.branches().query({
+                                            "title" : "Michael's Super New Branch"
+                                        }, function(response2) {
+                                            $.each(response2.rows, function(index, branch) {
+                                                $('<li>' + branch._doc + '</li>').appendTo($('#branch-list'));
+                                                $('#branch-details').empty().append('<div>' + branch.title + '</div>')
+                                                        .append('<div>' + branch.description + '</div>');
+                                            });
+                                        });
+                                    });
+                                }
+                            });
+                        }, function(error) {
+                            $('#field1').html("Failed to authenticate with status " + error.status);
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

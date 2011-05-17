@@ -43,12 +43,101 @@ $(function() {
                     ]
                 },
                 {
+                    "title": "Repository",
+                    "examples": [
+                        {
+                            "id":"repository-by-id",
+                            "title":"Find Repository by ID",
+                            "link":"../../html/general/RepositoryById.html"
+                        },
+                        {
+                            "id":"repository-by-query",
+                            "title":"Query Repositories",
+                            "link":"../../html/general/RepositoryByQuery.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Branch",
+                    "examples": [
+                        {
+                            "id":"branch-by-id",
+                            "title":"Find Branch by ID",
+                            "link":"../../html/general/BranchById.html"
+                        },
+                        {
+                            "id":"branch-by-query",
+                            "title":"Query Branches",
+                            "link":"../../html/general/BranchByQuery.html"
+                        },
+                        {
+                            "id":"branch-crud",
+                            "title":"Query Operations",
+                            "link":"../../html/general/BranchCrud.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Node",
+                    "examples": [
+                        {
+                            "id":"node-crud",
+                            "title":"Node Operations",
+                            "link":"../../html/general/NodeCrud.html"
+                        },
+                        {
+                            "id":"person-node",
+                            "title":"Person Node",
+                            "link":"../../html/general/PersonNode.html"
+                        },
+                        {
+                            "id":"node-attachments",
+                            "title":"Node Attachments",
+                            "link":"../../html/general/NodeAttachments.html"
+                        },
+                        {
+                            "id":"folder-node",
+                            "title":"Folder Node",
+                            "link":"../../html/general/FolderNode.html"
+                        },
+                        {
+                            "id":"node-audit-records",
+                            "title":"Node Audit Records",
+                            "link":"../../html/general/NodeAuditRecords.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Association",
+                    "examples": [
+                        {
+                            "id":"association-crud",
+                            "title":"Association Operations",
+                            "link":"../../html/general/AssociationCrud.html"
+                        }
+                    ]
+                },
+                {
+                    "title": "Search",
+                    "examples": [
+                        {
+                            "id":"search-fulltext",
+                            "title":"Full-Text Search",
+                            "link":"../../html/general/SearchFullText.html"
+                        },{
+                            "id":"search-spatial",
+                            "title":"Spatial Search",
+                            "link":"../../html/general/SearchSpatial.html"
+                        }
+                    ]
+                },
+                {
                     "title": "Query",
                     "examples": [
                         {
-                            "id":"frontpage-products",
-                            "title":"Front Page Products",
-                            "link":"../../html/general/FrontPageProducts.html"
+                            "id":"query-examples",
+                            "title":"Query Examples",
+                            "link":"../../html/general/QueryExamples.html"
                         }
                     ]
                 },
@@ -56,29 +145,9 @@ $(function() {
                     "title": "Traverse",
                     "examples": [
                         {
-                            "id":"related-products",
-                            "title":"Related Products",
-                            "link":"../../html/general/RelatedProducts.html"
-                        }
-                    ]
-                },
-                {
-                    "title": "Full-Text Search",
-                    "examples": [
-                        {
-                            "id":"search-results",
-                            "title":"Search by Keyword",
-                            "link":"../../html/general/SearchResults.html"
-                        }
-                    ]
-                },
-                {
-                    "title": "Users and Groups",
-                    "examples": [
-                        {
-                            "id":"user-details",
-                            "title":"User Details",
-                            "link":"../../html/general/UserDetails.html"
+                            "id":"traverse-examples",
+                            "title":"Traverse Examples",
+                            "link":"../../html/general/TraverseExamples.html"
                         }
                     ]
                 }
@@ -209,6 +278,7 @@ $(function() {
                 itemBar.append(listItem);
                 if (item.id == currentExampleId) {
                     itemBar.addClass('ui-state-highlight');
+                    $('title').html('Gitana SDK - '+item.title);
                 }
                 itemBar.hover(function() {
                     $(this).addClass('ui-state-hover');
@@ -220,8 +290,6 @@ $(function() {
         });
         bar.appendTo(container);
     }
-
-    ;
 
     function renderSideBar(container) {
         $.each(examples, function(i, items) {
@@ -236,8 +304,6 @@ $(function() {
             bar.appendTo(container);
         });
     }
-
-    ;
 
     if (!Alpaca.isValEmpty(currentExampleId)) {
         var sideBar = $('<div id="sidebar"></div>');

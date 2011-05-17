@@ -1,46 +1,46 @@
-html,body {
+html, body {
     margin: 0px;
     padding: 0;
     font: 12px normal Verdana, Arial, Helvetica, sans-serif;
-	height:100%;
-	min-width:1000px;
+    height: 100%;
+    min-width: 1000px;
 }
 
 h3 {
-	margin-top:10px;
-	text-decoration: underline;	
+    margin-top: 10px;
+    text-decoration: underline;
 }
 
 h4 {
-	width:500px;
-	font-weight:normal;	
+    width: 500px;
+    font-weight: normal;
 }
 
 .clear {
-	clear:both;	
+    clear: both;
 }
 
 .gitana-example-container {
-	min-height:100%;
-	position:relative;
+    min-height: 100%;
+    position: relative;
 }
 
 .gitana-example-body {
-	padding-bottom:20px;
-	display:inline-block;
-	width:100%;
+    padding-bottom: 20px;
+    display: inline-block;
+    width: 100%;
 }
 
 .gitana-example-header {
     border-bottom: 1px solid #EEEEEE;
     float: left;
     width: 100%;
-	margin-bottom:10px;
-	background: transparent url(../images/logos/gitana-logo.png) no-repeat scroll left center;
+    margin-bottom: 10px;
+    background: transparent url(../images/logos/gitana-logo.png) no-repeat scroll left center;
 }
 
 .gitana-example-header h2 {
-	padding:2px 0 0 140px;
+    padding: 2px 0 0 140px;
 }
 
 .gitana-example-header h2 A:link {
@@ -51,55 +51,58 @@ h4 {
     text-decoration: none;
     color: #000000;
 }
+
 .gitana-example-header h2 A:active {
     text-decoration: none;
 }
+
 .gitana-example-header h2 A:hover {
     text-decoration: underline;
 }
 
 .gitana-example-sidebar-header {
-	padding:4px;
+    padding: 4px;
 }
+
 .gitana-example-sidebar {
-	display:inline-block;
-/*
-	float:left;
-*/
-	width:300px;
-	margin: 0px 20px 10px 10px;
-	padding:4px;
+    display: inline-block;
+    /*
+        float:left;
+    */
+    width: 300px;
+    margin: 0px 20px 10px 10px;
+    padding: 4px;
 }
 
-.gitana-example-sidebar ul{
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	font-weight:bold;
-}		
+.gitana-example-sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
 
-.gitana-example-sidebar ul li{
-	padding: 2px 2px 2px 4px;
-	margin: 1px;
-	font-weight:normal;
-}		
+.gitana-example-sidebar ul li {
+    padding: 2px 2px 2px 4px;
+    margin: 1px;
+    font-weight: normal;
+}
 
-.gitana-example-sidebar ul li a{
-	text-decoration : none;
+.gitana-example-sidebar ul li a {
+    text-decoration: none;
 }
 
 .gitana-example-case {
-	display:inline-block;
-	vertical-align:top;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .gitana-example-footer {
-	clear:both;
-   	display:inline-block;		
-   	position:absolute;
-  	bottom:0;
-  	width:100%;
-   	height:20px;
+    clear: both;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
 }
 
 pre {
@@ -111,7 +114,7 @@ pre {
     line-height: 20px;
     overflow: auto;
     overflow-Y: hidden;
-    width:800px;
+    width: 800px;
 }
 
 pre code {
@@ -119,3 +122,77 @@ pre code {
     padding: 5px 0;
     display: block;
 }
+
+#social-details {
+    font-size: 1.0em;
+    text-align: left;
+}
+
+#social-details .user-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#social-details .user-email {
+
+}
+
+#social-details .user-info {
+    display: block;
+    margin-left: 110px;
+}
+
+#social-details .user-avatar {
+    display: inline-block;
+    float: left;
+    padding: 4px;
+    width: 100px;
+}
+
+#social-details .user-position {
+    font-weight: bold;
+}
+
+#social-details .user-gender {
+
+}
+
+#social-details .user-biography {
+    margin: 4px 0 4px 0;
+}
+
+#social-details .user-memberships {
+    font-weight: bold;
+    padding: 4px 0 4px 0;
+}
+
+#social-details .user-group {
+}
+
+#social-details .group-avatar {
+    display: inline-block;
+    float: left;
+    padding: 4px;
+    width: 200px;
+}
+
+#social-details .group-info {
+    display: inline-block;
+}
+
+#social-details .group-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#social-details .group-descriptions {
+    margin: 4px 0 4px 0;
+}
+
+#social-details .group-users, #social-details .group-groups {
+    font-weight: bold;
+    padding: 4px 0 4px 0;
+}
+

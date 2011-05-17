@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet"/>
+    <style>
+        .result-item {
+            padding-bottom: 4px;
+        }
+
+        .item-title {
+            font-weight: bold;
+        }
+
+        .total-results {
+            padding: 4px 0 4px 0;
+            text-decoration: underline;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='search-fulltext'>
+        <h2>Search</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Full-Text Search</h3>
+            <h4>Full-Text Search</h4>
+
+            <div id="field1">
+                <div style="margin-bottom:10px;">
+                    Keyword: <input type="text" id="keyword" size="60" value=""/>
+                    <button id="search-button">Search</button>
+                </div>
+                <div id="search-results"></div>
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var errorHandler = function(error) {
+                            $('#field1').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            this.readBranch('master').then(function() {
+                                var branch = this;
+                                $('#search-button').click(function() {
+                                    branch.chain().searchNodes($('#keyword').val()).count(
+                                            function(count) {
+                                                $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
+                                            }).each(function(key, node, index) {
+                                        var title = node.get('title') ? node.get('title') : node.getId();
+                                        var description = node.get('description') ? node.get('description') : "";
+                                        $('#search-results').append('<div class="result-item"><div class="item-title">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>');
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

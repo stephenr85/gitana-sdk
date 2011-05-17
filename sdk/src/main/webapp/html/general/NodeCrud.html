@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <style>
+        #field1 {
+            width: 463px;
+            height: 196px;
+        }
+
+        #message {
+            padding: 80px 0 0 110px;
+            text-align: center;
+            width: 250px;
+            color: #2953a7;
+        }
+
+        #toolbar {
+            margin: 70px 0 0 0;
+            text-align: right;
+        }
+
+        button {
+            margin: 0 4px;
+        }
+
+        #new_button {
+            margin-top: 180px;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='node-crud'>
+        <h2>Node</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Basic Node Operations</h3>
+            <h4>Basic Node Operations.</h4>
+
+            <div id="field1">
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+
+                        var randomInteger = function (M, N) {
+                            return Math.floor(M + (1 + N - M) * Math.random());
+                        }
+
+                        var updateFortuneCookieMessage = function(node, messages) {
+                            node.object['message'] = messages[randomInteger(0, messages.length - 1)];
+                            node.object['luckNumbers'] = [randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100)];
+                            node.chain().update().reload().then(function() {
+                                displayFortuneCookieMessage(this, messages);
+                            });
+                        };
+
+                        var createFortuneCookieMessage = function(branch, messages) {
+                            branch.chain().createNode({
+                                "_qname" : "theoffice:fortunecookie",
+                                "title" : "My Fouturn Cookie",
+                                "message" : messages[randomInteger(0, messages.length - 1)],
+                                "luckNumbers" : [randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100)]
+                            }).then(function() {
+                                displayFortuneCookieMessage(this, messages);
+                            });
+                        };
+
+                        var displayFortuneCookieMessage = function(node, messages) {
+                            $('#field1').empty().append('<div id="message"><div>' + node.get('message') + '</div><div>Lucky Numbers: '
+                                    + node.get('luckNumbers').join(',') + '</div>'
+                                    + '</div>');
+                            $('#field1').append('<div id="toolbar"><span>' + node.getSystemMetadata().getModifiedBy() + ' @ ' + node.getSystemMetadata().getModifiedOn()["timestamp"]
+                                    + '</span><button id="update_button">Update</button><button id="delete_button">Delete</button></div>');
+                            $('#delete_button').click(function() {
+                                var branch = node.getBranch();
+                                node.chain().del().then(function() {
+                                    $('#field1').empty();
+                                    $('#field1').append('<div id="toolbar"><button id="new_button">Generate New</button></div>');
+                                    $('#new_button').click(function() {
+                                        createFortuneCookieMessage(branch, messages);
+                                    });
+                                });
+                            });
+                            $('#update_button').click(function() {
+                                updateFortuneCookieMessage(node, messages);
+                            });
+                        };
+
+                        var errorHandler = function(error) {
+                            $('#field1').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            this.readBranch('master').readNode('theoffice:fortunecookiemessages').then(function() {
+                                var messages = this.get('messages');
+                                $('#field1').css({
+                                    "background": "url('" + gitana.serverURL + this.attachment("background").getUri() + "') no-repeat"
+                                });
+                                var branch = this.getBranch();
+                                branch.chain().trap(
+                                        function(error) {
+                                            if (error.http.status == 404) {
+                                                createFortuneCookieMessage(branch, messages);
+                                            }
+                                        }).readNode("theoffice:fortunecookie").then(function() {
+                                    updateFortuneCookieMessage(this, messages);
+                                });
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>

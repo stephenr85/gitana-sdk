@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet"/>
+    <style>
+        .result-item {
+            padding-bottom: 4px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .total-results {
+            padding: 4px 0 4px 0;
+            text-decoration: underline;
+        }
+
+        .field {
+            padding: 2px 0 2px 0;
+        }
+
+        .field ul {
+            list-style-type: none;
+            padding-left: 0px;
+        }
+
+        .field ul li {
+            padding-bottom: 4px;
+        }
+
+        .field ul li span {
+            float: left;
+            width: 80px;
+        }
+
+        .query-examples ul li {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+<div class='gitana-example-header' id='query-examples'>
+    <h2>Search</h2>
+</div>
+<div class='gitana-example-body'>
+<div class='gitana-example-case'>
+<h3>Query Examples</h3>
+<h4>Query Examples</h4>
+
+<div id="field1">
+    <div style="margin-bottom:10px;">
+        <div class="query-examples">
+            <ul>
+            </ul>
+        </div>
+        <div class="field">
+            <ul>
+                <li>
+                    <textarea id="query" rows="10" cols="75"></textarea>
+                </li>
+                <li>
+                    <button id="query-button">Query</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="query-results"></div>
+</div>
+
+<script type="text/javascript" id="field1-script">
+$(function() {
+    $(document).ready(function() {
+        var errorHandler = function(error) {
+            $('#field1').html("Error message: " + error.msg);
+        };
+        var gitana = new Gitana();
+        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+            "title" : "Dunder Mifflin sample repository",
+            "tags":["Demo","The office"]
+        }).keep(1).each(function() {
+            this.readBranch('master').then(function() {
+                var branch = this;
+                $('#query-button').click(function() {
+                    branch.chain().queryNodes(JSON.parse($('#query').val())).count(
+                            function(count) {
+                                $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
+                            }).each(function(key, node , index) {
+                        var title = node.get('title') ? node.get('title') : node.getId();
+                        var description = node.get('description') ? node.get('description') : "";
+                        $('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1)
+                                + '. ' + title + '</div><div class="item-description">'
+                                + description + '</div></div>').click(
+                                function() {
+                                    var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
+                                    var _this = this;
+                                    sourceViewDialog.alpaca({
+                                        "data": [
+                                            {
+                                                "title": "JSON Source",
+                                                "text": JSON.stringify(node.object, null, '&nbsp;')
+                                            }
+                                        ],
+                                        "view": {
+                                            "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
+                                        },
+                                        "postRender": function(renderedNewFieldControl) {
+                                            sourceViewDialog.dialog({
+                                                resizable: true,
+                                                height: 550,
+                                                width: 800,
+                                                modal: false
+                                            });
+                                        }
+                                    });
+                                }).appendTo($('#query-results'));
+                    });
+                });
+
+            });
+        });
+
+        /*
+         var driver = new Gitana.Driver();
+         driver.security().authenticate("admin", "admin", function(success) {
+         driver.repositories().query({
+         "title" : "Dunder Mifflin sample repository",
+         "tags":["Demo","The office"]
+         }, function(response) {
+         if (response.total_rows > 0) {
+         var respositoryId = response.rows[0]._doc;
+         driver.repositories().read(respositoryId, function(repository) {
+         repository.branches().read('master', function(branch) {
+         $('#query-button').click(function() {
+         branch.nodes().query(JSON.parse($('#query').val()), function(response) {
+         $('#query-results').empty().append('<div class="total-results">Total ' + response.list.length + ' query results.</div>');
+         $.each(response.list, function(index, node) {
+         var title = node.title ? node.title : node.getId();
+         var description = node.description ? node.description : "";
+         $('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1)
+         + '. ' + title + '</div><div class="item-description">'
+         + description + '</div></div>').click(
+         function() {
+         var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
+         var _this = this;
+         sourceViewDialog.alpaca({
+         "data": [
+         {
+         "title": "JSON Source",
+         "text": JSON.stringify(node, null, '&nbsp;')
+         }
+         ],
+         "view": {
+         "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
+         },
+         "postRender": function(renderedNewFieldControl) {
+         sourceViewDialog.dialog({
+         resizable: true,
+         height: 550,
+         width: 800,
+         modal: false
+         });
+         }
+         });
+         }).appendTo($('#query-results'));
+         });
+
+         });
+         });
+         });
+         });
+         }
+         });
+         }, function(error) {
+         $('#field1').html("Failed to authenticate with status " + error.status);
+         });
+         */
+    });
+    var queries = {
+        "example1" :{
+            "title": "Find all nodes with type 'theoffice:creature'.",
+            "query":{
+                "_type" : "theoffice:creature"
+            }
+        },
+        "example2" :{
+            "title": "Find all nodes with type 'theoffice:creature' and title 'Creature Squirrel'",
+            "query":{
+                "_type" : "theoffice:creature",
+                "title" : "Creature Squirrel"
+            }
+        },
+        "example3" :{
+            "title": "Find all nodes with type 'theoffice:creature' and range field containing both 'USA' and 'Canada'.",
+            "query":{
+                "_type": "theoffice:creature",
+                "range":{ "$all": [ "USA", "Canada" ] }
+            }
+        },
+        "example4" :{
+            "title": "Find all 'theoffice:creature' type nodes whose classification.Genus field is either 'Tamiasciurus' or 'Canis'.",
+            "query":{
+                "_type": "theoffice:creature",
+                "classification.Genus":{"$in": ["Tamiasciurus","Canis"]}
+            }
+        },
+        "example5" :{
+            "title": "Find all 'theoffice:creature' type nodes that have lifeExpectancy field with value between 5 and 12.",
+            "query":{
+                "_type": "theoffice:creature",
+                "lifeExpectancy":{"$gt": 5, "$lt": 12}
+            }
+        },
+        "example6" :{
+            "title":"Find all 'theoffice:creature' type nodes that have classification.Infraclass field.",
+            "query": {
+                "_type": "theoffice:creature",
+                "classification.Infraclass": {
+                    "$exists": true
+                }
+            }
+        },
+        "example7" :{
+            "title":"Find all 'theoffice:creature' type nodes that have (lifeExpectancy mod 7 = 3).",
+            "query":{
+                "_type": "theoffice:creature",
+                "lifeExpectancy": {
+                    "$mod": [7,3]
+                }
+            }
+        },
+        "example8":{
+            "title":"Find all 'theoffice:creature' type nodes whose trophicLevel field is not 'Tertiary Consumer'.",
+            "query":{
+                "_type": "theoffice:creature",
+                "trophicLevel": {
+                    "$ne" : "Tertiary Consumer"
+                }
+            }
+        },
+        "example9":{
+            "title":"Find all 'theoffice:creature' type nodes whose trophicLevel field does not have any value in ['Tertiary Consumer','Primary Consumer'].",
+            "query":{
+                "_type": "theoffice:creature",
+                "trophicLevel": {
+                    "$nin" : ["Tertiary Consumer","Primary Consumer"]
+                }
+            }
+        },
+        "example10":{
+            "title":"Find all 'theoffice:creature' type nodes with lifeExpectanc between 5 and 12 OR or classification.Genus field as either 'Tamiasciurus' or 'Canis'.",
+            "query":{
+                "_type": "theoffice:creature",
+                "$or":[
+                    {
+                        "trophicLevel": {
+                            "$in" : ["Tertiary Consumer","Primary Consumer"]
+                        }
+                    },
+                    {
+                        "lifeExpectancy":{"$gt": 5, "$lt": 12}
+                    }
+                ]
+            }
+        },
+        "example11":{
+            "title":"Find all 'theoffice:creature' type nodes with neither lifeExpectanc between 5 and 12 nor classification.Genus field as either 'Tamiasciurus' or 'Canis'.",
+            "query":{
+                "_type": "theoffice:creature",
+                "$nor":[
+                    {
+                        "trophicLevel": {
+                            "$in" : ["Tertiary Consumer","Primary Consumer"]
+                        }
+                    },
+                    {
+                        "lifeExpectancy":{"$gt": 5, "$lt": 12}
+                    }
+                ]
+            }
+        },
+        "example12":{
+            "title":"Find all 'theoffice:creature' type nodes whose range field has two elements.",
+            "query":{
+                "_type": "theoffice:creature",
+                "range" : { "$size": 2 }
+            }
+        },
+        "example13":{
+            "title":"Find all 'theoffice:creature' type nodes whose attachHumans field has boolean value.",
+            "query":{
+                "_type": "theoffice:creature",
+                "attackHumans" : { "$type": 8 }
+            }
+        },
+        "example14":{
+            "title":"Find all 'theoffice:creature' type nodes whose trophicLevel field is not 'Tertiary Consumer'.",
+            "query":{
+                "_type": "theoffice:creature",
+                "trophicLevel": {
+                    "$ne" : "Tertiary Consumer"
+                }
+            }
+        },
+        "example15":{
+            "title":"Find all 'theoffice:creature' type nodes with title matching a given regular expression.",
+            "query":{
+                "_type": "theoffice:creature",
+                "title": {
+                    "$regex" : "^([a-zA-Z]{8} Coyote)?$"
+                }
+            }
+        },
+        "example16":{
+            "title":"Find all 'theoffice:creature' type nodes with lifeExpectanc not greater than 5.",
+            "query":{
+                "_type": "theoffice:creature",
+                "lifeExpectancy":{
+                    "$not": {
+                        "$gt": 5
+                    }
+                }
+            }
+        }
+    };
+    var examplesElem = $('.query-examples ul');
+    for (var key in queries) {
+        $('<li id="' + key + '">' + queries[key].title + '</li>').click(
+                function() {
+                    $('#query').val(JSON.stringify(queries[$(this).attr('id')].query, null, ' '));
+                    $('#query-button').click();
+                }).appendTo(examplesElem);
+    }
+});
+</script>
+</div>
+</div>
+<div class="clear"></div>
+<div class="gitana-example-footer">
+    <center class="copyright">
+        Copyright &copy; 2011 Gitana Software | All Rights Reserved
+    </center>
+</div>
+</div>
+</body>
+</html>
