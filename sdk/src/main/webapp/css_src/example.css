@@ -196,3 +196,40 @@ pre code {
     padding: 4px 0 4px 0;
 }
 
+/* form */
+.form {
+    padding: 2px 0 2px 0;
+}
+
+.form ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.form ul li {
+    padding-bottom: 4px;
+}
+
+.form ul li label {
+    display: inline-block;
+    width: 80px;
+}
+
+.form .field {
+    display: inline-block;
+}
+
+.error {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.result-item {
+    padding-bottom: 4px;
+}
+
+.item-title {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Branch</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
-          rel="stylesheet">
+          rel="stylesheet"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -28,43 +28,82 @@
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
             <h3>Branch</h3>
-            <h4>Find a repository through query.</h4>
+            <h4>Branch Operations.</h4>
 
             <div id="field1">
-                <ul id="branch-list"></ul>
-                <div id="branch-details"></div>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="branch-id">Branch ID</label>
+
+                            <div class="field">
+                                <select id="branch-id">
+                                    <option value="">--- Select A Branch ---</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="new-branch">New Branch</button>
+                            <button id="delete-branch">Delete Branch</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="results" id="branch-details"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var driver = new Gitana.Driver();
-                        driver.security().authenticate("admin", "admin", function(success) {
-                            driver.repositories().query({
-                                "title" : "Dunder Mifflin sample repository",
-                                "tags":["Demo","The office"]
-                            }, function(response) {
-                                if (response.total_rows > 0) {
-                                    var respositoryId = response.rows[0]._doc;
-                                    driver.repositories().read(respositoryId, function(repository) {
-                                        repository.branches().query({
-                                            "title" : "Michael's Super New Branch"
-                                        }, function(response2) {
-                                            $.each(response2.rows, function(index, branch) {
-                                                $('<li>' + branch._doc + '</li>').appendTo($('#branch-list'));
-                                                $('#branch-details').empty().append('<div>' + branch.title + '</div>')
-                                                        .append('<div>' + branch.description + '</div>');
-                                            });
-                                        });
+                        var errorHandler = function(error) {
+                            $('#field1 .error').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
+                        var repo = null;
+                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            repo = this;
+                            this.listBranches().each(function() {
+                                $('#branch-id').append('<option value="' + this.getId() + '">' + this.get('title') + '</option>');
+                            });
+
+                            var updateBranchInfo = function  (branchId) {
+                                $('#branch-details').empty();
+                                if (branchId != '') {
+                                    repo.chain().readBranch(branchId).then(function() {
+                                        var title = this.get('title') ? this.get('title') : this.getId();
+                                        var description = this.get('description') ? this.get('description') : "";
+                                        $('#branch-details').append('<div class="result-item"><div class="item-title branch" id="' + this.getId() + '">'
+                                                + title + '</div><div class="item-description">'
+                                                + description + '</div><div>Tip Change Set :: '
+                                                + this.get('tip')+ '</div><div>Root Change Set :: '
+                                                + this.get('root')+ '</div></div>');
                                     });
                                 }
+                            };
+
+                            $('#branch-id').change(function() {
+                                updateBranchInfo($('#branch-id').val());
                             });
-                        }, function(error) {
-                            $('#field1').html("Failed to authenticate with status " + error.status);
+
+                            $('#new-branch').click(function() {
+                                var branchId = $('#branch-id').val();
+                                if (branchId != '') {
+                                    repo.chain().createBranch(branchId,{
+                                        "title" :"New Branch",
+                                        "description":"New branch "
+                                    }).then(function(){
+
+                                    })
+                                }
+                            });
                         });
                     });
                 });
             </script>
+
         </div>
     </div>
     <div class="clear"></div>

@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Full-Text Search</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
-          rel="stylesheet">
+          rel="stylesheet"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -33,21 +33,78 @@
             <h4>Full-Text Search.</h4>
 
             <div id="field1">
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="repo-id">Repository ID</label>
+
+                            <div class="field">
+                                <input type="text" id="keyword" size="60"/>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="search">search</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="results" id="results"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var gitanaConnector = window.gitanaConnector;
-                        var templateId = "../../templates/SearchResults";
-                        var el = $('#field1');
 
-                        gitanaConnector.search("paper", function(result) {
-                            new Gitana.jQueryTemplateEngine('SearchResults').render(el, templateId, {
-                                "data": result
+                        $('#search').click(function() {
+                            var errorHandler = function(error) {
+                                $('#field1 .err').html("Error message: " + error.msg);
+                            };
+                            var gitana = new Gitana();
+                            gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                                "title" : "Dunder Mifflin sample repository",
+                                "tags":["Demo","The office"]
+                            }).keep(1).each(function() {
+                                this.readBranch('master').then(function() {
+                                    var branch = this;
+                                    var result = {
+                                        "count":0,
+                                        "list":[]
+                                    };
+                                    this.searchNodes($('#keyword').val()).count(
+                                            function(count) {
+                                                result.count = count;
+                                            }).each(
+                                            function() {
+                                                var searchResult = this.object;
+                                                this.listAttachments().then(function() {
+                                                    searchResult.attachments = {};
+                                                    this.each(
+                                                            function() {
+                                                                searchResult.attachments[this.getId()] = this.getDownloadUri();
+                                                            }).then(function() {
+                                                        result.list.push(searchResult);
+                                                    });
+                                                });
+                                            }).then(function() {
+                                        new Gitana.jQueryTemplateEngine('SearchResults').render($('#results'), '../../templates/SearchResults', {
+                                            "data": result
+                                        });
+                                    });
+                                });
                             });
-                        }, function(loadedError) {
                         });
+                        /*
+                         var gitanaConnector = window.gitanaConnector;
+                         var templateId = "../../templates/SearchResults";
+                         var el = $('#field1');
+
+                         gitanaConnector.search("paper", function(result) {
+                         new Gitana.jQueryTemplateEngine('SearchResults').render(el, templateId, {
+                         "data": result
+                         });
+                         }, function(loadedError) {
+                         });
+                         */
                     });
                 });
             </script>

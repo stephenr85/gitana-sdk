@@ -1,19 +1,12 @@
 <script id="searchResultsTemplate" type="text/x-jquery-tmpl">
     <div class="searchresults">
-        <h1>Search Results:</h1>
+        <h1>Total ${data.count} search results:</h1>
         {{each data.list}}
-        {{if _type == 'theoffice:product'}}
-        <h2><a href="#/product/${_doc}">${title}</a></h2>
-        {{else _type == 'theoffice:promotion'}}
-        <h2><a href="#/promotion/${_doc}">${title}</a></h2>
-        {{else}}
         <h2>${title}</h2>
-        {{/if}}
-
         <h3>${description}</h3>
-        {{if _type == 'theoffice:product' || _type == 'theoffice:promotion'}}
+        {{if attachments && attachments.image_thumbnail}}
         <div>
-            <img src="/proxy/repositories/${data.repositoryId}/branches/${data.branchId}/nodes/${_doc}/attachment/image_thumbnail?ticket=${data._ticket}"/>
+            <img src="${attachments.image_thumbnail}"/>
         </div>
         {{/if}}
         {{/each}}

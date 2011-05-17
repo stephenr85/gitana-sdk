@@ -10,7 +10,7 @@
         </div>
 
         <div class="front_page_products_image">
-            <img src="/proxy/repositories/${data.repositoryId}/branches/${data.branchId}/nodes/${data.list[0]._doc}/attachment/image_full?ticket=${data._ticket}" width="167" alt="Sub Item Name"/>
+            <img src="${data.list[0].attachments.image_full}" width="167" alt="Sub Item Name"/>
         </div>
 
         <div class="front_page_products_text">
@@ -22,11 +22,6 @@
             <div class="price">
                 <h2>${data.list[0].price.price} (${data.list[0].price.unit})</h2>
             </div>
-
-            <div class="addtocart">
-                <a href="#/"><span class="hidden">Add to Cart</span></a>
-            </div>
-
             <div class="clearthis">&nbsp;</div>
         </div>
 {{/if}}
@@ -49,7 +44,7 @@
         </div>
 
         <div class="front_page_products_image">
-            <img src="/proxy/repositories/${data.repositoryId}/branches/${data.branchId}/nodes/${data.list[1]._doc}/attachment/image_full?ticket=${data._ticket}" width="167" alt="Sub Item Name"/>
+            <img src="${data.list[1].attachments.image_full}" width="167" alt="Sub Item Name"/>
         </div>
 
         <div class="front_page_products_text">
@@ -61,11 +56,6 @@
             <div class="price">
                 <h2>${data.list[1].price.price} (${data.list[1].price.unit})</h2>
             </div>
-
-            <div class="addtocart">
-                <a href="#/"><span class="hidden">Add to Cart</span></a>
-            </div>
-
             <div class="clearthis">&nbsp;</div>
         </div>
 {{/if}}

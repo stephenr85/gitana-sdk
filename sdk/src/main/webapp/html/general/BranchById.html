@@ -62,9 +62,7 @@
                         };
                         var gitana = new Gitana();
                         var repo = null;
-                        // Issue: can't use "mscott_theoffice" since he doesn't seem to be able to read master branch.
-                        // Issue: the trap call doesn't seem to catches 403.
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).queryRepositories({
                             "title" : "Dunder Mifflin sample repository",
                             "tags":["Demo","The office"]
                         }).keep(1).each(function() {

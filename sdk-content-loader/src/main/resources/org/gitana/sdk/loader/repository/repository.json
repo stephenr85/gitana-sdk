@@ -374,16 +374,90 @@
             {
                 "title" : "Michael's Branch",
                 "description" : "Michael's Branch",
+                "authorities": {
+                    "manager":["mscott_theoffice"],
+                    "collaborator":["dschrute_theoffice"]
+                },
+                "folders" : [
+                    {
+                        "qname":"theoffice:root",
+                        "title": "The Office",
+                        "description": "Root folder of the office",
+                        "content" :[
+                            {
+                                "qname":"theoffice:michaeltodolist",
+                                "title":"Michael's TODO List",
+                                "description" : "Michael's TODO List.",
+                                "attachments" : [
+                                    {
+                                        "name":"file",
+                                        "path": "org/gitana/sdk/loader/repository/files/Michael_TODO_List.txt",
+                                        "mimeType":"text/plain"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 "branches" : [
                     {
                         "title" : "Dwight's Branch",
-                        "description" : "Dwight's Branch"
+                        "description" : "Dwight's Branch",
+                        "authorities": {
+                            "manager":["dschrute_theoffice"],
+                            "collaborator":["mscott_theoffice"]
+                        },
+                        "folders" : [
+                            {
+                                "qname":"theoffice:root",
+                                "title": "The Office",
+                                "description": "Root folder of the office",
+                                "content" :[
+                                    {
+                                        "qname":"theoffice:dwighttodolist",
+                                        "title":"Dwight's TODO List",
+                                        "description" : "Dwight's TODO List.",
+                                        "attachments" : [
+                                            {
+                                                "name":"file",
+                                                "path": "org/gitana/sdk/loader/repository/files/Dwight_TODO_List.txt",
+                                                "mimeType":"text/plain"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "title" : "Michael's Super New Branch",
-                "description" : "Michael's Super New Branch"
+                "title" : "Michael's Secret Branch",
+                "description" : "Michael's Secret Branch",
+                "authorities": {
+                    "manager":["mscott_theoffice"]
+                },
+                "folders" : [
+                    {
+                        "qname":"theoffice:root",
+                        "title": "The Office",
+                        "description": "Root folder of the office",
+                        "content" :[
+                            {
+                                "qname":"theoffice:michaelpasswords",
+                                "title":"Michael's Passwords",
+                                "description" : "Michael's Passwords.",
+                                "attachments" : [
+                                    {
+                                        "name":"file",
+                                        "path": "org/gitana/sdk/loader/repository/files/Michael_Passwords.txt",
+                                        "mimeType":"text/plain"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

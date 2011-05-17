@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Content Item Display</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
@@ -33,19 +33,49 @@
             <h4>Promotion Single Item Display.</h4>
 
             <div id="field1">
+                <div class="results" id="promotion"></div>
+                <div class="error"></div>
             </div>
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var gitanaConnector = window.gitanaConnector;
+
+                        var errorHandler = function(error) {
+                            $('#field1 .error').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
                         var templateId = "../../templates/LatestPromotion";
-                        var el = $('#field1');
-                        gitanaConnector.readNode("theoffice:binderpromotion", function(node) {
-                            new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
-                                "data": node
+                        var el = $('#promotion');
+                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
+                            "title" : "Dunder Mifflin sample repository",
+                            "tags":["Demo","The office"]
+                        }).keep(1).each(function() {
+                            this.readBranch('master').readNode('theoffice:binderpromotion').then(function() {
+                                var data = this.object;
+                                this.listAttachments().then(function() {
+                                    data.attachments = {};
+                                    this.each( function(key, attachment, index) {
+                                        data.attachments[attachment.getId()] = attachment.getDownloadUri();
+                                    }).then(function() {
+                                        new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
+                                            "data": data
+                                        });
+                                    });
+                                });
                             });
-                        }, function(loadedError) {
                         });
+
+                        /*
+                         var gitanaConnector = window.gitanaConnector;
+                         var templateId = "../../templates/LatestPromotion";
+                         var el = $('#field1');
+                         gitanaConnector.readNode("theoffice:binderpromotion", function(node) {
+                         new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
+                         "data": node
+                         });
+                         }, function(loadedError) {
+                         });
+                         */
                     });
                 });
             </script>

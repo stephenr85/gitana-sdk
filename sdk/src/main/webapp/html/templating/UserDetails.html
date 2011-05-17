@@ -33,129 +33,168 @@
             <h4>User Details.</h4>
 
             <div id="field1">
+                <div class="results" id="social-details"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var gitanaConnector = window.gitanaConnector;
-                        var templateId = "../../templates/SocialGraphUserDetails";
-                        var el = $('#field1');
-                        var userId = 'jhalpert_theoffice';
+                        var userSocialDetails = {
 
-                        var getUserDetails = function () {
-                            var data = {};
-                            gitanaConnector.gitanaDriver.users().read(userId, function(user) {
-                                data.avatar = '/proxy/security/users/' + userId + '/attachment/avatar?ticket=' + gitanaConnector.ticket;
-                                data.name = user.firstName + ' ' + user.lastName;
-                                data.email = user.email;
-                                var branch = gitanaConnector.branch;
-                                branch.nodes().readPerson(userId, function(personNode) {
-                                    var personNodeId = personNode._doc;
-                                    data.currentPosition = personNode.currentPosition;
-                                    data.gender = personNode.gender;
-                                    data.biography = personNode.biography;
-                                    personNode.traverse({
-                                        "associations": {
-                                            "theoffice:isManager": "BOTH"
-                                        },
-                                        "depth": 1
-                                    }, function(response) {
-                                        var nodes = response.nodes;
-                                        var associations = response.associations;
-                                        var supervisors = [];
-                                        var subordinates = [];
-                                        for (var key in response.associations) {
-                                            var type = response.associations[key]["_type"];
-                                            var direction = response.associations[key]["direction"];
-                                            var sourceId = response.associations[key]["source"];
-                                            var targetId = response.associations[key]["target"];
-                                            var targetNode = nodes[response.associations[key]["target"]];
-                                            var sourceNode = nodes[response.associations[key]["source"]];
-                                            if (type == 'theoffice:isManager') {
-                                                if (personNodeId == sourceId) {
-                                                    subordinates.push({
-                                                        "userId": targetNode["userId"]
-                                                    });
-                                                }
-                                                if (personNodeId == targetId) {
-                                                    supervisors.push({
-                                                        "userId": sourceNode["userId"]
-                                                    });
-                                                }
-                                            }
-                                        }
-                                        data.supervisors = supervisors;
-                                        data.subordinates = subordinates;
-                                        personNode.traverse({
-                                            "associations": {
-                                                "theoffice:hasRelation": "BOTH"
-                                            },
-                                            "depth": 1
-                                        }, function(response) {
-                                            var nodes = response.nodes;
-                                            var associations = response.associations;
-                                            var relationships = []
-                                            for (var key in response.associations) {
-                                                var type = response.associations[key]["_type"];
-                                                var direction = response.associations[key]["direction"];
-                                                var sourceId = response.associations[key]["source"];
-                                                var targetId = response.associations[key]["target"];
-                                                var targetNode = nodes[response.associations[key]["target"]];
-                                                var sourceNode = nodes[response.associations[key]["source"]];
+                        };
+                        new Gitana().authenticate("jhalpert_theoffice", "password").trap(
+                                function(error) {
+                                    $('#field1 .error').html("Error message: " + error.message);
+                                }).readUser("jhalpert_theoffice").then(function() {
+                            userSocialDetails.user = this.object;
+                            this.listAttachments().then(function() {
+                                userSocialDetails.user.attachments = {};
+                                this.each(
+                                        function() {
+                                            userSocialDetails.user.attachments[this.getId()] = this.getDownloadUri();
+                                        });
+                            });
 
-                                                var relationship = {};
-                                                if (personNodeId == sourceId) {
-                                                    relationship.userId = targetNode["userId"];
-                                                }
-                                                if (personNodeId == targetId) {
-                                                    relationship.userId = sourceNode["userId"];
-                                                }
-                                                relationship.type = response.associations[key].details.type;
-                                                relationships.push(relationship);
-
-                                            }
-                                            data.relationships = relationships;
-
-                                            new Gitana.jQueryTemplateEngine('UserDetails').render(el, templateId, {
-                                                "data": data
-                                            }, function() {
-                                                $('.supervisor', el).each(function(index) {
-                                                    var userId = $(this).attr('id');
-                                                    var _this = this;
-                                                    gitanaConnector.gitanaDriver.users().read(userId, function(user) {
-                                                        $(_this).html(user.firstName + ' ' + user.lastName);
-                                                    });
-
-                                                });
-                                                $('.subordinate', el).each(function(index) {
-                                                    var userId = $(this).attr('id');
-                                                    var _this = this;
-                                                    gitanaConnector.gitanaDriver.users().read(userId, function(user) {
-                                                        $(_this).html(user.firstName + ' ' + user.lastName);
-                                                    });
-
-                                                });
-                                                $('.relationship', el).each(function(index) {
-                                                    var userId = $(this).attr('id');
-                                                    var _this = this;
-                                                    gitanaConnector.gitanaDriver.users().read(userId, function(user) {
-                                                        $(_this).html(user.firstName + ' ' + user.lastName + ' ' + $(_this).html());
-                                                    });
-                                                });
+                            this.getServer().queryRepositories({
+                                "title" : "Dunder Mifflin sample repository",
+                                "tags":["Demo","The office"]
+                            }).keep(1).each(function() {
+                                this.readBranch('master').readPerson("jhalpert_theoffice").then(
+                                        function() {
+                                            userSocialDetails.personNode = this.object;
+                                            this.traverse({
+                                                "associations": {
+                                                    "theoffice:isManager": "BOTH"
+                                                },
+                                                "depth": 1
+                                            }).nodes().each(function() {
+                                                alert('I am here');
                                             });
                                         });
-                                    });
-                                });
                             });
-                        };
 
-
-                        gitanaConnector.connect(getUserDetails, function(error) {
-                            gitanaConnector.connectorErrorCallback(error, function() {
-                                getUserDetails();
-                            });
                         });
+                        /*
+                         var gitanaConnector = window.gitanaConnector;
+                         var templateId = "../../templates/SocialGraphUserDetails";
+                         var el = $('#field1');
+                         var userId = 'jhalpert_theoffice';
+
+                         var getUserDetails = function () {
+                         var data = {};
+                         gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                         data.avatar = '/proxy/security/users/' + userId + '/attachment/avatar?ticket=' + gitanaConnector.ticket;
+                         data.name = user.firstName + ' ' + user.lastName;
+                         data.email = user.email;
+                         var branch = gitanaConnector.branch;
+                         branch.nodes().readPerson(userId, function(personNode) {
+                         var personNodeId = personNode._doc;
+                         data.currentPosition = personNode.currentPosition;
+                         data.gender = personNode.gender;
+                         data.biography = personNode.biography;
+                         personNode.traverse({
+                         "associations": {
+                         "theoffice:isManager": "BOTH"
+                         },
+                         "depth": 1
+                         }, function(response) {
+                         var nodes = response.nodes;
+                         var associations = response.associations;
+                         var supervisors = [];
+                         var subordinates = [];
+                         for (var key in response.associations) {
+                         var type = response.associations[key]["_type"];
+                         var direction = response.associations[key]["direction"];
+                         var sourceId = response.associations[key]["source"];
+                         var targetId = response.associations[key]["target"];
+                         var targetNode = nodes[response.associations[key]["target"]];
+                         var sourceNode = nodes[response.associations[key]["source"]];
+                         if (type == 'theoffice:isManager') {
+                         if (personNodeId == sourceId) {
+                         subordinates.push({
+                         "userId": targetNode["userId"]
+                         });
+                         }
+                         if (personNodeId == targetId) {
+                         supervisors.push({
+                         "userId": sourceNode["userId"]
+                         });
+                         }
+                         }
+                         }
+                         data.supervisors = supervisors;
+                         data.subordinates = subordinates;
+                         personNode.traverse({
+                         "associations": {
+                         "theoffice:hasRelation": "BOTH"
+                         },
+                         "depth": 1
+                         }, function(response) {
+                         var nodes = response.nodes;
+                         var associations = response.associations;
+                         var relationships = []
+                         for (var key in response.associations) {
+                         var type = response.associations[key]["_type"];
+                         var direction = response.associations[key]["direction"];
+                         var sourceId = response.associations[key]["source"];
+                         var targetId = response.associations[key]["target"];
+                         var targetNode = nodes[response.associations[key]["target"]];
+                         var sourceNode = nodes[response.associations[key]["source"]];
+
+                         var relationship = {};
+                         if (personNodeId == sourceId) {
+                         relationship.userId = targetNode["userId"];
+                         }
+                         if (personNodeId == targetId) {
+                         relationship.userId = sourceNode["userId"];
+                         }
+                         relationship.type = response.associations[key].details.type;
+                         relationships.push(relationship);
+
+                         }
+                         data.relationships = relationships;
+
+                         new Gitana.jQueryTemplateEngine('UserDetails').render(el, templateId, {
+                         "data": data
+                         }, function() {
+                         $('.supervisor', el).each(function(index) {
+                         var userId = $(this).attr('id');
+                         var _this = this;
+                         gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                         $(_this).html(user.firstName + ' ' + user.lastName);
+                         });
+
+                         });
+                         $('.subordinate', el).each(function(index) {
+                         var userId = $(this).attr('id');
+                         var _this = this;
+                         gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                         $(_this).html(user.firstName + ' ' + user.lastName);
+                         });
+
+                         });
+                         $('.relationship', el).each(function(index) {
+                         var userId = $(this).attr('id');
+                         var _this = this;
+                         gitanaConnector.gitanaDriver.users().read(userId, function(user) {
+                         $(_this).html(user.firstName + ' ' + user.lastName + ' ' + $(_this).html());
+                         });
+                         });
+                         });
+                         });
+                         });
+                         });
+                         });
+                         };
+
+
+                         gitanaConnector.connect(getUserDetails, function(error) {
+                         gitanaConnector.connectorErrorCallback(error, function() {
+                         getUserDetails();
+                         });
+                         });
+                         */
                     });
                 });
             </script>

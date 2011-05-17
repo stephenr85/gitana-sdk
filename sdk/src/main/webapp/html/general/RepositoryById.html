@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Repository</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
-          rel="stylesheet">
+          rel="stylesheet"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -31,25 +31,42 @@
             <h4>Find a repository by its ID.</h4>
 
             <div id="field1">
-                <span>Repository ID:</span><input type="text" id="repo-id"/>
-                <button id="find-repo">Find</button>
-                <div id="repo-details"></div>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="repo-id">Repository ID</label>
+
+                            <div class="field">
+                                <input type="text" id="repo-id" size="60"/>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="find-repo">Find</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="results" id="repo-details"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var driver = new Gitana.Driver();
-                        driver.security().authenticate("mscott_theoffice", "password", function(success) {
-                            $('#find-repo').click(
-                                    function() {
-                                        driver.repositories().read($('#repo-id').val(), function(selectedRepository) {
-                                            $('#repo-details').empty().append('<div>' + selectedRepository.title + '</div>')
-                                                    .append('<div>' + selectedRepository.description + '</div>');
-                                        });
-                                    });
-                        }, function(error) {
-                            $('#field1').html("Failed to authenticate with status " + error.status);
+                        var errorHandler = function(error) {
+                            $('#field1 .error').html("Error message: " + error.msg);
+                        };
+                        var gitana = new Gitana();
+                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).then(function() {
+                            var server = this;
+                            $('#find-repo').click(function() {
+                                server.chain().readRepository($('#repo-id').val()).then(function() {
+                                    var title = this.get('title') ? this.get('title') : this.getId();
+                                    var description = this.get('description') ? this.get('description') : "";
+                                    $('#repo-details').empty().append('<div class="result-item"><div class="item-title branch" id="' + this.getId() + '">'
+                                            + title + '</div><div class="item-description">'
+                                            + description + '</div></div>');
+                                });
+                            });
                         });
                     });
                 });

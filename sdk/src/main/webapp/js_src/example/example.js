@@ -202,7 +202,7 @@ $(function() {
                         {
                             "id":"user-details",
                             "title":"User Details",
-                            "link":"../../html/general/UserDetails.html"
+                            "link":"../../html/templating/UserDetails.html"
                         }
                     ]
                 }

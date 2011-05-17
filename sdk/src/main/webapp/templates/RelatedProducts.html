@@ -1,21 +1,12 @@
 <script id="relatedProductsTemplate" type="text/x-jquery-tmpl">
     <div class="relatedproducts">
         <h1>Related Products:</h1>
-        {{each data.nodes}}
-        {{if _type == 'theoffice:product'}}
-        <h2><a href="#/product/${_doc}">${title}</a></h2>
-        {{else _type == 'theoffice:promotion'}}
-        <h2><a href="#/promotion/${_doc}">${title}</a></h2>
-        {{else}}
+        {{each data}}
         <h2>${title}</h2>
-        {{/if}}
-
         <h3>${description}</h3>
-        {{if _type == 'theoffice:product' || _type == 'theoffice:promotion'}}
         <div>
-            <img src="/proxy/repositories/${data.repositoryId}/branches/${data.branchId}/nodes/${_doc}/attachment/image_thumbnail?ticket=${data._ticket}"/>
+            <img src="${attachments.image_thumbnail}"/>
         </div>
-        {{/if}}
         {{/each}}
     </div>
 </script>

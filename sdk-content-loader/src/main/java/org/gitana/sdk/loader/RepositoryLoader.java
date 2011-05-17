@@ -211,7 +211,15 @@ public class RepositoryLoader extends AbstractLoader {
             logger.error("Failed to parse Json for features.", e);
         }
         newFolderObj.put("_features", featuresObj);
-        Node folder = nodes.create(newFolderObj);
+
+        Node folder = nodes.read(folderObj.get("qname").getTextValue());
+
+        if (folder != null) {
+            logger.info("Folder exists.");
+        } else {
+            folder = nodes.create(newFolderObj);
+            logger.info("Creates a new folder.");
+        }
         logger.info("Folder QName  :: " + folder.getQName());
         logger.info("Folder title  :: " + folder.getTitle());
         logger.info("Folder description  :: " + folder.getDescription());
@@ -331,6 +339,8 @@ public class RepositoryLoader extends AbstractLoader {
         }
         // Manage authorities
         if (branchObj.get("authorities") != null) {
+            // Revoke default authorities for EVERYONE group
+            branch.revokeAll("EVERYONE");
             JsonNode authoritiesNode = branchObj.get("authorities");
             if (authoritiesNode != null) {
                 Iterator<String> it = authoritiesNode.getFieldNames();
@@ -449,7 +459,7 @@ public class RepositoryLoader extends AbstractLoader {
                     */
                     logger.info("Branch exists. ID :: " + subBranch.getId());
                 } else {
-                    logger.info("branch doesn't exist. Create a new one.");
+                    logger.info("Branch doesn't exist. Create a new one from branch " + branch.getTitle() + " with changeset " + branch.getTipChangesetId());
                     subBranch = this.repository.branches().create(branch.getTipChangesetId());
                 }
                 this.loadBranch(subBranchObj, subBranch);
