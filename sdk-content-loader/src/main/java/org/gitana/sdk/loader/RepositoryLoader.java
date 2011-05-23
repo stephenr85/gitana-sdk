@@ -16,9 +16,6 @@ import org.gitana.repo.client.SecurityPrincipal;
 import org.gitana.repo.client.SecurityUser;
 import org.gitana.repo.client.nodes.Association;
 import org.gitana.repo.client.nodes.Node;
-import org.gitana.repo.client.services.Branches;
-import org.gitana.repo.client.services.Definitions;
-import org.gitana.repo.client.services.Nodes;
 import org.gitana.repo.client.types.TypeDefinition;
 import org.gitana.repo.namespace.QName;
 import org.gitana.repo.query.QueryBuilder;
@@ -49,8 +46,8 @@ public class RepositoryLoader extends AbstractLoader {
      */
     public RepositoryLoader() throws Exception {
         super();
-        this.gitanaRepositories = gitana.repositories().map();
-        this.gitanaUsers = gitana.users().map();
+        this.gitanaRepositories = this.server.fetchRepositories();
+        this.gitanaUsers = this.server.fetchUsers();
         this.repositoryLoadMode = this.loaderConfig.getString("repository.load.mode") == null ? "update" : this.loaderConfig.getString("repository.load.mode");
         this.repositoryObj = this.loadJsonFromClasspath("org/gitana/sdk/loader/repository/repository.json");
     }
@@ -70,7 +67,7 @@ public class RepositoryLoader extends AbstractLoader {
             }
         }
         ObjectNode query = builder.get();
-        Map<String, Repository> results = gitana.repositories().query(query);
+        Map<String, Repository> results = server.queryRepositories(query);
 
         if (results.size() > 0) {
             Repository repo = results.values().iterator().next();
@@ -100,13 +97,13 @@ public class RepositoryLoader extends AbstractLoader {
             if (this.repositoryLoadMode.equals("overwrite")) {
                 logger.info("Repository exists. Delete it and then create a new one.");
                 this.repository.delete();
-                this.repository = gitana.repositories().create(repoConfigs);
+                this.repository = server.createRepository(repoConfigs);
             } else {
                 logger.info("Repository exists. ID :: " + repository.getId());
             }
         } else {
             logger.info("Repository doesn't exist. Create a new one.");
-            this.repository = gitana.repositories().create(repoConfigs);
+            this.repository = server.createRepository(repoConfigs);
         }
 
         logger.info("Repository title  :: " + repositoryTitle);
@@ -117,7 +114,7 @@ public class RepositoryLoader extends AbstractLoader {
         this.repository.update();
 
         // Validate the repository
-        this.repository = gitana.repositories().read(this.repository.getId());
+        this.repository = this.server.readRepository(this.repository.getId());
         logger.info("Updated repository id  :: " + this.repository.getId());
         logger.info("Updated repository title  :: " + this.repository.getTitle());
         logger.info("Updated repository description  :: " + this.repository.getDescription());
@@ -144,7 +141,7 @@ public class RepositoryLoader extends AbstractLoader {
 
         // Load master branch
         if (repositoryObj.get("master") != null) {
-            this.loadBranch(repositoryObj.get("master"), repository.branches().read("master"));
+            this.loadBranch(repositoryObj.get("master"), repository.readBranch("master"));
         }
         // Manage files
         if (repositoryObj.get("files") != null) {
@@ -174,7 +171,7 @@ public class RepositoryLoader extends AbstractLoader {
         QueryBuilder builder = QueryBuilder.start("title").is(title).and("description").is(description);
 
         ObjectNode query = builder.get();
-        Map<String, Branch> results = repository.branches().query(query);
+        Map<String, Branch> results = repository.queryBranches(query);
 
         if (results.size() > 0) {
             Branch branch = results.values().iterator().next();
@@ -190,10 +187,9 @@ public class RepositoryLoader extends AbstractLoader {
      * @param folderObj
      * @param branch
      * @param parentNode
-     * @param nodes
      * @return
      */
-    public Node loadFolder(JsonNode folderObj, Branch branch, Node parentNode, Nodes nodes) {
+    public Node loadFolder(JsonNode folderObj, Branch branch, Node parentNode) {
         ObjectNode newFolderObj = JsonUtil.createObject();
         if (folderObj.get("qname") != null) {
             newFolderObj.put("_qname", folderObj.get("qname").getTextValue());
@@ -212,12 +208,12 @@ public class RepositoryLoader extends AbstractLoader {
         }
         newFolderObj.put("_features", featuresObj);
 
-        Node folder = nodes.read(folderObj.get("qname").getTextValue());
+        Node folder = branch.readNode(folderObj.get("qname").getTextValue());
 
         if (folder != null) {
             logger.info("Folder exists.");
         } else {
-            folder = nodes.create(newFolderObj);
+            folder = branch.createNode(newFolderObj);
             logger.info("Creates a new folder.");
         }
         logger.info("Folder QName  :: " + folder.getQName());
@@ -249,7 +245,7 @@ public class RepositoryLoader extends AbstractLoader {
                         if (contentObj.get("description") != null) {
                             newContentObj.put("description", contentObj.get("description").getTextValue());
                         }
-                        Node content = nodes.create(newContentObj);
+                        Node content = branch.createNode(newContentObj);
                         folder.associate(content, QName.create("a:child"));
                         logger.info("Create content  :: " + content.getId());
                         logger.info("Create content  :: " + content.getQName());
@@ -276,7 +272,7 @@ public class RepositoryLoader extends AbstractLoader {
 
         if (folderObj.get("folders") != null) {
             for (JsonNode subFolderObj : folderObj.get("folders")) {
-                loadFolder(subFolderObj, branch, folder, nodes);
+                loadFolder(subFolderObj, branch, folder);
             }
         }
         return folder;
@@ -304,8 +300,6 @@ public class RepositoryLoader extends AbstractLoader {
 
         branch.update();
 
-        Definitions definitions = branch.definitions();
-
         // Manage definitions
         if (branchObj.get("definitions") != null) {
             for (JsonNode definitionObj : branchObj.get("definitions")) {
@@ -315,13 +309,13 @@ public class RepositoryLoader extends AbstractLoader {
                     try {
                         QName definitionQName = QName.create(qname);
                         ObjectNode definitionNode = this.loadJsonFromClasspath(path);
-                        Node definition = definitions.read(definitionQName);
+                        Node definition = branch.readDefinition(definitionQName);
                         if (definition != null) {
                             logger.info("Definition exists. Delete it first.");
                             definition.delete();
                         }
                         logger.info("Create definition " + qname + ".");
-                        definition = definitions.defineType(definitionQName, definitionNode);
+                        definition = branch.defineType(definitionQName, definitionNode);
                         // Validate the definition
                         //TODO: Bug with read?
                         // definition = definitions.read(definition.getQName());
@@ -369,7 +363,7 @@ public class RepositoryLoader extends AbstractLoader {
                 Iterator<String> it = formsObj.getFieldNames();
                 while (it.hasNext()) {
                     String definitionQName = it.next();
-                    TypeDefinition definition = (TypeDefinition) definitions.read(QName.create(definitionQName));
+                    TypeDefinition definition = (TypeDefinition) branch.readDefinition(QName.create(definitionQName));
                     if (definition != null) {
                         logger.info("Add forms for definition " + definitionQName);
                         for (JsonNode formObj : formsObj.get(definitionQName)) {
@@ -378,7 +372,7 @@ public class RepositoryLoader extends AbstractLoader {
                             if (formKey != null && path != null) {
                                 try {
                                     ObjectNode formNode = this.loadJsonFromClasspath(path);
-                                    definition.forms().create(formKey, formNode);
+                                    definition.createForm(formKey, formNode);
                                     logger.info("Add form :: " + formKey);
                                 } catch (IOException e) {
                                     logger.error("Failed to load form from " + path, e);
@@ -395,16 +389,15 @@ public class RepositoryLoader extends AbstractLoader {
             for (JsonNode associationTypeObj : branchObj.get("associationTypes")) {
                 String qnameStr = associationTypeObj.getTextValue();
                 QName qname = QName.create(qnameStr);
-                definitions.defineAssociationType(qname);
+                branch.defineAssociationType(qname);
                 logger.info("Create association type  :: " + qnameStr);
             }
 
         }
         // Manage folders
         if (branchObj.get("folders") != null) {
-            Nodes nodes = branch.nodes();
             for (JsonNode folderObj : branchObj.get("folders")) {
-                loadFolder(folderObj, branch, null, nodes);
+                loadFolder(folderObj, branch, null);
             }
         }
         // Manage associations
@@ -418,8 +411,8 @@ public class RepositoryLoader extends AbstractLoader {
                 if (associationObj.get("direction") != null) {
                     direction = Direction.valueOf(associationObj.get("direction").getTextValue());
                 }
-                Node sourceNode = branch.nodes().read(sourceQnameStr);
-                Node targetNode = branch.nodes().read(targetQnameStr);
+                Node sourceNode = branch.readNode(sourceQnameStr);
+                Node targetNode = branch.readNode(targetQnameStr);
                 if (sourceNode != null && targetNode != null) {
                     Association association = sourceNode.associate(targetNode, typeQname, direction);
                     logger.info("Create " + typeQnameStr + " Association :: " + sourceQnameStr + "<=>" + targetQnameStr + " (" + direction + ")");
@@ -438,7 +431,7 @@ public class RepositoryLoader extends AbstractLoader {
         }
 
         // Validate the branch
-        branch = repository.branches().read(branch.getId());
+        branch = repository.readBranch(branch.getId());
         logger.info("Updated branch id  :: " + branch.getId());
         logger.info("Updated branch title  :: " + branch.getTitle());
         logger.info("Updated branch description  :: " + branch.getDescription());
@@ -460,7 +453,7 @@ public class RepositoryLoader extends AbstractLoader {
                     logger.info("Branch exists. ID :: " + subBranch.getId());
                 } else {
                     logger.info("Branch doesn't exist. Create a new one from branch " + branch.getTitle() + " with changeset " + branch.getTipChangesetId());
-                    subBranch = this.repository.branches().create(branch.getTipChangesetId());
+                    subBranch = this.repository.createBranch(branch.getTipChangesetId());
                 }
                 this.loadBranch(subBranchObj, subBranch);
             }

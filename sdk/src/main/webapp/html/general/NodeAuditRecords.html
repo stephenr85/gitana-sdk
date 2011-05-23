@@ -61,7 +61,7 @@
                     $(document).ready(function() {
                         var getAuditRecords = function (nodeId, branch) {
                             var records = [];
-                            branch.chain().readNode(nodeId).listAuditRecords().each(
+                            branch.readNode(nodeId).listAuditRecords().each(
                                     function() {
                                         records.push([this.getScope(),this.getAction(),this.getPrincipalId(),this.getMethod(),this.getHandler(),this.getSystemMetadata().getModifiedOn()['timestamp']]);
                                     }).then(function() {

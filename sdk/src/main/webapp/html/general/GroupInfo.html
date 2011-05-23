@@ -43,9 +43,7 @@
                         new Gitana().authenticate("mscott_theoffice", "password").trap(Gitana.SDK.defaults.errorHandler).readGroup("dunder_mifflin_scranton_theoffice").then(function() {
                             $('#social-details').append('<div class="group-avatar"></div><div class="group-info"></div>');
                             // Add avatar image
-                            this.attachment().each(function(){
-                                $('.group-avatar').append('<img src="' + this.getDownloadUri() + '"/>');
-                            });
+                            $('.group-avatar').append('<img src="' + this.attachment('avatar').getDownloadUri() + '"/>');
                             // Add group info.
                             $('.group-info').append('<div class="group-title">' + this.getTitle() + '</div>'
                                     + '<div class="group-description">' + this.getDescription() + '</div>');

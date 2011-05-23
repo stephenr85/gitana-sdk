@@ -54,7 +54,7 @@
                             $('#query').val(JSON.stringify(Gitana.SDK.defaults.repositoryQuery, null, ' '));
                             var server = this;
                             $('#query-button').click(function() {
-                                server.chain().queryRepositories(JSON.parse($('#query').val())).count(function(count) {
+                                server.queryRepositories(JSON.parse($('#query').val())).count(function(count) {
                                     $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
                                 }).each(function(key, repo, index) {
                                     var title = repo.get('title') ? repo.get('title') : repo.getId();

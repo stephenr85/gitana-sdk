@@ -54,7 +54,7 @@
                         new Gitana().authenticate("mscott_theoffice", "password").trap(Gitana.SDK.defaults.errorHandler).then(function() {
                             var server = this;
                             $('#find-repo').click(function() {
-                                server.chain().readRepository($('#repo-id').val()).then(function() {
+                                server.readRepository($('#repo-id').val()).then(function() {
                                     var title = this.getTitle() ? this.getTitle() : this.getId();
                                     var description = this.getDescription() ? this.getDescription() : "";
                                     $('#repo-details').empty().append('<div class="result-item"><div class="item-title branch" id="' + this.getId() + '">'

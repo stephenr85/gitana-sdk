@@ -37,8 +37,8 @@ public class GroupLoader extends AbstractLoader {
      */
     public GroupLoader() throws Exception {
         super();
-        this.gitanaGroups = gitana.groups().map();
-        this.gitanaUsers = gitana.users().map();
+        this.gitanaGroups = this.server.fetchGroups();
+        this.gitanaUsers = this.server.fetchUsers();
         this.groupLoadMode = this.loaderConfig.getString("group.load.mode") == null ? "update" : this.loaderConfig.getString("group.load.mode");
         this.groupListObj = this.loadJsonFromClasspath("org/gitana/sdk/loader/security/groups.json");
     }
@@ -63,18 +63,18 @@ public class GroupLoader extends AbstractLoader {
         logger.info("Loading group " + groupId);
         if (groupId != null) {
             // Setup group.
-            SecurityGroup group = gitana.groups().read(groupId);
+            SecurityGroup group = this.gitanaGroups.get(groupId);
             if (group != null) {
                 if (this.groupLoadMode.equals("overwrite")) {
                     logger.info("Group exists. Delete it and then create a new one.");
                     group.delete();
-                    group = gitana.groups().create(groupId);
+                    group = this.server.createGroup(groupId);
                 } else {
                     logger.info("Group exists. Update it.");
                 }
             } else {
                 logger.info("Group doesn't exist. Create a new one.");
-                group = gitana.groups().create(groupId);
+                group = this.server.createGroup(groupId);
             }
             // Update group attributes
             if (groupObj.get("name") != null) {
@@ -97,7 +97,7 @@ public class GroupLoader extends AbstractLoader {
                     // upload avatar.
                     logger.info("User avatar image  :: " + avatarPath);
                     byte[] avatarBytes = ClasspathUtil.bytesFromClasspath(groupObj.get("avatar").get("path").getTextValue());
-                    group.uploadAttachment("avatar", groupObj.get("avatar").get("mimeType").getTextValue(), avatarBytes);
+                    group.uploadAttachment("avatar", avatarBytes, groupObj.get("avatar").get("mimeType").getTextValue());
                 }
             } catch (IOException e) {
                 logger.error("Failed to upload avatar for group " + groupId, e);
@@ -108,9 +108,9 @@ public class GroupLoader extends AbstractLoader {
                 for (JsonNode userIdObj : groupObj.get("members")) {
                     String userId = userIdObj.getTextValue();
                     if (this.gitanaUsers.containsKey(userId)) {
-                        if (!group.childMap().containsKey(userId)) {
+                        if (!group.fetchPrincipals().containsKey(userId)) {
                             logger.info("Add user  :: " + userId);
-                            group.add(userId);
+                            group.addPrincipal(userId);
                         }
                     }
                 }
@@ -121,9 +121,9 @@ public class GroupLoader extends AbstractLoader {
                 for (JsonNode subGroupObj : groupObj.get("groups")) {
                     SecurityGroup loadedGroup = loadGroup(subGroupObj);
                     if (loadedGroup != null) {
-                        if (!group.childMap().containsKey(loadedGroup.getId())) {
+                        if (!group.fetchPrincipals().containsKey(loadedGroup.getId())) {
                             logger.info("Add sub group  :: " + loadedGroup.getId());
-                            group.add(loadedGroup);
+                            group.addPrincipal(loadedGroup);
                         }
                     }
                 }
@@ -131,10 +131,10 @@ public class GroupLoader extends AbstractLoader {
 
             // Makes sure we actually update/create it
             logger.info("Finished loading group " + groupId);
-            group = gitana.groups().read(groupId);
+            group = gitanaGroups.get(groupId);
             logger.info("Updated group name  :: " + group.getTitle());
             logger.info("Updated group description  :: " + group.getDescription());
-            for (SecurityPrincipal child : group.childList()) {
+            for (SecurityPrincipal child : group.listPrincipals()) {
                 logger.info("Updated group child  :: " + child.getId() + " (" + child.getPrincipalType() + ")");
             }
 

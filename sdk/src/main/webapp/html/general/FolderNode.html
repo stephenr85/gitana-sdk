@@ -79,7 +79,7 @@
                             $('.folder-title', folderElem).click(function() {
                                 $('.folder-node', folderElem).remove();
                                 $('.content-node', folderElem).remove();
-                                parentNode.chain().listChildren().each(function() {
+                                parentNode.listChildren().each(function() {
                                     if (this.isContainer()) {
                                         findChildren(this, $('#field1 #' + parentNode.getId()));
                                     } else {

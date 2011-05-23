@@ -55,7 +55,7 @@
                                 "title" : "Michael's Secret Branch"
                             }, null, ' '));
                             $('#query-button').click(function() {
-                                repo.chain().queryBranches(JSON.parse($('#query').val())).count(function(count) {
+                                repo.queryBranches(JSON.parse($('#query').val())).count(function(count) {
                                         $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
                                     }).each(function(key,value,index) {
                                         var branch = this;

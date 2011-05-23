@@ -112,18 +112,21 @@
                                             };
 
                                             $('#eats').empty().append('<div class="list-title">EATS</div>');
-                                            selectedNode.chain().incomingAssociations().each(function() {
+                                            selectedNode.incomingAssociations().each(function() {
                                                 if (this.getTypeQName() == 'theoffice:isEatenBy') {
-                                                    var otherNode = nodeLookup[this.get('source')];
-                                                    displayCreature($('#eats'), otherNode);
-
+                                                    //var otherNode = nodeLookup[this.get('source')];
+                                                    this.readSourceNode().then(function(){
+                                                        displayCreature($('#eats'), this);
+                                                    });
                                                 }
                                             });
                                             $('#is-eaten-by').empty().append('<div  class="list-title">IS EATEN BY</div>');
-                                            selectedNode.chain().outgoingAssociations().each(function() {
+                                            selectedNode.outgoingAssociations().each(function() {
                                                 if (this.getTypeQName() == 'theoffice:isEatenBy') {
-                                                    var otherNode = nodeLookup[this.get('target')];
-                                                    displayCreature($('#is-eaten-by'), otherNode);
+                                                    //var otherNode = nodeLookup[this.get('target')];
+                                                    this.readTargetNode().then(function(){
+                                                        displayCreature($('#is-eaten-by'), this);
+                                                    });
                                                 }
                                             });
                                         }

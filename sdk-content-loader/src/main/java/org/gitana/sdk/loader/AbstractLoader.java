@@ -3,6 +3,7 @@ package org.gitana.sdk.loader;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.gitana.repo.client.Gitana;
+import org.gitana.repo.client.Server;
 import org.gitana.util.JsonUtil;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.FileCopyUtils;
@@ -26,6 +27,7 @@ public class AbstractLoader {
     private ResourceBundle serverConfig = null;
     protected ResourceBundle loaderConfig = null;
     protected Gitana gitana;
+    protected Server server;
 
     /**
      * @throws Exception
@@ -36,7 +38,7 @@ public class AbstractLoader {
         this.loaderConfig = ResourceBundle.getBundle("loader");
         this.gitana = new Gitana();
         // authenticate
-        gitana.authenticate("admin", "admin");
+        this.server = gitana.authenticate("admin", "admin");
     }
 
     /**

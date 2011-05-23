@@ -80,13 +80,13 @@
                         var updateFortuneCookieMessage = function(node, messages) {
                             node.object['message'] = messages[randomInteger(0, messages.length - 1)];
                             node.object['luckNumbers'] = generateLuckyNumbers();
-                            node.chain().update().reload().then(function() {
+                            node.update().reload().then(function() {
                                 displayFortuneCookieMessage(this, messages);
                             });
                         };
 
                         var createFortuneCookieMessage = function(branch, messages) {
-                            branch.chain().createNode({
+                            branch.createNode({
                                 "_qname" : "theoffice:fortunecookie",
                                 "title" : "My Fouturn Cookie",
                                 "message" : messages[randomInteger(0, messages.length - 1)],
@@ -104,8 +104,8 @@
                                     + '</span><button id="update_button">Update</button><button id="delete_button">Delete</button></div>');
                             $('#delete_button').click(function() {
                                 var branch = node.getBranch();
-                                node.chain().del().then(function() {
-                                    $('#field1').empty().append('<div id="toolbar"><button id="new_button">Generate New</button></div>');
+                                node.del().then(function() {
+                                    $('#fortune-cookie').empty().append('<div id="toolbar"><button id="new_button">Generate New</button></div>');
                                     $('#new_button').click(function() {
                                         createFortuneCookieMessage(branch, messages);
                                     });
@@ -126,7 +126,7 @@
                                     });
                                 });
                                 var branch = this.getBranch();
-                                branch.chain().trap(function(error) {
+                                branch.trap(function(error) {
                                     if (error.http.status == 404) {
                                         createFortuneCookieMessage(branch, messages);
                                     }

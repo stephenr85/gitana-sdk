@@ -37,7 +37,7 @@ public class UserLoader extends AbstractLoader {
      */
     public UserLoader() throws Exception {
         super();
-        this.gitanaUsers = gitana.users().map();
+        this.gitanaUsers = server.fetchUsers();
         this.userLoadMode = this.loaderConfig.getString("user.load.mode") == null ? "update" : this.loaderConfig.getString("user.load.mode");
         this.userListObj = this.loadJsonFromClasspath("org/gitana/sdk/loader/security/users.json");
     }
@@ -62,21 +62,21 @@ public class UserLoader extends AbstractLoader {
         logger.info("Loading user " + userId);
         if (userId != null) {
             // Setup user.
-            SecurityUser user = gitana.users().read(userId);
+            SecurityUser user = this.gitanaUsers.get(userId);
             if (user != null) {
                 if (this.userLoadMode.equals("overwrite")) {
                     logger.info("User exists. Delete it and then create a new one.");
                     user.delete();
-                    user = gitana.users().create(userId, "password");
-                    gitana.server().grant(userId, "collaborator");
+                    user = this.server.createUser(userId, "password");
+                    this.server.grant(userId, "collaborator");
                 } else {
                     logger.info("User exists. Update it.");
-                    gitana.server().grant(userId, "collaborator");
+                    this.server.grant(userId, "collaborator");
                 }
             } else {
                 logger.info("User doesn't exist. Create a new one.");
-                user = gitana.users().create(userId, "password");
-                gitana.server().grant(userId, "collaborator");
+                user = this.server.createUser(userId, "password");
+                this.server.grant(userId, "collaborator");
             }
             // Update user attributes
             if (userObj.get("firstName") != null) {
@@ -109,7 +109,7 @@ public class UserLoader extends AbstractLoader {
                     // upload avatar.
                     logger.info("User avatar image  :: " + avatarPath);
                     byte[] avatarBytes = ClasspathUtil.bytesFromClasspath(userObj.get("avatar").get("path").getTextValue());
-                    user.uploadAttachment("avatar", userObj.get("avatar").get("mimeType").getTextValue(), avatarBytes);
+                    user.uploadAttachment("avatar", avatarBytes,userObj.get("avatar").get("mimeType").getTextValue());
                 }
             } catch (IOException e) {
                 logger.error("Failed to upload avatar for user " + userId, e);
@@ -117,13 +117,13 @@ public class UserLoader extends AbstractLoader {
 
             // Makes sure we actually update/create it
             logger.info("Finished loading user " + userId);
-            user = gitana.users().read(userId);
+            user = this.server.readUser(userId);
             logger.info("Updated user first name  :: " + user.getFirstName());
             logger.info("Updated user last name  :: " + user.getLastName());
             logger.info("Updated user email  :: " + user.getEmail());
             logger.info("Updated user company name  :: " + user.getCompanyName());
 
-            for (String authority : gitana.server().getAuthorities(userId)) {
+            for (String authority : this.server.getAuthorities(userId)) {
                 logger.info("User authority  :: " + authority);
             }
         }

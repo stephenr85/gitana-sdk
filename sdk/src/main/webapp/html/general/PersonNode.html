@@ -46,9 +46,7 @@
                                     + '<div class="user-email">' + this.getEmail() + '</div>'
                                     + '<div class="user-company">' + this.getCompanyName() + '</div></div>');
                             // Add avatar image
-                            this.attachment().each(function(){
-                                $('.user-avatar').append('<img src="' + this.getDownloadUri() + '"/>');
-                            });
+                            $('.user-avatar').append('<img src="' + this.attachment('avatar').getDownloadUri() + '"/>');
                             // Load additional person information from person node.
                             this.getServer().queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                                 this.readBranch('master').readPerson("mscott_theoffice").then(function() {

@@ -8,20 +8,13 @@ import org.gitana.repo.association.Direction;
 import org.gitana.repo.client.Branch;
 import org.gitana.repo.client.Repository;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.gitana.repo.client.SecurityUser;
 import org.gitana.repo.client.nodes.Association;
 import org.gitana.repo.client.nodes.Node;
-import org.gitana.repo.client.services.Branches;
-import org.gitana.repo.client.services.Definitions;
-import org.gitana.repo.client.services.Nodes;
 import org.gitana.repo.namespace.QName;
-import org.gitana.repo.query.QueryBuilder;
-import org.gitana.util.ClasspathUtil;
-import org.gitana.util.JsonUtil;
 
 /**
  * Loader for setting up users.
@@ -49,8 +42,8 @@ public class SocialGraphLoader extends AbstractLoader {
     public SocialGraphLoader(Repository repository) throws Exception {
         super();
         this.repository = repository;
-        this.branch = repository.branches().read("master");
-        this.gitanaUsers = gitana.users().map();
+        this.branch = repository.readBranch("master");
+        this.gitanaUsers = this.server.fetchUsers();
         this.socialGraphLoadMode = this.loaderConfig.getString("socialGraph.load.mode") == null ? "update" : this.loaderConfig.getString("socialGraph.load.mode");
         this.socialGraphObj = this.loadJsonFromClasspath("org/gitana/sdk/loader/social/social-graph.json");
     }
@@ -58,10 +51,10 @@ public class SocialGraphLoader extends AbstractLoader {
     public Node getSecurityPrincipalNode(JsonNode nodeObj) {
         Node node = null;
         if (nodeObj.get("type").getTextValue().equals("user")) {
-            node = branch.nodes().readPerson(nodeObj.get("id").getTextValue(), true);
+            node = branch.readPerson(nodeObj.get("id").getTextValue(), true);
         }
         if (nodeObj.get("type").getTextValue().equals("group")) {
-            node = branch.nodes().readGroup(nodeObj.get("id").getTextValue(), true);
+            node = branch.readGroup(nodeObj.get("id").getTextValue(), true);
         }
         return node;
     }
@@ -84,7 +77,7 @@ public class SocialGraphLoader extends AbstractLoader {
             for (JsonNode associationTypeObj : socialGraphObj.get("associationTypes")) {
                 String qnameStr = associationTypeObj.getTextValue();
                 QName qname = QName.create(qnameStr);
-                branch.definitions().defineAssociationType(qname);
+                branch.defineAssociationType(qname);
                 logger.info("Create association type  :: " + qnameStr);
             }
 
@@ -130,7 +123,7 @@ public class SocialGraphLoader extends AbstractLoader {
      */
     public void loadUser(String userId, JsonNode userObj) throws Exception {
         logger.info("Loading Person Object for user ::" + userId);
-        Node personNode = branch.nodes().readPerson(userId, true);
+        Node personNode = branch.readPerson(userId, true);
         if (personNode != null) {
             logger.info("Get Person Node for user ::" + userId);
             logger.info("Person Node ::" + personNode.toJSONString(true));

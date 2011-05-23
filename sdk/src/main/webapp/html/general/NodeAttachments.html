@@ -58,7 +58,6 @@
                                     this.listAttachments().count(function(count) {
                                         $('#attachments').empty().append('<div class="total-results">Total ' + count + ' attachments.</div>');
                                     }).each(function(key,attachment,index){
-                                        //TODO: We can't get index here. Seems like a bug.
                                         $('#attachments').append('<div class="result-item"><div class="item-title" id="' + this.getId() + '">' + (index + 1)
                                                 + '.  <a href="'+ this.getDownloadUri() +'">' + this.getFilename() + '</a></div><div class="item-description">'
                                                 + this.getContentType()+' ( '+this.getLength() + ' )</div></div>');

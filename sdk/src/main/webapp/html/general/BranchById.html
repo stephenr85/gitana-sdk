@@ -62,7 +62,7 @@
                                 $('#branch-details').empty();
                                 var branchId = $('#branch-id').val();
                                 if (branchId != '') {
-                                    repo.chain().readBranch(branchId).then(function() {
+                                    repo.readBranch(branchId).then(function() {
                                         var title = this.getTitle() ? this.getTitle() : this.getId();
                                         var description = this.getDescription() ? this.getDescription() : "";
                                         var branchElem = $('<div class="result-item"><div class="item-title branch" id="' + this.getId() + '">'

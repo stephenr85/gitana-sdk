@@ -39,8 +39,6 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        //TODO: Avatar part is not straightforward. It took me a while to figure it out after trying attachments() and attachment('avatar')
-                        //TODO: maybe we should make it a direct call? such as get getAvatar?
                         var defaults = Gitana.SDK.defaults;
                         new Gitana().authenticate("mscott_theoffice", "password").trap(defaults.errorHandler).readUser("mscott_theoffice").then(function() {
                             // Popular user information
@@ -49,9 +47,7 @@
                                 +'<div class="user-email">' + this.getEmail() + '</div>'+'<div class="user-company">'
                                 + this.getCompanyName() + '</div>');
                             // Add avatar image
-                            this.attachment().each(function(){
-                                $('.user-avatar').append('<img src="' + this.getDownloadUri() + '"/>');
-                            });
+                            $('.user-avatar').append('<img src="' + this.attachment('avatar').getDownloadUri() + '"/>');
                             // Display memebership list
                             this.listMemberships().then(function() {
                                 $('#social-details').append('<div class="user-memberships">Memberships</div>');
