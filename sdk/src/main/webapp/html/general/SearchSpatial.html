@@ -27,8 +27,8 @@
     </div>
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
-            <h3>Spatial Search</h3>
-            <h4>Spatial Search</h4>
+            <h3>Traversal Search</h3>
+            <h4>Traversal Search</h4>
 
             <div id="field1">
                     <div class="form">
@@ -67,7 +67,7 @@
                             this.readBranch('master').then(function() {
                                 var branch = this;
                                 $('#search-button').click(function() {
-                                    branch.chain().readNode($('#source-node').val()).search({
+                                    branch.readNode($('#source-node').val()).search({
                                         "search": $('#keyword').val(),
                                         "traverse": {
                                             "depth": parseInt($('#depth').val())

@@ -64,7 +64,7 @@ $(function() {
             this.readBranch('master').then(function() {
                 var branch = this;
                 $('#query-button').click(function() {
-                    branch.chain().queryNodes(JSON.parse($('#query').val())).count(function(count) {
+                    branch.queryNodes(JSON.parse($('#query').val())).count(function(count) {
                         $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
                     }).each(function(key, node , index) {
                         var title = node.getTitle() ? node.getTitle() : node.getId();

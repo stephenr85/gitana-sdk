@@ -58,7 +58,7 @@
                             this.readBranch('master').then(function() {
                                 var branch = this;
                                 $('#search-button').click(function() {
-                                    branch.chain().searchNodes($('#keyword').val()).count(function(count) {
+                                    branch.searchNodes($('#keyword').val()).count(function(count) {
                                         $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
                                     }).each(function(key, node, index) {
                                         var title = node.getTitle() ? node.getTitle() : node.getId();

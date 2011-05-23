@@ -130,7 +130,7 @@ $(function() {
                         },
                         {
                             "id":"search-spatial",
-                            "title":"Spatial Search",
+                            "title":"Traversal Search",
                             "link":"../../html/general/SearchSpatial.html"
                         }
                     ]

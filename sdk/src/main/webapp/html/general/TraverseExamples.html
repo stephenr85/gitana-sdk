@@ -75,7 +75,7 @@
                         this.readBranch('master').then(function() {
                             var branch = this;
                             $('#traverse-button').click(function() {
-                                branch.chain().readNode($('#source-node').val()).traverse(JSON.parse($('#traverse').val())).nodeCount(function(count) {
+                                branch.readNode($('#source-node').val()).traverse(JSON.parse($('#traverse').val())).nodeCount(function(count) {
                                     $('#traverse-results').empty().append('<div class="total-results">Total ' + count + ' traverse results.</div>');
                                 }).nodes().each(function(key, node, index) {
                                     var title = node.get('title') ? node.get('title') : node.getId();
