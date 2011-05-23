@@ -1,22 +1,22 @@
 <script id="socialGraphUserDetailsTemplate" type="text/x-jquery-tmpl">
-    <div class="user-avatar"><img src="${data.avatar}"/></div>
+    <div class="user-avatar"><img src="${data.user.attachments.avatar}"/></div>
     <div class="user-info">
-        <div class="user-name">${data.name}</div>
-        <div class="user-email">${data.email}</div>
-        <div class="user-position">${data.currentPosition}</div>
-        <div class="user-gender">${data.gender}</div>
-        <div class="user-biography">${data.biography}</div>
+        <div class="user-name">${data.user.firstName} ${data.user.lastName}</div>
+        <div class="user-email">${data.user.email}</div>
+        <div class="user-position">${data.personNode.currentPosition}</div>
+        <div class="user-gender">${data.personNode.gender}</div>
+        <div class="user-biography">${data.personNode.biography}</div>
         <div class="supervisors">Supervisors</div>
         {{each data.supervisors}}
-            <div class="supervisor" id="${userId}"></div>
+            <div class="supervisor user" id="${userId}"></div>
         {{/each}}
         <div class="subordinates">Subordinates</div>
         {{each data.subordinates}}
-            <div class="supervisor" id="${userId}"></div>
+            <div class="subordinate user" id="${userId}"></div>
         {{/each}}
         <div class="relationships">Relationships</div>
         {{each data.relationships}}
-            <div class="relationship" id="${userId}">(${type})</div>
+            <div class="relationship user" id="${userId}">(${type})</div>
         {{/each}}
     </div>
 </script>

@@ -1,0 +1,39 @@
+<script id="promotionsTemplate" type="text/x-jquery-tmpl">
+    <div class="related-products">
+        <ul>
+            {{each(index, item) data.list}}
+            <li>
+                <div class="product-promotion">
+                    <div class="product-promotion-title">
+                        ${item.product}
+                    </div>
+                    <div class="product-promotion-image">
+                        <img src="${item.attachments.image_full}" alt="${item.product}"/>
+                    </div>
+                    <div class="product-promotion-body">
+                        <div class="product-promotion-price"><span class="price">$${item.promotion_price.price}</span>
+                            <span class="unit">${item.promotion_price.unit}</span></div>
+                        <div>${item.code}</div>
+                        <div>${item.details}</div>
+                        <div class="product-regular-price">Reg. Price <span
+                                class="price">$${item.original_price.price}</span> <span class="unit">${item.original_price.unit}</span>
+                        </div>
+                        <div class="product-promotion-stores">
+                            Available store locations:
+                            {{each(i, store) item.stores}}
+                            {{if i !=0}},{{/if}}
+                            <span class="store">${store}</span>
+                            {{/each}}
+                        </div>
+                        <div class="product-promotion-dates">
+                            Promotion effective from <span class="date">${item.start_date}</span> to <span class="date">${item.end_date}</span>.
+                        </div>
+                    </div>
+                    <div class="clear"/>
+                </div>
+                <div class="h_divider">&nbsp;</div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</script>

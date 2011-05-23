@@ -9,44 +9,10 @@
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet"/>
     <style>
-        .result-item {
-            padding-bottom: 4px;
-        }
-
-        .item-title {
-            font-weight: bold;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .total-results {
-            padding: 4px 0 4px 0;
-            text-decoration: underline;
-        }
-
-        .field {
-            padding: 2px 0 2px 0;
-        }
-
-        .field ul {
-            list-style-type: none;
-            padding-left: 0px;
-        }
-
-        .field ul li {
-            padding-bottom: 4px;
-        }
-
-        .field ul li span {
-            float: left;
-            width: 80px;
-        }
-
         .query-examples ul li {
             text-decoration: underline;
             cursor: pointer;
         }
-
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
@@ -71,12 +37,12 @@
 <h4>Query Examples</h4>
 
 <div id="field1">
-    <div style="margin-bottom:10px;">
+    <div>
         <div class="query-examples">
             <ul>
             </ul>
         </div>
-        <div class="field">
+        <div class="form">
             <ul>
                 <li>
                     <textarea id="query" rows="10" cols="75"></textarea>
@@ -87,117 +53,31 @@
             </ul>
         </div>
     </div>
-    <div id="query-results"></div>
+    <div  class="results" id="query-results"></div>
+    <div class="error"></div>
 </div>
-
 <script type="text/javascript" id="field1-script">
 $(function() {
     $(document).ready(function() {
-        var errorHandler = function(error) {
-            $('#field1').html("Error message: " + error.msg);
-        };
-        var gitana = new Gitana();
-        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-            "title" : "Dunder Mifflin sample repository",
-            "tags":["Demo","The office"]
-        }).keep(1).each(function() {
+        var defaults = Gitana.SDK.defaults;
+        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
             this.readBranch('master').then(function() {
                 var branch = this;
                 $('#query-button').click(function() {
-                    branch.chain().queryNodes(JSON.parse($('#query').val())).count(
-                            function(count) {
-                                $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
-                            }).each(function(key, node , index) {
-                        var title = node.get('title') ? node.get('title') : node.getId();
-                        var description = node.get('description') ? node.get('description') : "";
+                    branch.chain().queryNodes(JSON.parse($('#query').val())).count(function(count) {
+                        $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
+                    }).each(function(key, node , index) {
+                        var title = node.getTitle() ? node.getTitle() : node.getId();
+                        var description = node.getDescription() ? node.getDescription() : "";
                         $('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1)
                                 + '. ' + title + '</div><div class="item-description">'
-                                + description + '</div></div>').click(
-                                function() {
-                                    var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
-                                    var _this = this;
-                                    sourceViewDialog.alpaca({
-                                        "data": [
-                                            {
-                                                "title": "JSON Source",
-                                                "text": JSON.stringify(node.object, null, '&nbsp;')
-                                            }
-                                        ],
-                                        "view": {
-                                            "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
-                                        },
-                                        "postRender": function(renderedNewFieldControl) {
-                                            sourceViewDialog.dialog({
-                                                resizable: true,
-                                                height: 550,
-                                                width: 800,
-                                                modal: false
-                                            });
-                                        }
-                                    });
-                                }).appendTo($('#query-results'));
+                                + description + '</div></div>').click( function() {
+                                    defaults.sourceViewer(node.object);
+                            }).appendTo($('#query-results'));
                     });
                 });
-
             });
         });
-
-        /*
-         var driver = new Gitana.Driver();
-         driver.security().authenticate("admin", "admin", function(success) {
-         driver.repositories().query({
-         "title" : "Dunder Mifflin sample repository",
-         "tags":["Demo","The office"]
-         }, function(response) {
-         if (response.total_rows > 0) {
-         var respositoryId = response.rows[0]._doc;
-         driver.repositories().read(respositoryId, function(repository) {
-         repository.branches().read('master', function(branch) {
-         $('#query-button').click(function() {
-         branch.nodes().query(JSON.parse($('#query').val()), function(response) {
-         $('#query-results').empty().append('<div class="total-results">Total ' + response.list.length + ' query results.</div>');
-         $.each(response.list, function(index, node) {
-         var title = node.title ? node.title : node.getId();
-         var description = node.description ? node.description : "";
-         $('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1)
-         + '. ' + title + '</div><div class="item-description">'
-         + description + '</div></div>').click(
-         function() {
-         var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
-         var _this = this;
-         sourceViewDialog.alpaca({
-         "data": [
-         {
-         "title": "JSON Source",
-         "text": JSON.stringify(node, null, '&nbsp;')
-         }
-         ],
-         "view": {
-         "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
-         },
-         "postRender": function(renderedNewFieldControl) {
-         sourceViewDialog.dialog({
-         resizable: true,
-         height: 550,
-         width: 800,
-         modal: false
-         });
-         }
-         });
-         }).appendTo($('#query-results'));
-         });
-
-         });
-         });
-         });
-         });
-         }
-         });
-         }, function(error) {
-         $('#field1').html("Failed to authenticate with status " + error.status);
-         });
-         */
-    });
     var queries = {
         "example1" :{
             "title": "Find all nodes with type 'theoffice:creature'.",
@@ -353,6 +233,7 @@ $(function() {
                     $('#query-button').click();
                 }).appendTo(examplesElem);
     }
+    });
 });
 </script>
 </div>

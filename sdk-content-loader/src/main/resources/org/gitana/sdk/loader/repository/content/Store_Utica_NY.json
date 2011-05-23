@@ -1,0 +1,44 @@
+{
+    "name":"Utica NY Store",
+    "address":{
+        "street":[
+            "111 South Street"
+        ],
+        "city":"Utica",
+        "state":"NY",
+        "zip":"13501"
+    },
+    "phone":"(678)456-7890",
+    "fax":"(678)456-8890",
+    "manager": "Amy Shortbread",
+    "hours":[
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Monday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Tuesday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Wednesday"
+        },
+        {
+            "hour":"10:00AM - 9:00PM EST",
+            "day":"Thursday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Friday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Saturday"
+        },
+        {
+            "hour":"11:00AM - 6:00PM EST",
+            "day":"Sunday"
+        }
+    ]
+}

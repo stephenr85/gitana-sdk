@@ -1,0 +1,20 @@
+<script id="productsByCateogryTemplate" type="text/x-jquery-tmpl">
+    <div class="related-products-title">Category: ${data.category}</div>
+    <div class="related-products">
+        <ul>
+        {{each(index, item) data.list}}
+            <li>
+                <div class="related-product">
+                    <div class="related-product-image">
+                        <img src="${item.attachments.image_thumbnail}"/>
+                    </div>
+                    <div class="related-product-info">
+                        <div class="related-product-title"><a href="#/product/${item._qname}">${item.title}</a></div>
+                        <div class="related-product-description">${item.description}</div>
+                    </div>
+                </div>
+            </li>
+        {{/each}}
+        </ul>
+    </div>
+</script>

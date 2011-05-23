@@ -1,20 +1,16 @@
 <script id="userReviewIndicatorsTemplate" type="text/x-jquery-tmpl">
     <div>
-        <div class="spamindicator">
-        {{if data.spamCounter}}
-            ${data.spamCounter} people marked this review as spam or offensive.
-        {{else}}
-            Not spam.
-        {{/if}}
-        </div>
-        <a class="spambutton" href="#">Mark it as spam</a>
         <div class="helpfulindicator">
         {{if data.helpfulCounter && data.totalCounter}}
-            ${data.helpfulCounter} out of ${data.totalCounter} found this review helpful.
-        {{else}}
-            0 out 0 people found this review helpful.
+            ${data.helpfulCounter} out of ${data.totalCounter} people found this review helpful.
         {{/if}}
         </div>
-        <div>Was this review useful ? <a class="helpfulbutton" href="#">Yes</a> <a class="unhelpfulbutton" href="#">No</a></div>
+        <div class="spamindicator">
+        {{if data.spamCounter}}
+            ${data.spamCounter} people marked this review as inappropriate.
+        {{/if}}
+        </div>
+        <div class="helpfulindicator-toolbar"><b>Was this review helpful to you ?</b>  <a class="helpfulbutton" href="#">Yes</a> <a class="unhelpfulbutton" href="#">No</a></div>
+        <div class="spamindicator-toolbar">(<a class="spambutton" href="#">Mark this review as inappropriate</a>)</div>
     </div>
 </script>

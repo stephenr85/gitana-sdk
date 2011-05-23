@@ -63,6 +63,10 @@
             {
                 "qname" : "theoffice:creature",
                 "path": "org/gitana/sdk/loader/repository/definitions/creature.json"
+            },
+            {
+                "qname" : "theoffice:store",
+                "path": "org/gitana/sdk/loader/repository/definitions/store.json"
             }
         ],
         "forms": {
@@ -215,6 +219,217 @@
                                         "mimeType":"image/jpg"
                                     }
                                 ]
+                            },
+                            {
+                                "qname":"theoffice:beetle",
+                                "type":"theoffice:creature",
+                                "title":"Creature Beetle",
+                                "description" : "Beetle.",
+                                "path":"org/gitana/sdk/loader/repository/content/Beetle.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Beetle.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:bobcat",
+                                "type":"theoffice:creature",
+                                "title":"Creature Bobcat",
+                                "description" : "Bobcat.",
+                                "path":"org/gitana/sdk/loader/repository/content/Bobcat.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Bobcat.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:checkerspot",
+                                "type":"theoffice:creature",
+                                "title":"Creature Checkerspot",
+                                "description" : "Checkerspot.",
+                                "path":"org/gitana/sdk/loader/repository/content/Checkerspot.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Checkerspot.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:cougar",
+                                "type":"theoffice:creature",
+                                "title":"Creature Cougar",
+                                "description" : "Cougar.",
+                                "path":"org/gitana/sdk/loader/repository/content/Cougar.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Cougar.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:marten",
+                                "type":"theoffice:creature",
+                                "title":"Creature Marten",
+                                "description" : "Marten.",
+                                "path":"org/gitana/sdk/loader/repository/content/Marten.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Marten.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:muledeer",
+                                "type":"theoffice:creature",
+                                "title":"Creature Mule Deer",
+                                "description" : "Mule Deer.",
+                                "path":"org/gitana/sdk/loader/repository/content/Muledeer.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Muledeer.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:nuthatch",
+                                "type":"theoffice:creature",
+                                "title":"Creature Nuthatch",
+                                "description" : "Nuthatch.",
+                                "path":"org/gitana/sdk/loader/repository/content/Nuthatch.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Nuthatch.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:pika",
+                                "type":"theoffice:creature",
+                                "title":"Creature Pika",
+                                "description" : "Pika.",
+                                "path":"org/gitana/sdk/loader/repository/content/Pika.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Pika.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:raven",
+                                "type":"theoffice:creature",
+                                "title":"Creature Raven",
+                                "description" : "Raven.",
+                                "path":"org/gitana/sdk/loader/repository/content/Raven.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Raven.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:ringtail",
+                                "type":"theoffice:creature",
+                                "title":"Creature Ringtail",
+                                "description" : "Ringtail.",
+                                "path":"org/gitana/sdk/loader/repository/content/Ringtail.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Ringtail.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:treefrog",
+                                "type":"theoffice:creature",
+                                "title":"Creature Tree Frog",
+                                "description" : "Tree Frong.",
+                                "path":"org/gitana/sdk/loader/repository/content/Treefrog.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Treefrog.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:whiptail",
+                                "type":"theoffice:creature",
+                                "title":"Creature Whiptail",
+                                "description" : "Whiptail.",
+                                "path":"org/gitana/sdk/loader/repository/content/Whiptail.json",
+                                "attachments" : [
+                                    {
+                                        "name":"photo",
+                                        "path": "org/gitana/sdk/loader/repository/content/attachments/Whiptail.jpg",
+                                        "mimeType":"image/jpg"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:stores",
+                        "title": "Store Information",
+                        "description": "Dunder Mifflin Paper Company Store Information.",
+                        "content":[
+                            {
+                                "qname":"theoffice:storenashuanh",
+                                "type":"theoffice:store",
+                                "title":"Nashua NH Store",
+                                "description" : "Nashua NH Store.",
+                                "path":"org/gitana/sdk/loader/repository/content/Store_Nashua_NH.json",
+                                "attachments" : [
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:storescrantonpa",
+                                "type":"theoffice:store",
+                                "title":"Scranton PA Store",
+                                "description" : "Scranton PA Store.",
+                                "path":"org/gitana/sdk/loader/repository/content/Store_Scranton_PA.json",
+                                "attachments" : [
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:storestamfordct",
+                                "type":"theoffice:store",
+                                "title":"Stamford CT Store",
+                                "description" : "Stamford CT Store.",
+                                "path":"org/gitana/sdk/loader/repository/content/Store_Stamford_CT.json",
+                                "attachments" : [
+                                ]
+                            },
+                            {
+                                "qname":"theoffice:storeuticany",
+                                "type":"theoffice:store",
+                                "title":"Utica NY Store",
+                                "description" : "Utica NY Store.",
+                                "path":"org/gitana/sdk/loader/repository/content/Store_Utica_NY.json",
+                                "attachments" : [
+                                ]
                             }
                         ]
                     }
@@ -297,6 +512,82 @@
                         ]
                     },
                     {
+                        "qname":"theoffice:mediumbinderclips",
+                        "type":"theoffice:product",
+                        "title":"Medium Binder Clips",
+                        "description" : "Medium Binder Clips.",
+                        "path":"org/gitana/sdk/loader/repository/content/Medium_Binder_Clips.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Medium_Binder_Clips_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Medium_Binder_Clips_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:sharpieaccenthighlighters",
+                        "type":"theoffice:product",
+                        "title":"Sharpie Accent Highlighters",
+                        "description" : "Sharpie Accent Highlighters.",
+                        "path":"org/gitana/sdk/loader/repository/content/Sharpie_Accent_Highlighters.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Sharpie_Accent_Highlighters_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Sharpie_Accent_Highlighters_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:swinglinestapler",
+                        "type":"theoffice:product",
+                        "title":"Swingline Stapler",
+                        "description" : "Swingline Stapler.",
+                        "path":"org/gitana/sdk/loader/repository/content/Swingline_Stapler.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Swingline_Stapler_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/Swingline_Stapler_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "qname":"theoffice:topssecondaaturepad",
+                        "type":"theoffice:product",
+                        "title":"TOPS Second Nature Pad",
+                        "description" : "TOPS Second Nature Pad.",
+                        "path":"org/gitana/sdk/loader/repository/content/TOPS_Second_Nature_Pad.json",
+                        "attachments" : [
+                            {
+                                "name":"image_thumbnail",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/TOPS_Second_Nature_Pad_Thumbnail.jpg",
+                                "mimeType":"image/jpg"
+                            },
+                            {
+                                "name":"image_full",
+                                "path": "org/gitana/sdk/loader/repository/content/attachments/TOPS_Second_Nature_Pad_Full.jpg",
+                                "mimeType":"image/jpg"
+                            }
+                        ]
+                    },
+                    {
                         "qname":"theoffice:Dunder_Mifflin_HR_Policy3.pdf",
                         "title":"Dunder_Mifflin_HR_Policy.pdf",
                         "description":"Dunder Mifflin Human Resource Policy",
@@ -350,6 +641,24 @@
                 "direction":"BOTH"
             },
             {
+                "associationType" : "theoffice:isRelatedTo",
+                "source":"theoffice:topssecondaaturepad",
+                "target":"theoffice:sharpieaccenthighlighters",
+                "direction":"BOTH"
+            },
+            {
+                "associationType" : "theoffice:isRelatedTo",
+                "source":"theoffice:mediumbinderclips",
+                "target":"theoffice:swinglinestapler",
+                "direction":"BOTH"
+            },
+            {
+                "associationType" : "theoffice:isRelatedTo",
+                "source":"theoffice:mediumbinderclips",
+                "target":"theoffice:hammermillcopypluspaper",
+                "direction":"BOTH"
+            },
+            {
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:jackrabbit",
                 "target":"theoffice:coyote",
@@ -362,10 +671,170 @@
             {
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:squirrel",
-                "target":"theoffice:jackrabbit",
+                "target":"theoffice:ringtail",
                 "direction":"OUTGOING",
                 "associationDetails": {
-                    "title":"Jackrabbit sometimes eats squirrel",
+                    "title":"Ringtail sometimes eats squirrel",
+                    "favorite": 5
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:beetle",
+                "target":"theoffice:pika",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Pika sometimes eats beetle",
+                    "favorite": 5
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:beetle",
+                "target":"theoffice:nuthatch",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Nuthatch sometimes eats beetle",
+                    "favorite": 4
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:beetle",
+                "target":"theoffice:treefrog",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Tree Frog sometimes eats beetle",
+                    "favorite": 3
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:pika",
+                "target":"theoffice:ringtail",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Ringtail sometimes eats pika",
+                    "favorite": 3
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:pika",
+                "target":"theoffice:marten",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Marten sometimes eats pika",
+                    "favorite": 5
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:nuthatch",
+                "target":"theoffice:marten",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Marten sometimes eats nuthatch",
+                    "favorite": 2
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:treefrog",
+                "target":"theoffice:ringtail",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Ringtail sometimes eats tree frog",
+                    "favorite": 3
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:muledeer",
+                "target":"theoffice:coyote",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Coyote sometimes eats mule deer",
+                    "favorite": 6
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:muledeer",
+                "target":"theoffice:cougar",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Cougar sometimes eats mule deer",
+                    "favorite": 6
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:muledeer",
+                "target":"theoffice:bobcat",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Bobcat sometimes eats mule deer",
+                    "favorite": 4
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:ringtail",
+                "target":"theoffice:bobcat",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Bobcat sometimes eats ringtail",
+                    "favorite": 8
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:whiptail",
+                "target":"theoffice:coyote",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Coyote sometimes eats whiptail",
+                    "favorite": 9
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:marten",
+                "target":"theoffice:cougar",
+                "direction":"OUTGOING",
+                "associationDetails": {
+                    "title":"Cougar sometimes eats marten",
+                    "favorite": 5
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:bobcat",
+                "target":"theoffice:cougar",
+                "direction":"BOTH",
+                "associationDetails": {
+                    "title":"Bobcat and cougar eat each other",
+                    "favorite": 5
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:coyote",
+                "target":"theoffice:cougar",
+                "direction":"BOTH",
+                "associationDetails": {
+                    "title":"Cougar and coyote eat each other",
+                    "favorite": 5
+                }
+            },
+            {
+                "associationType" : "theoffice:isEatenBy",
+                "source":"theoffice:coyote",
+                "target":"theoffice:bobcat",
+                "direction":"BOTH",
+                "associationDetails": {
+                    "title":"Bobcat and coyote eat each other",
                     "favorite": 5
                 }
             }

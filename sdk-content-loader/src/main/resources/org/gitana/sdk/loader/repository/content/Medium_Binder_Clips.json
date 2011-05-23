@@ -1,0 +1,15 @@
+{
+    "product":"Medium Binder Clips",
+    "details":"Medium Binder Clips, 1 1/4\" Wide, 5/8\" Capacity, Black, Pack Of 24",
+    "SKU":"CLP08903643",
+    "price":{
+        "price" : "5.99",
+        "unit" : "pack"
+    },
+    "categories":[
+        "Clips"
+    ],
+    "tags":[
+        "Feature"
+    ]
+}

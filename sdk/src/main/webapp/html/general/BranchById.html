@@ -2,27 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Branch</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet"/>
-    <style>
-        .result-item {
-            padding-bottom: 4px;
-        }
-
-        .item-title {
-            font-weight: bold;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        #branch-details {
-            padding: 4px;
-        }
-    </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -44,50 +29,51 @@
         <div class='gitana-example-case'>
             <h3>Branch</h3>
             <h4>Find a branch by ID.</h4>
-
             <div id="field1">
-                <span>Branch ID: </span>
-                <select id="branch-id">
-                    <option value="">--- Select A Branch ---</option>
-                </select>
-
-                <div id="branch-details"></div>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="repo-id">Branch ID</label>
+                            <div class="field">
+                                <select id="branch-id">
+                                    <option value="">--- Select A Branch ---</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="results" id="branch-details"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        var repo = null;
-                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
-                            repo = this;
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                            var repo = this;
+                            // Populate branch drop down list.
                             this.listBranches().each(function() {
-                                $('#branch-id').append('<option value="' + this.getId() + '">' + this.get('title') + '</option>');
+                                $('#branch-id').append('<option value="' + this.getId() + '">' + this.getTitle() + '</option>');
                             });
 
-                            var updateBranchInfo = function  (branchId) {
+                            // Add change listener to branch drop down list.
+                            $('#branch-id').change(function() {
                                 $('#branch-details').empty();
+                                var branchId = $('#branch-id').val();
                                 if (branchId != '') {
                                     repo.chain().readBranch(branchId).then(function() {
-                                        var title = this.get('title') ? this.get('title') : this.getId();
-                                        var description = this.get('description') ? this.get('description') : "";
+                                        var title = this.getTitle() ? this.getTitle() : this.getId();
+                                        var description = this.getDescription() ? this.getDescription() : "";
                                         var branchElem = $('<div class="result-item"><div class="item-title branch" id="' + this.getId() + '">'
                                                 + title + '</div><div class="item-description">'
                                                 + description + '</div></div>');
-
-                                        branchElem.appendTo($('#branch-details'));
+                                        var branch = this;
+                                        branchElem.click(function(){
+                                            Gitana.SDK.defaults.sourceViewer(branch.object);
+                                        }).appendTo($('#branch-details'));
                                     });
                                 }
-                            };
-
-                            $('#branch-id').change(function() {
-                                updateBranchInfo($('#branch-id').val());
                             });
                         });
                     });

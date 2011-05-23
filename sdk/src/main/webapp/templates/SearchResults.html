@@ -1,14 +1,29 @@
 <script id="searchResultsTemplate" type="text/x-jquery-tmpl">
-    <div class="searchresults">
-        <h1>Total ${data.count} search results:</h1>
-        {{each data.list}}
-        <h2>${title}</h2>
-        <h3>${description}</h3>
-        {{if attachments && attachments.image_thumbnail}}
-        <div>
-            <img src="${attachments.image_thumbnail}"/>
-        </div>
-        {{/if}}
+    <div class="search-results">
+        <div class="search-results-title">Total ${data.count} search results:</div>
+        <ul>
+        {{each(index, item) data.list}}
+        <li>
+            <div class="search-results-title">${index+1}.
+                {{if item.title}}
+                    {{if item._type == 'theoffice:product'}}
+                        <a href="#/product/${item._qname}">${item.title}</a>
+                    {{else item._type == 'theoffice:promotion'}}
+                        <a href="#/promotion/${item._qname}">${item.title}</a>
+                    {{else}}
+                        ${item.title}
+                    {{/if}}
+                {{else}}
+                    ${item._doc}
+                {{/if}}</div>
+            <div class="search-results-description">${item.description}</div>
+            {{if item.attachments && item.attachments.image_thumbnail}}
+            <div class="search-results-image">
+                <img src="${item.attachments.image_thumbnail}"/>
+            </div>
+            {{/if}}
+        </li>
         {{/each}}
+        </ul>
     </div>
 </script>

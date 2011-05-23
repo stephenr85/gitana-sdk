@@ -36,36 +36,6 @@
                 }
             }
         },
-        "photos":{
-            "title":"Product Photos",
-            "description":"Product photos",
-            "type":"array",
-            "items": {
-                "title": "Product Photo",
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "title": "Photo Type",
-                        "description": "Photo type.",
-                        "type": "string",
-                        "enum": [
-                            "thumbnail",
-                            "full"
-                        ]
-                    },
-                    "title": {
-                        "title": "Photo Title",
-                        "description": "Short description of the photo.",
-                        "type": "string"
-                    },
-                    "image": {
-                        "title": "Image",
-                        "description": "Image file for this photo",
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "categories":{
             "title":"Product Categories",
             "description":"List of categories that this product belongs to.",

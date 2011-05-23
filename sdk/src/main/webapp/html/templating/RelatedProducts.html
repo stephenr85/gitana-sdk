@@ -41,26 +41,16 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-
-                        var errorHandler = function(error) {
-                            $('#field1 .error').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        var templateId = "../../templates/FrontPageProducts";
-                        var el = $('#products');
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName,defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').readNode('theoffice:papermateballpointstickpens').then(function() {
                                 var product = this.object;
                                 // get attachments
                                 this.listAttachments().then(function() {
                                     product.attachments = {};
-                                    this.each(
-                                            function() {
-                                                product.attachments[this.getId()] = this.getDownloadUri();
-                                            }).then(function() {
+                                    this.each(function() {
+                                        product.attachments[this.getId()] = this.getDownloadUri();
+                                    }).then(function() {
                                         new Gitana.jQueryTemplateEngine('Product').render($('#product'), "../../templates/ProductDetails", {
                                             "data": product
                                         });
@@ -73,16 +63,15 @@
                                         "theoffice:isRelatedTo": "BOTH"
                                     },
                                     "depth": 1
-                                }).nodes().each( function() {
+                                }).nodes().each(function() {
                                     var relatedProduct = this.object;
-                                    // get attachments
                                     this.listAttachments().then(function() {
                                         relatedProduct.attachments = {};
                                         this.each(function() {
                                             relatedProduct.attachments[this.getId()] = this.getDownloadUri();
                                         });
                                     }).then(function() {
-                                        relatedProducts.push(relatedProduct);
+                                            relatedProducts.push(relatedProduct);
                                     });
                                 }).then(function() {
                                     new Gitana.jQueryTemplateEngine('Product').render($('#products-related'), "../../templates/RelatedProducts", {
@@ -91,29 +80,8 @@
                                 });
                             });
                         });
-
-                    /*
-                     var gitanaConnector = window.gitanaConnector;
-                     gitanaConnector.traverse({
-                     "sourceId":"theoffice:papermateballpointstickpens",
-                     "associations": {
-                     "theoffice:isRelatedTo": "BOTH"
-                     },
-                     "depth": 1
-                     }, function(result) {
-                     new Gitana.jQueryTemplateEngine('Product').render($('#Product'), "../../templates/ProductDetails", {
-                     "data": result.sourceNode
-                     }, function() {
-                     new Gitana.jQueryTemplateEngine('RelatedProducts').render($('#RelatedProducts'), "../../templates/RelatedProducts", {
-                     "data": result
-                     });
-                     }, function(loadedError) {
-                     });
-                     });
-                     */
+                    });
                 });
-                })
-                ;
             </script>
         </div>
     </div>

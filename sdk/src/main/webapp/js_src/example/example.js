@@ -69,12 +69,15 @@ $(function() {
                             "id":"branch-by-query",
                             "title":"Query Branches",
                             "link":"../../html/general/BranchByQuery.html"
-                        },
+                        }
+                        /*
+                        ,
                         {
                             "id":"branch-crud",
                             "title":"Query Operations",
                             "link":"../../html/general/BranchCrud.html"
                         }
+                        */
                     ]
                 },
                 {
@@ -124,7 +127,8 @@ $(function() {
                             "id":"search-fulltext",
                             "title":"Full-Text Search",
                             "link":"../../html/general/SearchFullText.html"
-                        },{
+                        },
+                        {
                             "id":"search-spatial",
                             "title":"Spatial Search",
                             "link":"../../html/general/SearchSpatial.html"
@@ -247,7 +251,7 @@ $(function() {
                         {
                             "id":"social-graph-app",
                             "title":"Social Graph Application",
-                            "link":"../../html/alpaca/SocialGraph.html"
+                            "link":"../../html/socialgraph/SocialGraph.html"
                         }
                     ]
                 },
@@ -278,7 +282,7 @@ $(function() {
                 itemBar.append(listItem);
                 if (item.id == currentExampleId) {
                     itemBar.addClass('ui-state-highlight');
-                    $('title').html('Gitana SDK - '+item.title);
+                    $('title').html('Gitana SDK - ' + item.title);
                 }
                 itemBar.hover(function() {
                     $(this).addClass('ui-state-hover');
@@ -315,5 +319,14 @@ $(function() {
             navigation: true
         });
         $('.gitana-example-header h2').prepend('<a href="../../index.html">SDK</a><span> :: </span>');
+    }
+
+    $.fn.stars = function() {
+        return $(this).each(function() {
+            var n = $(this).html();
+            if (!isNaN(parseFloat(n)) && isFinite(n)) {
+                $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * 16));
+            }
+        });
     }
 });

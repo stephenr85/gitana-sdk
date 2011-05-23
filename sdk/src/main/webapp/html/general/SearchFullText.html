@@ -8,20 +8,6 @@
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet"/>
-    <style>
-        .result-item {
-            padding-bottom: 4px;
-        }
-
-        .item-title {
-            font-weight: bold;
-        }
-
-        .total-results {
-            padding: 4px 0 4px 0;
-            text-decoration: underline;
-        }
-    </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -45,34 +31,41 @@
             <h4>Full-Text Search</h4>
 
             <div id="field1">
-                <div style="margin-bottom:10px;">
-                    Keyword: <input type="text" id="keyword" size="60" value=""/>
-                    <button id="search-button">Search</button>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="keyword">Keyword</label>
+                            <div class="field">
+                                <input type="text" id="keyword" size="60"/>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="search-button">Search</button>
+                        </li>
+                    </ul>
                 </div>
-                <div id="search-results"></div>
+                <div class="results" id="search-results"></div>
+                <div class="error"></div>
             </div>
+
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        //TODO: Add pagination and sorting.
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').then(function() {
                                 var branch = this;
                                 $('#search-button').click(function() {
-                                    branch.chain().searchNodes($('#keyword').val()).count(
-                                            function(count) {
-                                                $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
-                                            }).each(function(key, node, index) {
-                                        var title = node.get('title') ? node.get('title') : node.getId();
-                                        var description = node.get('description') ? node.get('description') : "";
-                                        $('#search-results').append('<div class="result-item"><div class="item-title">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>');
+                                    branch.chain().searchNodes($('#keyword').val()).count(function(count) {
+                                        $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
+                                    }).each(function(key, node, index) {
+                                        var title = node.getTitle() ? node.getTitle() : node.getId();
+                                        var description = node.getDescription() ? node.getDescription(): "";
+                                        $('<div class="result-item"><div class="item-title">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>').click(function(){
+                                            defaults.sourceViewer(node.object);
+                                        }).appendTo($('#search-results'));
                                     });
                                 });
                             });

@@ -65,36 +65,6 @@
                 }
             }
         },
-        "photos":{
-            "title":"Product Photos",
-            "description":"Product photos for promotion",
-            "type":"array",
-            "items": {
-                "title": "Product Photo",
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "title": "Photo Type",
-                        "description": "Photo type.",
-                        "type": "string",
-                        "enum": [
-                            "thumbnail",
-                            "full"
-                        ]
-                    },
-                    "title": {
-                        "title": "Photo Title",
-                        "description": "Short description of the photo.",
-                        "type": "string"
-                    },
-                    "image": {
-                        "title": "Image",
-                        "description": "Image file for this photo",
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "stores":{
             "title":"Promotion Locations",
             "description":"List of stores that will participate this promotion.",

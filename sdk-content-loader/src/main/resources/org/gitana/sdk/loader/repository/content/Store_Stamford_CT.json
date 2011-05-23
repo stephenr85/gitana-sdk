@@ -1,0 +1,44 @@
+{
+    "name":"Stamford CT Store",
+    "address":{
+        "street":[
+            "15 Bell Street"
+        ],
+        "city":"Stamford",
+        "state":"CT",
+        "zip":"06901"
+    },
+    "phone":"(790)456-7890",
+    "fax":"(790)456-8890",
+    "manager": "Jack Chan",
+    "hours":[
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Monday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Tuesday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Wednesday"
+        },
+        {
+            "hour":"10:00AM - 9:00PM EST",
+            "day":"Thursday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Friday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Saturday"
+        },
+        {
+            "hour":"11:00AM - 6:00PM EST",
+            "day":"Sunday"
+        }
+    ]
+}

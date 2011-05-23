@@ -1,0 +1,21 @@
+{
+    "name":"Darkling beetle",
+    "details":"Darkling beetles (also known as darkening beetles) are a family of beetles found worldwide, estimated at more than 20,000 species. Many of the beetles have black elytra, leading to their common name. Apart from the 9 subfamilies listed here, the tribe Opatrini of the Tenebrioninae is sometimes considered a distinct family, and/or the Pimeliinae are included in the Tenebrioninae as a tribe Pimeliini.",
+    "trophicLevel":"Primary Producer",
+    "lifeExpectancy":0.5,
+    "attackHumans": false,
+    "classification":{
+        "Kingdom":     "Animalia",
+        "Phylum":     "Arthropoda",
+        "Class":     "Insecta",
+        "Order":     "Coleoptera",
+        "Suborder":  "Polyphaga",
+        "Family":     "Tenebrionidae",
+        "Genus":     "Tribolium",
+        "Species":     "T. castaneum"
+    },
+    "range":[
+        "USA",
+        "Mexico"
+    ]
+}

@@ -9,40 +9,7 @@
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet"/>
     <style>
-        .result-item {
-            padding-bottom: 4px;
-        }
-
-        .item-title {
-            font-weight: bold;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .total-results {
-            padding: 4px 0 4px 0;
-            text-decoration: underline;
-        }
-
-        .field {
-            padding: 2px 0 2px 0;
-        }
-
-        .field ul {
-            list-style-type: none;
-            padding-left: 0px;
-        }
-
-        .field ul li {
-            padding-bottom: 4px;
-        }
-
-        .field ul li span {
-            float: left;
-            width: 80px;
-        }
-
-        .query-examples ul li {
+        .traverse-examples ul li {
             text-decoration: underline;
             cursor: pointer;
         }
@@ -71,19 +38,24 @@
         <h4>Traverse Examples</h4>
 
         <div id="field1">
-            <div style="margin-bottom:10px;">
+            <div>
                 <div class="traverse-examples">
                     <ul>
                     </ul>
                 </div>
-                <div class="field">
+                <div class="form">
                     <ul>
                         <li>
-                            <span class="field-key">Source Node</span>
-                            <input type="text" id="source-node" size="75" value="theoffice:coyote"/></li>
+                            <label for="source-node">Source Node</label>
+                            <div class="field">
+                                <input type="text" id="source-node" size="75" value="theoffice:coyote"/>
+                            </div>
+                        </li>
                         <li>
-                            <span class="field-key">Traverse</span>
-                            <textarea id="traverse" rows="10" cols="75"></textarea>
+                            <label for="traverse" style="vertical-align:top;">Traverse</label>
+                            <div class="field">
+                                <textarea id="traverse" rows="10" cols="75"></textarea>
+                            </div>
                         </li>
                         <li>
                             <button id="traverse-button">Traverse</button>
@@ -91,119 +63,35 @@
                     </ul>
                 </div>
             </div>
-            <div id="traverse-results"></div>
+            <div class="results" id="traverse-results"></div>
+            <div class="error" id="error"></div>
         </div>
 
         <script type="text/javascript" id="field1-script">
             $(function() {
                 $(document).ready(function() {
-                    var errorHandler = function(error) {
-                        $('#field1').html("Error message: " + error.msg);
-                    };
-                    var gitana = new Gitana();
-                    gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                        "title" : "Dunder Mifflin sample repository",
-                        "tags":["Demo","The office"]
-                    }).keep(1).each(function() {
+                    var defaults = Gitana.SDK.defaults;
+                    new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                         this.readBranch('master').then(function() {
                             var branch = this;
                             $('#traverse-button').click(function() {
-                                branch.chain().readNode($('#source-node').val()).traverse(JSON.parse($('#traverse').val())).nodeCount(
-                                        function(count) {
-                                            $('#traverse-results').empty().append('<div class="total-results">Total ' + count + ' traverse results.</div>');
-                                        }).nodes().each(function(key, node, index) {
+                                branch.chain().readNode($('#source-node').val()).traverse(JSON.parse($('#traverse').val())).nodeCount(function(count) {
+                                    $('#traverse-results').empty().append('<div class="total-results">Total ' + count + ' traverse results.</div>');
+                                }).nodes().each(function(key, node, index) {
                                     var title = node.get('title') ? node.get('title') : node.getId();
                                     var description = node.get('description') ? node.get('description') : "";
                                     $('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1)
                                             + '. ' + title + '</div><div class="item-description">'
                                             + description + '</div></div>').click(
                                             function() {
-                                                var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
-                                                var _this = this;
-                                                sourceViewDialog.alpaca({
-                                                    "data": [
-                                                        {
-                                                            "title": "JSON Source",
-                                                            "text": JSON.stringify(node.object, null, '&nbsp;')
-                                                        }
-                                                    ],
-                                                    "view": {
-                                                        "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
-                                                    },
-                                                    "postRender": function(renderedNewFieldControl) {
-                                                        sourceViewDialog.dialog({
-                                                            resizable: true,
-                                                            height: 550,
-                                                            width: 800,
-                                                            modal: false
-                                                        });
-                                                    }
-                                                });
+                                                defaults.sourceViewer(node.object);
                                             }).appendTo($('#traverse-results'));
                                 });
                             });
 
                         });
                     });
-                    /*
-                     var driver = new Gitana.Driver();
-                     driver.security().authenticate("admin", "admin", function(success) {
-                     driver.repositories().query({
-                     "title" : "Dunder Mifflin sample repository",
-                     "tags":["Demo","The office"]
-                     }, function(response) {
-                     if (response.total_rows > 0) {
-                     var respositoryId = response.rows[0]._doc;
-                     driver.repositories().read(respositoryId, function(repository) {
-                     repository.branches().read('master', function(branch) {
-                     $('#traverse-button').click(function() {
-                     branch.nodes().read($('#source-node').val(), function(sourceNode) {
-                     sourceNode.traverse(JSON.parse($('#traverse').val()), function(response) {
-                     $('#traverse-results').empty().append('<div class="total-results">Total ' + response.nodeList.length + ' traverse results.</div>');
-                     $.each(response.nodeList, function(index, node) {
-                     var title = node.title ? node.title : node.getId();
-                     var description = node.description ? node.description : "";
-                     $('<div class="result-item"><div class="item-title" id="' + node.getQName() + '">' + (index + 1)
-                     + '. ' + title + '</div><div class="item-description">'
-                     + description + '</div></div>').click(
-                     function() {
-                     var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
-                     var _this = this;
-                     sourceViewDialog.alpaca({
-                     "data": [
-                     {
-                     "title": "JSON Source",
-                     "text": JSON.stringify(node, null, '&nbsp;')
-                     }
-                     ],
-                     "view": {
-                     "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
-                     },
-                     "postRender": function(renderedNewFieldControl) {
-                     sourceViewDialog.dialog({
-                     resizable: true,
-                     height: 550,
-                     width: 800,
-                     modal: false
-                     });
-                     }
-                     });
-                     }).appendTo($('#traverse-results'));
-                     });
-                     });
-
-                     });
-                     });
-                     });
-                     });
-                     }
-                     });
-                     }, function(error) {
-                     $('#field1').html("Failed to authenticate with status " + error.status);
-                     });
-                     */
-                })
-                        ;
+                });
                 var queries = {
                     "example1" :{
                         "title": "Find all nodes around the source node.",
@@ -259,8 +147,7 @@
                                 $('#traverse-button').click();
                             }).appendTo(examplesElem);
                 }
-            })
-                    ;
+            });
         </script>
     </div>
 </div>

@@ -1,0 +1,21 @@
+{
+    "name":"Western whiptail",
+    "details":"The western whiptail (Aspidoscelis tigris (Baird and Girard, 1852) is a small lizard (adults average 25 to 35 cm - about a foot - in length) that ranges throughout most of the southwestern United States. Most of its populations appear stable, and is not listed as endangered in any of the states comprising its range. It lives in a wide variety of habitats, including deserts and semiarid shrublands, usually in areas with sparse vegetation; also woodland, open dry forest, and riparian growth.",
+    "trophicLevel":"Secondary Consumer",
+    "lifeExpectancy":2,
+    "attackHumans": false,
+    "classification":{
+        "Kingdom":     "Animalia",
+        "Phylum":     "Chordata",
+        "Class":     "Reptilia",
+        "Order":     "Carnivora",
+        "Suborder":  "Sauria",
+        "Family":     "Teiidae",
+        "Genus":     "Aspidoscelis",
+        "Species":     "A. tigris"
+    },
+    "range":[
+        "USA",
+        "Mexico"
+    ]
+}

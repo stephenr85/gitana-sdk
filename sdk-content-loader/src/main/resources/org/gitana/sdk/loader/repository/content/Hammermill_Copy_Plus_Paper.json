@@ -6,18 +6,6 @@
         "price" : "75.99",
         "unit" : "carton"
     },
-    "photos":[
-        {
-            "type": "thumbnail",
-            "title": "Hammermill Copy Plus Paper Thumbnail View",
-            "image": "image_thumbnail"
-        },
-        {
-            "type": "full",
-            "title": "Hammermill Copy Plus Paper Full View",
-            "image": "image_full"
-        }
-    ],
     "categories":[
         "Paper"
     ],

@@ -39,19 +39,26 @@
             <h4>Node Audit Records.</h4>
 
             <div id="field1">
-                <div style="margin-bottom:10px;">
-                    Node ID: <input type="text" id="node-id" size="60" value="theoffice:wilsonjonesbinder"/>
-                    <button id="audit-button">Get Audit Records</button>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="node-id">Node Id</label>
+                            <div class="field">
+                                <input type="text" id="node-id" size="60" value="theoffice:wilsonjonesbinder"/>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="audit-button">Get Audit Records</button>
+                        </li>
+                    </ul>
                 </div>
                 <table cellpadding="0" cellspacing="0" border="0" class="display" id="audit-records"></table>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
                         var getAuditRecords = function (nodeId, branch) {
                             var records = [];
                             branch.chain().readNode(nodeId).listAuditRecords().each(
@@ -78,11 +85,8 @@
                                 });
                             });
                         };
-                        var gitana = new Gitana();
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').then(function() {
                                 var branch = this;
                                 $('#audit-button').click(function() {

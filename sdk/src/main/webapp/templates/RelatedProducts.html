@@ -1,12 +1,20 @@
 <script id="relatedProductsTemplate" type="text/x-jquery-tmpl">
-    <div class="relatedproducts">
-        <h1>Related Products:</h1>
+    <div class="related-products">
+        <div class="related-products-title">Related Products:</div>
+        <ul>
         {{each data}}
-        <h2>${title}</h2>
-        <h3>${description}</h3>
-        <div>
-            <img src="${attachments.image_thumbnail}"/>
-        </div>
+            <li>
+                <div class="related-product">
+                    <div class="related-product-image">
+                        <img src="${attachments.image_thumbnail}"/>
+                    </div>
+                    <div class="related-product-info">
+                        <div class="related-product-title"><a href="#/product/${_qname}">${title}</a></div>
+                        <div class="related-product-description">${description}</div>
+                    </div>
+                </div>
+            </li>
         {{/each}}
+        </ul>
     </div>
 </script>

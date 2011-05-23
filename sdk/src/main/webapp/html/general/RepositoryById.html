@@ -35,7 +35,6 @@
                     <ul>
                         <li>
                             <label for="repo-id">Repository ID</label>
-
                             <div class="field">
                                 <input type="text" id="repo-id" size="60"/>
                             </div>
@@ -52,16 +51,12 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1 .error').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).then(function() {
+                        new Gitana().authenticate("mscott_theoffice", "password").trap(Gitana.SDK.defaults.errorHandler).then(function() {
                             var server = this;
                             $('#find-repo').click(function() {
                                 server.chain().readRepository($('#repo-id').val()).then(function() {
-                                    var title = this.get('title') ? this.get('title') : this.getId();
-                                    var description = this.get('description') ? this.get('description') : "";
+                                    var title = this.getTitle() ? this.getTitle() : this.getId();
+                                    var description = this.getDescription() ? this.getDescription() : "";
                                     $('#repo-details').empty().append('<div class="result-item"><div class="item-title branch" id="' + this.getId() + '">'
                                             + title + '</div><div class="item-description">'
                                             + description + '</div></div>');

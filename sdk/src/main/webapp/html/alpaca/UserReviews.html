@@ -24,258 +24,250 @@
 </head>
 <body>
 <div class='gitana-example-container'>
-<div class='gitana-example-header' id='user-reviews'>
-    <h2>User Reviews</h2>
-</div>
-<div class='gitana-example-body'>
-<div class='gitana-example-case'>
-<h3>User Reviews</h3>
-<h4>User Reviews.</h4>
-
-<div id="field1">
-    <div id="promotion">
+    <div class='gitana-example-header' id='user-reviews'>
+        <h2>User Reviews</h2>
     </div>
-    <div id="review_metrics">
-    </div>
-    <div id="user_reviews">
-    </div>
-</div>
-<script type="text/javascript" id="field1-script">
-$(function() {
-    $(document).ready(function() {
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>User Reviews</h3>
+            <h4>User Reviews.</h4>
 
-        var gitanaConnector = window.gitanaConnector;
-        var latestPromotionNode;
-        var el = $('#promotion');
-        var connector = new Alpaca.Connectors.GitanaConnector('gitana', {
-            "userName": "admin",
-            "password": "admin",
-            "repositoryId": {
-                "title" : "Dunder Mifflin sample repository",
-                "tags":["Demo",
-                    "The office"]
-            }
-        });
+            <div id="field1">
+                <div id="promotion">
+                </div>
+                <div class="user-reviews-summary">
+                    <div id="review_metrics" class="user-reviews-metrics">
+                    </div>
+                    <div id="review_button" class="user-reviews-button">
+                    </div>
+                </div>
+                <div id="user_reviews">
+                </div>
+            </div>
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var promotionNodeId = "theoffice:binderpromotion";
+                        var promotionNode;
+                        var reviewMatricsNode = null;
+                        var el = $('#promotion');
+                        var connector = Gitana.SDK.defaults.gitanaConnector;
 
-        // Render reviews
-        var renderReviews = function (nodeId) {
-            $('#user_reviews').empty().alpaca({
-                "view" : {
-                    "globalTemplate": '../../templates/UserReviews.html'
-                },
-                "data": {
-                    "traversal" : {
-                        "sourceId":nodeId,
-                        "associations": {
-                            "theoffice:hasReview": "OUTGOING"
-                        },
-                        "depth": 1
-                    }
-                },
-                "connector" : connector,
-                "postRender": function (renderedReviews) {
-                    $.each(renderedReviews.data.associationList, function(index, associationNode) {
-                        var reviewIndicator = $('<div id="' + associationNode.target + '-indicator"></div>');
-                        reviewIndicator.prependTo($('#' + associationNode.target));
-                        reviewIndicator.alpaca({
-                            "view" : {
-                                "globalTemplate": '../../templates/UserReviewIndicators.html'
-                            },
-                            "data": associationNode,
-                            "postRender" : function(renderedReviewIndicatorsField) {
-                                var renderedReviewIndicators = renderedReviewIndicatorsField.data;
-                                var helpfulButton = $('.helpfulbutton', renderedReviewIndicatorsField.container);
-                                helpfulButton.click(function() {
-                                    if (Alpaca.isEmpty(associationNode.helpfulCounter)) {
-                                        associationNode.helpfulCounter = 1;
-                                        associationNode.totalCounter = 1;
-                                    } else {
-                                        associationNode.helpfulCounter++;
-                                        associationNode.totalCounter++;
-                                    }
-                                    associationNode.update(function(stats) {
-                                        $('.helpfulindicator', renderedReviewIndicatorsField.container).html(associationNode.helpfulCounter + ' out of ' + (associationNode.totalCounter) + ' found this review helpful.');
-                                    });
-                                });
-                                var unhelpfulButton = $('.unhelpfulbutton', renderedReviewIndicatorsField.container);
-                                unhelpfulButton.click(function() {
-                                    if (Alpaca.isEmpty(associationNode.helpfulCounter)) {
-                                        associationNode.helpfulCounter = 1;
-                                        associationNode.totalCounter = 1;
-                                    } else {
-                                        associationNode.totalCounter++;
-                                    }
-                                    associationNode.update(function(stats) {
-                                        $('.helpfulindicator', renderedReviewIndicatorsField.container).html(associationNode.helpfulCounter + ' out of ' + (associationNode.totalCounter) + ' found this review helpful.');
-                                    });
-                                });
-                                var spamIndicatorButton = $('.spambutton', renderedReviewIndicatorsField.container);
-                                spamIndicatorButton.click(function() {
-                                    if (Alpaca.isEmpty(associationNode.spamCounter)) {
-                                        associationNode.spamCounter = 1;
-                                    } else {
-                                        associationNode.spamCounter++;
-                                    }
-                                    associationNode.update(function(stats) {
-                                        $('.spamindicator', renderedReviewIndicatorsField.container).html(associationNode.spamCounter + ' people marked this review as spam or offensive.');
-                                    });
-                                });
-                            }
-                        });
-                    });
-                }
-            });
-        };
-
-        connector.connect(function (success) {
-            el.alpaca({
-                "view" : {
-                    "globalTemplate": '../../templates/LatestPromotion.html'
-                },
-                "data": "theoffice:binderpromotion",
-                "connector" : connector,
-                "postRender": function (renderedField) {
-                    latestPromotionNode = renderedField.data;
-                    var gitanaDriver = connector.gitanaDriver;
-
-                    $('#review_metrics').alpaca({
-                        "view" : {
-                            "globalTemplate": '../../templates/UserReviewMetrics.html'
-                        },
-                        "data": {
-                            "traversal" : {
-                                "sourceId":latestPromotionNode.getId(),
+                        // Render reviews
+                        var renderReviews = function (nodeId) {
+                            promotionNode.chain().reload().traverse({
                                 "associations": {
-                                    "theoffice:hasReviewMetrics": "BOTH"
+                                    "theoffice:hasReview": "OUTGOING"
                                 },
                                 "depth": 1
-                            }
-                        },
-                        "connector" : connector
-                    });
-
-                    renderReviews(latestPromotionNode.getId());
-
-                    var editButton = $("<button>Write a review</button>").button(({
-                        icons: {
-                            primary: "ui-icon-pencil"
-                        }
-                    }));
-                    editButton.click(function() {
-                        editButton.removeClass("ui-state-focus ui-state-hover");
-                        var editDialog = $('<div id="alpaca-edit-form" title="Write a review"></div>');
-                        var _this = this;
-                        connector.connect(function (success2) {
-                            editDialog.alpaca({
-                                "options": "five_star",
-                                "schema": "theoffice:review",
-                                "view":{
-                                    "parent" : "VIEW::WEB_EDIT_LIST",
-                                    "type": "create"
-                                },
-                                "connector": connector,
-                                "postRender": function(renderedNewFieldControl) {
-                                    var saveButton = renderedNewFieldControl.form.saveButton;
-                                    saveButton.hide();
-                                    editDialog.dialog({
-                                        resizable: true,
-                                        height: 550,
-                                        width: 650,
-                                        modal: true,
-                                        buttons: {
-                                            "Create": function() {
-                                                // Do the actual work
-                                                var reviewVal = renderedNewFieldControl.getValue();
-                                                reviewVal._type = "theoffice:review";
-                                                latestPromotionNode.getBranch().nodes().create(reviewVal, function(reviewNode) {
-                                                    latestPromotionNode.associate(reviewNode.getId(), {
-                                                        "_type" : "theoffice:hasReview",
-                                                        "direction" : "OUTGOING"
-                                                    }, function(status) {
-                                                        // refresh the indicators
-                                                        $('#review_metrics').alpaca({
-                                                            "view" : {
-                                                                "globalTemplate": '../../templates/UserReviewMetrics.html'
-                                                            },
-                                                            "data": {
-                                                                "traversal" : {
-                                                                    "sourceId":latestPromotionNode.getId(),
-                                                                    "associations": {
-                                                                        "theoffice:hasReviewMetrics": "BOTH"
-                                                                    },
-                                                                    "depth": 1
-                                                                }
-                                                            },
-                                                            "connector" : connector,
-                                                            "postRender": function (renderedReviewIndicators) {
-                                                                var loadedAssociations = renderedReviewIndicators.data;
-                                                                if (loadedAssociations.node_count == 0) {
-                                                                    latestPromotionNode.getBranch().nodes().create({
-                                                                        "_type" : "theoffice:reviewmetrics",
-                                                                        "totalReviews" : 1,
-                                                                        "averageRating" : reviewVal.rating
-                                                                    }, function(reviewMetricsNode) {
-                                                                        latestPromotionNode.associate(reviewMetricsNode.getId(), {
-                                                                            "_type" : "theoffice:hasReviewMetrics",
-                                                                            "direction" : "BOTH"
-                                                                        }, function(status) {
-                                                                            editDialog.dialog("close");
-                                                                        });
-                                                                    });
-                                                                } else {
-                                                                    var metricsNode = loadedAssociations.nodeList[0];
-                                                                    var totalReviews = metricsNode.totalReviews;
-                                                                    var averageRating = metricsNode.averageRating;
-                                                                    metricsNode.averageRating = (averageRating * totalReviews + reviewVal.rating) / (totalReviews + 1);
-                                                                    metricsNode.totalReviews ++;
-                                                                    metricsNode.update(function(status) {
-                                                                        $('#review_metrics').empty();
-                                                                        $('#review_metrics').alpaca({
-                                                                            "view" : {
-                                                                                "globalTemplate": '../../templates/UserReviewMetrics.html'
-                                                                            },
-                                                                            "data": {
-                                                                                "nodeList":[metricsNode]
-                                                                            },
-                                                                            "postRender": function(renderedReviewMatricsField) {
-                                                                                editDialog.dialog("close");
-                                                                            }
-                                                                        });
-                                                                    });
-
-                                                                }
-                                                            }
+                            }).then(function(){
+                                var _this = this;
+                                this.nodes().then(function() {
+                                    $('#user_reviews').empty().alpaca({
+                                      "view" : {
+                                         "globalTemplate": '../../templates/UserReviews.html'
+                                        },
+                                        "data": this.object,
+                                        "postRender": function (renderedReviews) {
+                                            $('span.stars').stars();
+                                            _this.chain().associations().each( function() {
+                                            var associationNode = this;
+                                            var association = this.object;
+                                            var reviewIndicator = $('<div id="' + association.target + '-indicator"></div>');
+                                            reviewIndicator.prependTo($('#' + association.target+' .user-review-indicators'));
+                                            reviewIndicator.alpaca({
+                                                "view" : {
+                                                    "globalTemplate": '../../templates/UserReviewIndicators.html'
+                                                },
+                                                "data": association,
+                                                "postRender" : function(renderedReviewIndicatorsField) {
+                                                    var renderedReviewIndicators = renderedReviewIndicatorsField.data;
+                                                    var helpfulButton = $('.helpfulbutton', renderedReviewIndicatorsField.container);
+                                                    helpfulButton.click(function() {
+                                                        if (Alpaca.isEmpty(association.helpfulCounter)) {
+                                                            association.helpfulCounter = 1;
+                                                            association.totalCounter = 1;
+                                                        } else {
+                                                            association.helpfulCounter++;
+                                                            association.totalCounter++;
+                                                        }
+                                                        associationNode.chain().update().reload().then(function() {
+                                                            $('.helpfulindicator', renderedReviewIndicatorsField.container).html(this.get('helpfulCounter') + ' out of ' + this.get('totalCounter') + ' people found this review helpful.');
+                                                            associationNode = this;
+                                                            association = this.object;
                                                         });
-                                                        // refresh the reviews
-                                                        renderReviews(latestPromotionNode.getId());
                                                     });
-                                                });
+                                                    var unhelpfulButton = $('.unhelpfulbutton', renderedReviewIndicatorsField.container);
+                                                    unhelpfulButton.click(function() {
+                                                        if (Alpaca.isEmpty(association.helpfulCounter)) {
+                                                            association.helpfulCounter = 1;
+                                                            association.totalCounter = 1;
+                                                        } else {
+                                                            association.totalCounter++;
+                                                        }
+                                                        associationNode.chain().update().reload().then(function() {
+                                                            $('.helpfulindicator', renderedReviewIndicatorsField.container).html(this.get('helpfulCounter') + ' out of ' + this.get('totalCounter') + ' people found this review helpful.');
+                                                            associationNode = this;
+                                                            association = this.object;
+                                                        });
+                                                    });
+                                                    var spamIndicatorButton = $('.spambutton', renderedReviewIndicatorsField.container);
+                                                    spamIndicatorButton.click(function() {
+                                                        if (Alpaca.isEmpty(association.spamCounter)) {
+                                                            association.spamCounter = 1;
+                                                        } else {
+                                                            association.spamCounter++;
+                                                        }
+                                                        associationNode.chain().update().reload().then(function(stats) {
+                                                            $('.spamindicator', renderedReviewIndicatorsField.container).html(this.get('spamCounter') + ' people marked this review as inappropriate.');
+                                                            associationNode = this;
+                                                            association = this.object;
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+                                });
+                            });
+                        };
 
-                                            }
-                                        }
-                                    });
-                                    $('.ui-dialog').css("overflow", "hidden");
-                                    $('.ui-dialog-buttonpane').css("overflow", "hidden");
+                        var renderReviewMetrics = function (data) {
+                            $('#review_metrics').empty().alpaca({
+                                "view" : {
+                                    "globalTemplate": '../../templates/UserReviewMetrics.html'
+                                },
+                                "data": data,
+                                "postRender": function(renderedField) {
+                                    $('span.stars').stars();
                                 }
                             });
-                        });
+                        };
+
+                        var displayReviewMetrics = function () {
+                            if (reviewMatricsNode != null) {
+                                renderReviewMetrics (reviewMatricsNode.object);
+                            } else {
+                               promotionNode.chain().traverse({
+                                    "associations": {
+                                       "theoffice:hasReviewMetrics": "BOTH"
+                                   },
+                                    "depth": 1
+                                }).nodes().count( function(count) {
+                                    if (count == 0) {
+                                        connector.branch.chain().createNode({
+                                            "_type" : "theoffice:reviewmetrics",
+                                            "totalReviews" : 0,
+                                            "averageRating" : 0
+                                        }).associate(promotionNodeId, {
+                                            "_type" : "theoffice:hasReviewMetrics",
+                                            "direction" : "BOTH"
+                                        }).then(function() {
+                                            renderReviewMetrics(this.object);
+                                            reviewMatricsNode = this;
+                                        });
+                                    }
+                                }).keep(1).each(function() {
+                                    renderReviewMetrics(this.object);
+                                    reviewMatricsNode = this;
+                                });
+                            }
+                        };
+
+                        var updateReviewMetrics = function (reviewVal) {
+                            var totalReviews = reviewMatricsNode.get('totalReviews');
+                            var averageRating = reviewMatricsNode.get('averageRating');
+                            reviewMatricsNode.object.averageRating = (averageRating * totalReviews + reviewVal.rating) / (totalReviews + 1);
+                            reviewMatricsNode.object.totalReviews ++;
+                            reviewMatricsNode.chain().update().reload().then(function() {
+                                renderReviewMetrics(this.object);
+                            });
+                        };
+
+                            el.alpaca({
+                                "view" : {
+                                    "globalTemplate": '../../templates/LatestPromotion.html'
+                                },
+                                "data": promotionNodeId,
+                                "connector" : connector,
+                                "postRender": function (renderedField) {
+                                    promotionNode = connector.getGitanaNode(renderedField.data);
+                                    var gitanaDriver = connector.gitanaDriver;
+
+                                    renderReviews();
+
+                                    displayReviewMetrics();
+
+                                    var editButton = $("<button>Write a review</button>").button(({
+                                        icons: {
+                                            primary: "ui-icon-pencil"
+                                        }
+                                    }));
+                                    editButton.click(function() {
+                                        editButton.removeClass("ui-state-focus ui-state-hover");
+                                        var editDialog = $('<div id="alpaca-edit-form" title="Write a review"></div>');
+                                        var _this = this;
+                                            editDialog.alpaca({
+                                                "options": "five_star",
+                                                "schema": "theoffice:review",
+                                                "view":{
+                                                    "parent" : "VIEW::WEB_EDIT_LIST",
+                                                    "type": "create",
+                                                    "styles": {
+                                                        ".alpaca-controlfield-label": {
+                                                        "width": "200px"
+                                                        }
+                                                    }
+                                                },
+                                                "connector": connector,
+                                                "postRender": function(renderedNewFieldControl) {
+                                                    var saveButton = renderedNewFieldControl.form.saveButton;
+                                                    saveButton.hide();
+                                                    editDialog.dialog({
+                                                        resizable: true,
+                                                        height: 550,
+                                                        width: 650,
+                                                        modal: true,
+                                                        buttons: {
+                                                            "Create": function() {
+                                                                // Do the actual work
+                                                                var reviewVal = renderedNewFieldControl.getValue();
+                                                                reviewVal._type = "theoffice:review";
+                                                                connector.branch.chain().createNode(reviewVal).then(function(){
+                                                                    promotionNode.chain().associate(this.getId(), {
+                                                                        "_type" : "theoffice:hasReview",
+                                                                        "direction" : "OUTGOING"
+                                                                    }).then(function(status) {
+                                                                        // refresh the indicators
+                                                                        updateReviewMetrics(reviewVal);
+                                                                        // refresh the review list
+                                                                        renderReviews();
+                                                                    });
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+                                                    $('.ui-dialog').css("overflow", "hidden");
+                                                    $('.ui-dialog-buttonpane').css("overflow", "hidden");
+                                                }
+                                            });
+                                    });
+                                    $('#review_button').append(editButton);
+                                }
+                            });
+
                     });
-                    el.after(editButton);
-                }
-            });
-        }, function(loadedError) {
-        });
-    });
-});
-</script>
-</div>
-</div>
-<div class="clear"></div>
-<div class="gitana-example-footer">
-    <center class="copyright">
-        Copyright &copy; 2011 Gitana Software | All Rights Reserved
-    </center>
-</div>
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
 </div>
 </body>
 </html>

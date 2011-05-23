@@ -1,0 +1,44 @@
+{
+    "name":"Scranton PA Store",
+    "address":{
+        "street":[
+            "15 Penn Avenue"
+        ],
+        "city":"Scranton",
+        "state":"PA",
+        "zip":"18503"
+    },
+    "phone":"(123)456-7890",
+    "fax":"(123)456-8890",
+    "manager": "Jim Brown",
+    "hours":[
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Monday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Tuesday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Wednesday"
+        },
+        {
+            "hour":"10:00AM - 9:00PM EST",
+            "day":"Thursday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Friday"
+        },
+        {
+            "hour":"10:00AM - 7:00PM EST",
+            "day":"Saturday"
+        },
+        {
+            "hour":"11:00AM - 6:00PM EST",
+            "day":"Sunday"
+        }
+    ]
+}

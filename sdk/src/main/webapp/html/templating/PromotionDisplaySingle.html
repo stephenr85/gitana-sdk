@@ -39,17 +39,8 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-
-                        var errorHandler = function(error) {
-                            $('#field1 .error').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        var templateId = "../../templates/LatestPromotion";
-                        var el = $('#promotion');
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').readNode('theoffice:binderpromotion').then(function() {
                                 var data = this.object;
                                 this.listAttachments().then(function() {
@@ -57,25 +48,13 @@
                                     this.each( function(key, attachment, index) {
                                         data.attachments[attachment.getId()] = attachment.getDownloadUri();
                                     }).then(function() {
-                                        new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
+                                        new Gitana.jQueryTemplateEngine('LatestPromotion').render($('#promotion'), "../../templates/LatestPromotion", {
                                             "data": data
                                         });
                                     });
                                 });
                             });
                         });
-
-                        /*
-                         var gitanaConnector = window.gitanaConnector;
-                         var templateId = "../../templates/LatestPromotion";
-                         var el = $('#field1');
-                         gitanaConnector.readNode("theoffice:binderpromotion", function(node) {
-                         new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
-                         "data": node
-                         });
-                         }, function(loadedError) {
-                         });
-                         */
                     });
                 });
             </script>

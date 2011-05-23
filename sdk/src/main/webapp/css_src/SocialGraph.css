@@ -1,0 +1,109 @@
+#log {
+    font-size: 2em;
+}
+
+#center-container {
+    width: 642px;
+    left: 200px;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 1px;
+    border: 1px solid #c2c2cd;
+}
+
+span.close {
+    color: #FF5555;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+span.name {
+    cursor: pointer;
+    color: #000000
+}
+
+/*TOOLTIPS*/
+.tip {
+    color: #111;
+    width: 160px;
+    background-color: white;
+    border: 1px solid #ccc;
+    -moz-box-shadow: #555 2px 2px 8px;
+    -webkit-box-shadow: #555 2px 2px 8px;
+    -o-box-shadow: #555 2px 2px 8px;
+    box-shadow: #555 2px 2px 8px;
+    opacity: 0.9;
+    filter: alpha(opacity = 90);
+    font-size: 10px;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    padding: 7px;
+}
+
+.tip-title {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.tip-text {
+    margin-bottom: 2px;
+}
+
+.tip-text > .sub-title {
+    text-decoration: underline;
+}
+
+.tip-text > .sub-text {
+    text-align: right;
+}
+
+#social-details {
+    font-size: 1.2em;
+    text-align: left;
+}
+
+#social-details .user-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#social-details .user-email {
+
+}
+
+#social-details .user-info {
+    display: block;
+    margin-left: 110px;
+}
+
+#social-details .user-avatar {
+    display: inline-block;
+    float: left;
+    padding: 4px;
+    width: 100px;
+}
+
+#social-details .user-position {
+    font-weight: bold;
+}
+
+#social-details .user-gender {
+
+}
+
+#social-details .user-biography {
+    margin: 4px 0 4px 0;
+}
+
+#social-details .supervisors, #social-details .subordinates, #social-details .relationships {
+    font-weight: bold;
+    margin: 8px 0 4px 0;
+}
+
+#social-details .supervisor, #social-details .subordinate, #social-details .relationship {
+    text-decoration: underline;
+    cursor: pointer;
+}

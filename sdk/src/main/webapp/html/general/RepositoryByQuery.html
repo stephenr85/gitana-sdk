@@ -9,38 +9,6 @@
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet"/>
     <style>
-        .result-item {
-            padding-bottom: 4px;
-        }
-
-        .item-title {
-            font-weight: bold;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .total-results {
-            padding: 4px 0 4px 0;
-            text-decoration: underline;
-        }
-
-        .field {
-            padding: 2px 0 2px 0;
-        }
-
-        .field ul {
-            list-style-type: none;
-            padding-left: 0px;
-        }
-
-        .field ul li {
-            padding-bottom: 4px;
-        }
-
-        .field ul li span {
-            float: left;
-            width: 80px;
-        }
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
@@ -62,10 +30,10 @@
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
             <h3>Repository</h3>
-            <h4>Find a repository through query.</h4>
+            <h4>Find repositories through query.</h4>
 
             <div id="field1">
-                <div class="field">
+                <div class="form">
                     <ul>
                         <li>
                             <textarea id="query" rows="10" cols="75"></textarea>
@@ -75,57 +43,27 @@
                         </li>
                     </ul>
                 </div>
-                <div id="query-results"></div>
-                <div id="query-error"></div>
+                <div  class="results" id="query-results"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#query-error').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        gitana.authenticate("admin", "admin").trap(errorHandler).then(function() {
-                            $('#query').val(JSON.stringify({
-                                "title" : "Dunder Mifflin sample repository",
-                                "tags":["Demo","The office"]
-                            }, null, ' '));
+                        new Gitana().authenticate(Gitana.SDK.defaults.userName, Gitana.SDK.defaults.password).trap(Gitana.SDK.defaults.errorHandler).then(function() {
+                            $('#query').val(JSON.stringify(Gitana.SDK.defaults.repositoryQuery, null, ' '));
                             var server = this;
                             $('#query-button').click(function() {
-                                server.chain().queryRepositories(JSON.parse($('#query').val())).count(
-                                        function(count) {
-                                            $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
-                                        }).each(function(key, repo, index) {
+                                server.chain().queryRepositories(JSON.parse($('#query').val())).count(function(count) {
+                                    $('#query-results').empty().append('<div class="total-results">Total ' + count + ' query results.</div>');
+                                }).each(function(key, repo, index) {
                                     var title = repo.get('title') ? repo.get('title') : repo.getId();
                                     var description = repo.get('description') ? repo.get('description') : "";
                                     $('<div class="result-item"><div class="item-title" id="' + repo.getId() + '">' + (index + 1)
                                             + '. ' + title + '</div><div class="item-description">'
-                                            + description + '</div></div>').click(
-                                            function() {
-                                                var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
-                                                var _this = this;
-                                                sourceViewDialog.alpaca({
-                                                    "data": [
-                                                        {
-                                                            "title": "JSON Source",
-                                                            "text": JSON.stringify(repo.object, null, '&nbsp;')
-                                                        }
-                                                    ],
-                                                    "view": {
-                                                        "globalTemplate": '<div id="source-view-alpaca-field">{{each data}}<div><h3 style="text-decoration:underline;">${title}</h3><div><pre><code>${text}</pre></code></div></div>{{/each}}</div>'
-                                                    },
-                                                    "postRender": function(renderedNewFieldControl) {
-                                                        sourceViewDialog.dialog({
-                                                            resizable: true,
-                                                            height: 550,
-                                                            width: 800,
-                                                            modal: false
-                                                        });
-                                                    }
-                                                });
-                                            }).appendTo($('#query-results'));
-
+                                            + description + '</div></div>').click(function(){
+                                            Gitana.SDK.defaults.sourceViewer(repo.object);
+                                    }).appendTo($('#query-results'));
                                 });
                             });
                         });

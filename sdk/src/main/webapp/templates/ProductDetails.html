@@ -1,21 +1,22 @@
 <script id="productDetailsTemplate" type="text/x-jquery-tmpl">
-    <span id="product_details">
-{{if data}}
-        <div id="product_details_header">
-            <h1>${data.product}</h1>
-
-            <h2>${data.SKU}</h2>
+    <div class="product-details">
+        <div class="product-details-image">
+            <img src="${data.attachments.image_full}" alt="${data.product}"/>
         </div>
-        <div id="product_details_image">
-            <img src="${data.attachments.image_full}" width="167" alt="Sub Item Name"/>
+         <div class="product-details-info">
+            <div class="product-details-title">${data.product}</div>
+            <div class="product-details-sku">Item #${data.SKU}</div>
+            <div class="product-details-details">
+                ${data.details}
+            </div>
+            <div class="product-details-price">
+                Your Price: <span>$${data.price.price} / ${data.price.unit}</span>
+            </div>
+             <div class="product-details-categories">
+                 Categories: {{each(index, category) data.categories}}<span>${category}</span>{{/each}}
+             </div>
         </div>
-        <div id="product_details_text">
-            <p>${data.details}</p>
+        <div gadget="related_products_gadget" id="related_products">
         </div>
-        <div class="price">
-            <h2>${data.price.price} (${data.price.unit})</h2>
-        </div>
-{{/if}}
-        <div class="clearthis">&nbsp;</div>
-    </span>
+    </div>
 </script>

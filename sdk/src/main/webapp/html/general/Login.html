@@ -37,12 +37,15 @@
                     <button id="login-button">Login</button>
                     <button id="logout-button">Logout</button>
                 </div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        // Render login form using Alpaca
+                        // TODO: Need to add real logout.
+                        // TODO: Improve Alpaca to make it easier to add buttons (without adding form stuff).
+                        // TODO: trap doesn't seem to catch invalid password.
                         $('#form').alpaca({
                             "data" : {
                                 "username" : "mscott_theoffice"
@@ -64,10 +67,7 @@
                                 var loginButton = $('#login-button').button().click(function() {
                                     var value = form.getValue();
                                     var gitana = new Gitana();
-                                    gitana.authenticate(value.username, value.password).trap(
-                                            function(error) {
-                                                $('#field1').html("Error message: " + error.msg);
-                                            }).then(function() {
+                                    gitana.authenticate(value.username, value.password).trap(Gitana.SDK.defaults.errorHandler).then(function() {
                                         $('#form').hide();
                                         $('#status').empty().html("Authenticated as " + gitana.authenticatedUsername + " with ticket " + gitana.ticket);
                                         loginButton.hide();

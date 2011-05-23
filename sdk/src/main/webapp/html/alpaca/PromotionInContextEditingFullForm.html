@@ -36,18 +36,8 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var gitanaConnector = window.gitanaConnector;
                         var el = $('#field1');
-                        var connector = new Alpaca.Connectors.GitanaConnector('gitana', {
-                            "userName": "admin",
-                            "password": "admin",
-                            "repositoryId": {
-                                "title" : "Dunder Mifflin sample repository",
-                                "tags":["Demo",
-                                    "The office"]
-                            }
-                        });
-                        connector.connect(function (success) {
+                        var connector = Gitana.SDK.defaults.gitanaConnector;
                             el.alpaca({
                                 "view" : {
                                     "globalTemplate": '../../templates/LatestPromotion.html'
@@ -64,7 +54,6 @@
                                         editButton.removeClass("ui-state-focus ui-state-hover");
                                         var editDialog = $('<div id="alpaca-edit-form" title="Edit latest promotion"></div>');
                                         var _this = this;
-                                        connector.connect(function (success2) {
                                             editDialog.alpaca({
                                                 "data": "theoffice:binderpromotion",
                                                 "options": "full",
@@ -97,18 +86,16 @@
                                                                 },
                                                                 "data": updatedData
                                                             });
+                                                            editDialog.dialog('close');
                                                             alert("Promotion updated!");
                                                         };
                                                     }
                                                 }
                                             });
-                                        });
                                     });
                                     el.after(editButton);
                                 }
                             });
-                        }, function(loadedError) {
-                        });
                     });
                 });
             </script>

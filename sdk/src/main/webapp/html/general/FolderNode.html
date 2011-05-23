@@ -7,7 +7,7 @@
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
-          rel="stylesheet">
+          rel="stylesheet"/>
     <style>
         .folder-node {
             background: url('../../images/folder.png') no-repeat;
@@ -64,16 +64,17 @@
             <h4>Folder Node</h4>
 
             <div id="field1">
+                <div class="results" id="folders"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
+                        //TODO: add download links and source view links.
+                        var defaults = Gitana.SDK.defaults;
                         var findChildren = function (parentNode, insertPoint) {
-                            var folderElem = $('<div class="folder-node" id="' + parentNode.getId() + '"><div class="folder-title">' + parentNode.get('title') + '</div><div  class="folder-description">' + parentNode.get('description') + '</div></div>');
+                            var folderElem = $('<div class="folder-node" id="' + parentNode.getId() + '"><div class="folder-title">' + parentNode.getTitle() + '</div><div  class="folder-description">' + parentNode.getDescription() + '</div></div>');
                             insertPoint.append(folderElem);
                             $('.folder-title', folderElem).click(function() {
                                 $('.folder-node', folderElem).remove();
@@ -82,18 +83,15 @@
                                     if (this.isContainer()) {
                                         findChildren(this, $('#field1 #' + parentNode.getId()));
                                     } else {
-                                        $('#field1 #' + parentNode.getId()).append('<div class="content-node"><div class="content-title">' + this.get('title') + '</div><div class="content-description">' + this.get('description') + '</div></div>');
+                                        $('#field1 #' + parentNode.getId()).append('<div class="content-node"><div class="content-title">' + this.getTitle() + '</div><div class="content-description">' + this.getDescription() + '</div></div>');
                                     }
                                 });
                             });
                         };
                         var gitana = new Gitana();
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        gitana.authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').readNode('theoffice:root').then(function() {
-                                findChildren(this, $('#field1'));
+                                findChildren(this, $('#folders'));
                             });
                         });
                     });

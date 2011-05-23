@@ -196,6 +196,16 @@ pre code {
     padding: 4px 0 4px 0;
 }
 
+#social-details .supervisors, #social-details .subordinates, #social-details .relationships {
+    font-weight: bold;
+    margin: 8px 0 4px 0;
+}
+
+#social-details .supervisor, #social-details .subordinate, #social-details .relationship {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /* form */
 .form {
     padding: 2px 0 2px 0;
@@ -232,4 +242,408 @@ pre code {
     font-weight: bold;
     text-decoration: underline;
     cursor: pointer;
+}
+
+/* product promotion */
+.product-promotion {
+    /*
+    border: 2px dotted;
+    */
+    padding: 10px;
+    margin: 10px;
+}
+
+.product-promotion-image {
+    display: inline-block;
+    padding: 4px;
+    width: 180px;
+}
+
+.product-promotion-image img {
+    width: 160px;
+}
+
+.product-promotion-body {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+}
+
+.product-promotion-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.product-promotion-price {
+    padding: 10px 0 20px 0;
+}
+
+.product-promotion-price .price {
+    font-size: 6em;
+    color: #ff0000;
+}
+
+.product-promotion-price .unit {
+    color: #ff0000;
+}
+
+.product-promotion .store {
+    font-weight: bold;
+}
+
+.product-promotion .date {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* review */
+.user-reviews {
+    border: 1px solid #999999;
+}
+
+.user-reviews-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.user-review {
+    border: solid #999999;
+    border-width: 1px 0 0 0;
+}
+
+.user-review-left {
+    display: inline-block;
+    vertical-align: top;
+    width: 150px;
+    padding: 10px
+}
+
+.user-review-timestamp {
+    font-size: 0.8em;
+}
+
+.user-review-user {
+    font-size: 1.0em;
+    text-decoration: underline;
+}
+
+.user-review-rating {
+    padding-top: 20px;
+}
+
+.user-review-right {
+    display: inline-block;
+    vertical-align: top;
+    width: 350px;
+    padding: 10px;
+}
+
+.user-review-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.user-review-details {
+    padding: 4px 0 8px 0;
+}
+
+.user-review-indicators {
+    border: dashed #999999;
+    border-width: 1px 0 0px 0;
+}
+
+.user-review-tools {
+
+}
+
+.user-reviews-summary {
+    border: 1px solid #999999;
+}
+
+.user-reviews-metrics {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    width: 350px;
+}
+
+.user-reviews-button {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px
+}
+
+.helpfulindicator, .helpfulindicator-toolbar {
+    padding: 2px 0 2px 0;
+}
+
+.spamindicator, .spamindicator-toolbar {
+    padding: 2px 0 2px 0;
+}
+
+span.stars, span.stars span {
+    display: block;
+    background: url(../images/stars.png) 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+}
+
+span.stars span {
+    background-position: 0 0;
+}
+
+/* front page products */
+.front-page-product {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    width: 250px;
+}
+
+.front-page-product-image {
+    text-align: center;
+}
+
+.front-page-product-image img {
+    height: 75px;
+}
+
+.front-page-product-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 4px;
+}
+
+.front-page-product-details {
+    padding: 4px 0px 4px 0;
+    height: 100px;
+}
+
+.front-page-product-sku {
+    padding: 4px 0px 4px 0;
+}
+
+.front-page-product-price {
+    padding: 20px 0 0 0;
+}
+
+.front-page-product-price span {
+    color: #ff0000;
+}
+
+/* product details */
+.product-details {
+    display: inline-block;
+    padding: 10px;
+}
+
+.product-details-image {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    width: 180px;
+}
+
+.product-details-image img {
+    width: 150px;
+}
+
+.product-details-info {
+    display: inline-block;
+    padding: 10px;
+}
+
+.product-details-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 4px;
+}
+
+.product-details-details {
+    padding: 4px 0px 4px 0;
+    height: 100px;
+}
+
+.product-details-sku {
+    padding: 4px 0px 4px 0;
+}
+
+.product-details-price {
+    padding: 20px 0 0 0;
+}
+
+.product-details-price span {
+    color: #ff0000;
+}
+
+.product-details-categories {
+    padding: 4px 0px 4px 0;
+}
+
+.product-details-categories span {
+    padding: 0px 2px 0 2px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* related products */
+.related-products {
+}
+
+.related-products-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.related-products ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.related-products ul li {
+    padding-bottom: 4px;
+}
+
+.related-product {
+}
+
+.related-product-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.related-product-image {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    width: 100px;
+}
+
+.related-product-info {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+}
+
+/* search results */
+.search-results {
+}
+
+.search-results-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.search-results ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.search-results ul li {
+    padding-bottom: 4px;
+}
+
+.search-result {
+}
+
+.search-results-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.search-results-description {
+}
+
+.search-results-image {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    width: 100px;
+}
+
+/* repo query results */
+
+.result-item {
+    padding-bottom: 4px;
+}
+
+.item-title {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.total-results {
+    padding: 4px 0 4px 0;
+    text-decoration: underline;
+}
+
+.field {
+    padding: 2px 0 2px 0;
+}
+
+.field ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.field ul li {
+    padding-bottom: 4px;
+}
+
+.field ul li span {
+    float: left;
+    width: 80px;
+}
+
+/* store information */
+.stores .store {
+    padding: 10px;
+    margin: 10px;
+}
+
+.stores ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.stores ul li {
+    padding-bottom: 4px;
+}
+
+.store-map {
+    display: inline-block;
+    padding: 4px;
+    width: 180px;
+}
+
+.store-body {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+}
+
+.store-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.address-title  {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0px 0 10px 0;
+}
+
+.hours-title  {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 10px 0 10px 0;
+}
+
+.store .store-label {
+    font-weight: bold;
+    min-width: 70px;
+    display:inline-block;
 }

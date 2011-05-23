@@ -33,30 +33,34 @@
             <div id="field1">
                 <div id="form"></div>
                 <div id="social-details"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
 
-                        new Gitana().authenticate("mscott_theoffice", "password").trap(
-                                function(error) {
-                                    $('#field1').html("Error message: " + error.msg);
-                                }).readGroup("dunder_mifflin_scranton_theoffice").then(function() {
-                            $('#social-details').append('<div class="group-avatar"><img src="' + '/proxy/security/users/' + this.getId() + '/attachment/avatar"/></div>');
-                            $('#social-details').append('<div class="group-info"></div>');
-                            $('.group-info').append('<div class="group-title">' + this.get('title') + '</div>')
-                                    .append('<div class="group-description">' + this.get('description') + '</div>');
+                        new Gitana().authenticate("mscott_theoffice", "password").trap(Gitana.SDK.defaults.errorHandler).readGroup("dunder_mifflin_scranton_theoffice").then(function() {
+                            $('#social-details').append('<div class="group-avatar"></div><div class="group-info"></div>');
+                            // Add avatar image
+                            this.attachment().each(function(){
+                                $('.group-avatar').append('<img src="' + this.getDownloadUri() + '"/>');
+                            });
+                            // Add group info.
+                            $('.group-info').append('<div class="group-title">' + this.getTitle() + '</div>'
+                                    + '<div class="group-description">' + this.getDescription() + '</div>');
+                            // List group members.
                             this.listUsers().then(function() {
                                 $('.group-info').append('<div class="group-users">Members</div>');
                                 this.each(function() {
-                                    $('.group-info').append('<div class="group-user">' + this.get('firstName') + ' ' + this.get('lastName') + '(' + this.getId() + ')</div>');
+                                    $('.group-info').append('<div class="group-user">' + this.getFirstName() + ' ' + this.getLastName() + '(' + this.getId() + ')</div>');
                                 });
                             });
+                            // List sub groups.
                             this.listGroups().then(function() {
                                 $('.group-info').append('<div class="group-groups">Sub Groups</div>');
                                 this.each(function() {
-                                    $('.group-info').append('<div class="group-group">' + this.get('title') + '(' + this.getId() + ')</div>');
+                                    $('.group-info').append('<div class="group-group">' + this.getTitle() + '(' + this.getId() + ')</div>');
                                 });
                             });
                         });

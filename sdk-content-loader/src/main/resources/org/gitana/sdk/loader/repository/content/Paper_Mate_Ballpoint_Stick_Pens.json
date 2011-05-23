@@ -6,20 +6,8 @@
         "price" : "1.99",
         "unit" : "dozen"
     },
-    "photos":[
-        {
-            "type": "thumbnail",
-            "title": "Paper Mate Ballpoint Stick Pens Thumbnail View",
-            "image": "image_thumbnail"
-        },
-        {
-            "type": "full",
-            "title": "Paper Mate Ballpoint Stick Pens Full View",
-            "image": "image_full"
-        }
-    ],
     "categories":[
-        "Pen"
+        "Pens"
     ],
     "tags":[
         "Front Page"

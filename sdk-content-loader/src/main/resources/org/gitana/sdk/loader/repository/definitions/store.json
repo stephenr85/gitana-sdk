@@ -1,0 +1,63 @@
+{
+    "title":"Store",
+    "description":"Dunder Mifflin Paper Company retail store.",
+    "type":"object",
+    "properties":{
+        "name":{
+            "title":"Store Name",
+            "description":"Name of the store.",
+            "type":"string"
+        },
+        "address":{
+            "title":"Store Address",
+            "description":"Address of the store.",
+            "type":"object"
+        },
+        "phone":{
+            "title":"Store Phone Number",
+            "description":"Store phone number.",
+            "type":"string"
+        },
+        "fax":{
+            "title":"Store Fax Number",
+            "description":"Store fax number.",
+            "type":"string"
+        },
+        "manager":{
+            "title":"Store Manager",
+            "description":"Store manager.",
+            "type":"string"
+        },
+        "hours":{
+            "title":"Store Hours",
+            "description":"Store hours by day",
+            "type":"array",
+            "items": {
+                "title": "Hours By Day",
+                "description": "Hours by day",
+                "type": "object",
+                "properties":{
+                    "hour" : {
+                        "title":"Hours for the day",
+                        "description":"Hours for the day.",
+                        "type":"string"
+                    },
+                    "day" : {
+                        "title":"Day of The Week",
+                        "description":"Day of the week.",
+                        "type":"string",
+                        "enum": [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

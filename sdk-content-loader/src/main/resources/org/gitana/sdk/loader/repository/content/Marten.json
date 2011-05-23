@@ -1,0 +1,20 @@
+{
+    "name":"American Marten",
+    "details":"The American marten (Martes americana) is a North American member of the Mustelidae family, sometimes referred to as the Pine Marten. The name \"pine marten\" is derived from the common but distinct Eurasian species of Martes. It differs from the fisher (Martes pennanti) in that it is smaller in size.",
+    "trophicLevel":"Secondary Consumer",
+    "lifeExpectancy":21,
+    "attackHumans": false,
+    "classification":{
+        "Kingdom":     "Animalia",
+        "Phylum":     "Chordata",
+        "Class":     "Mammalia",
+        "Order":     "Carnivora",
+        "Family":     "Mustelidae",
+        "Genus":     "Martes",
+        "Species":     "M. americana"
+    },
+    "range":[
+        "USA",
+        "Canada"
+    ]
+}

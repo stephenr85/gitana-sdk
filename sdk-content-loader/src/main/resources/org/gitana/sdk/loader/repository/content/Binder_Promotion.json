@@ -12,18 +12,6 @@
         "price" : "4.2",
         "unit" : "each"
     },
-    "photos":[
-        {
-            "type": "thumbnail",
-            "title": "Wilson Jones Basic Round-Ring Binder Thumbnail View",
-            "image": "image_thumbnail"
-        },
-        {
-            "type": "full",
-            "title": "Wilson Jones Basic Round-Ring Binder Full View",
-            "image": "image_full"
-        }
-    ],
     "stores":[
         "Scranton, PA",
         "Utica, NY",

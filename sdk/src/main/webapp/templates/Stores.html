@@ -1,0 +1,35 @@
+<script id="storesTemplate" type="text/x-jquery-tmpl">
+    <div class="stores">
+        <ul>
+            {{each(index, item) data.list}}
+            <li>
+                <div class="store">
+                    <div class="store-title">
+                        ${item.name}
+                    </div>
+                    <!--
+                    <div class="store-map">
+                    </div>
+                    -->
+                    <div class="store-body">
+                        <div class="address-title">Store Address</div>
+                        {{each(index, street) item.address.street}}
+                            <div>${street}</div>
+                        {{/each}}
+                        <div>${item.address.city}, ${item.address.state} ${item.address.zip}</div>
+                        <div><span class="store-label">Manager</span>: ${item.manager}</div>
+                        <div><span class="store-label">Phone</span>: ${item.phone}</div>
+                        <div><span class="store-label">Fax</span>: ${item.fax}</div>
+                        <div  class="hours-title">Store Hours</div>
+                        {{each(index, hoursofday) item.hours}}
+                            <div><span class="store-label">${hoursofday.day}</span>: ${hoursofday.hour}</div>
+                        {{/each}}
+                    </div>
+                    <div class="clear"/>
+                </div>
+                <div class="h_divider">&nbsp;</div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</script>

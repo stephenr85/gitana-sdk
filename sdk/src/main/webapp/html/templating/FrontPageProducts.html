@@ -40,17 +40,11 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-
-                        var errorHandler = function(error) {
-                            $('#field1 .error').html("Error message: " + error.msg);
-                        };
                         var gitana = new Gitana();
                         var templateId = "../../templates/FrontPageProducts";
                         var el = $('#products');
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        var defaults = Gitana.SDK.defaults;
+                        gitana.authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').queryNodes({
                                 "_type" : "theoffice:product",
                                 "tags" : "Front Page"
@@ -75,24 +69,6 @@
                                 });
                             });
                         });
-
-
-                        /*
-                         var gitanaConnector = window.gitanaConnector;
-                         var templateId = "../../templates/FrontPageProducts";
-                         var el = $('#field1');
-                         gitanaConnector.query({
-                         "query" : {
-                         "_type" : "theoffice:product",
-                         "tags" : "Front Page"
-                         }
-                         }, function(result) {
-                         new Gitana.jQueryTemplateEngine('LatestPromotion').render(el, templateId, {
-                         "data": result
-                         });
-                         }, function(loadedError) {
-                         });
-                         */
                     });
                 });
             </script>

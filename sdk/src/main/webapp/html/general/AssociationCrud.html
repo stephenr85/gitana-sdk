@@ -25,13 +25,12 @@
         .list-title {
             font-size: 1.2em;
             font-weight: bold;
-            padding-bottom: 10px;
+            padding-bottom: 10px ;
+
         }
 
-        .item-title {
-            text-decoration: underline;
-            padding-bottom: 4px;
-            cursor: pointer;
+        .list-item {
+            padding:5px 0;
         }
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
@@ -55,40 +54,49 @@
         <div class='gitana-example-case'>
             <h3>Association</h3>
             <h4>Assocation.</h4>
-
             <div id="field1">
-                <div style="margin-bottom:10px;">
-                    Creature: <select id="creature-id">
-                    <option value="">---- Select A Creature ----</option>
-                </select>
-
-                    <div style="clear:both;"></div>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="node-id">Creature</label>
+                            <div class="field">
+                                <select id="creature-id">
+                                  <option value="">---- Select A Creature ----</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div  class="results" id="results">
                     <div id="is-eaten-by">
                     </div>
                     <div id="eats">
                     </div>
                 </div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
+                        //TODO: It is not that easy to do node/association cross-referencing. For example, when I do the loop over incoming associations,
+                        //TODO: I will need the properties of the source node which I can't get it directly from the association.
+                        //TODO: Instead of preparing a node list ahead of the association loop, can we add something like
+                        //TODO: .incomingAssociations().each(function() {
+                        //TODO:    var sourceNode = this.getSourceNode();
+                        //TODO:    ...... });
+                        //TODO: I guess we will need to add additional fields to the array objects that we feed to each function.
+                        //TODO: Also does incomingAssociations and outgoingAssociations returns association with BOTH direction?
+                        //TODO: The traverse around theoffice:bobcat doesn't seem to return correct results for theoffice:isEatenBy association with BOTH direction.
+                        var defaults = Gitana.SDK.defaults;
                         var nodeLookup = {};
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').queryNodes({
                                 "_type" : "theoffice:creature"
-                            }).each(
-                                    function() {
-                                        $('#creature-id').append('<option value="' + this.getId() + '">' + this.get('name') + '</option>');
-                                        nodeLookup[this.getId()] = this;
-                                    }).then(function() {
+                            }).each(function() {
+                                $('#creature-id').append('<option value="' + this.getId() + '">' + this.get('name') + '</option>');
+                                nodeLookup[this.getId()] = this;
+                            }).then(function() {
                                 $("#creature-id").change(function () {
                                     $("#creature-id option:selected").each(function () {
                                         var val = $(this).val();
@@ -97,7 +105,7 @@
                                             var displayCreature = function(div, node) {
                                                 div.append('<div class="list-item"><img class="creature-photo" src="' + node.attachment("photo").getDownloadUri() + '"/>'
                                                         + '<div id="' + node.getId() + '" class="item-title">' + node.get('name') + '</div>'
-                                                        + '<div class="item-details">' + node.get('details') + '</div></div>');
+                                                        + '<div class="item-details">' + node.get('details') + '</div><div class="clear"></div></div>');
                                                 $('#' + node.getId(), div).click(function() {
                                                     $('#creature-id').val($(this).attr('id')).change();
                                                 });

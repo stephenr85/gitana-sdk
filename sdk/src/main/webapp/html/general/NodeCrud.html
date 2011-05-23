@@ -9,7 +9,7 @@
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet">
     <style>
-        #field1 {
+        #fortune-cookie {
             width: 463px;
             height: 196px;
         }
@@ -57,6 +57,8 @@
             <h4>Basic Node Operations.</h4>
 
             <div id="field1">
+                <div class="results" id="fortune-cookie"></div>
+                <div class="error" id="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
@@ -67,9 +69,17 @@
                             return Math.floor(M + (1 + N - M) * Math.random());
                         }
 
+                        var generateLuckyNumbers = function () {
+                            var luckNumbers = [];
+                            for (var i = 0 ; i < 6 ; i++ ) {
+                                luckNumbers.push(randomInteger(1, 100));
+                            }
+                            return luckNumbers;
+                        }
+
                         var updateFortuneCookieMessage = function(node, messages) {
                             node.object['message'] = messages[randomInteger(0, messages.length - 1)];
-                            node.object['luckNumbers'] = [randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100)];
+                            node.object['luckNumbers'] = generateLuckyNumbers();
                             node.chain().update().reload().then(function() {
                                 displayFortuneCookieMessage(this, messages);
                             });
@@ -80,23 +90,22 @@
                                 "_qname" : "theoffice:fortunecookie",
                                 "title" : "My Fouturn Cookie",
                                 "message" : messages[randomInteger(0, messages.length - 1)],
-                                "luckNumbers" : [randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100),randomInteger(1, 100)]
+                                "luckNumbers" : generateLuckyNumbers()
                             }).then(function() {
                                 displayFortuneCookieMessage(this, messages);
                             });
                         };
 
                         var displayFortuneCookieMessage = function(node, messages) {
-                            $('#field1').empty().append('<div id="message"><div>' + node.get('message') + '</div><div>Lucky Numbers: '
+                            $('#fortune-cookie').empty().append('<div id="message"><div>' + node.get('message') + '</div><div>Lucky Numbers: '
                                     + node.get('luckNumbers').join(',') + '</div>'
                                     + '</div>');
-                            $('#field1').append('<div id="toolbar"><span>' + node.getSystemMetadata().getModifiedBy() + ' @ ' + node.getSystemMetadata().getModifiedOn()["timestamp"]
+                            $('#fortune-cookie').append('<div id="toolbar"><span>' + node.getSystemMetadata().getModifiedBy() + ' @ ' + node.getSystemMetadata().getModifiedOn()["timestamp"]
                                     + '</span><button id="update_button">Update</button><button id="delete_button">Delete</button></div>');
                             $('#delete_button').click(function() {
                                 var branch = node.getBranch();
                                 node.chain().del().then(function() {
-                                    $('#field1').empty();
-                                    $('#field1').append('<div id="toolbar"><button id="new_button">Generate New</button></div>');
+                                    $('#field1').empty().append('<div id="toolbar"><button id="new_button">Generate New</button></div>');
                                     $('#new_button').click(function() {
                                         createFortuneCookieMessage(branch, messages);
                                     });
@@ -107,26 +116,21 @@
                             });
                         };
 
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').readNode('theoffice:fortunecookiemessages').then(function() {
                                 var messages = this.get('messages');
-                                $('#field1').css({
-                                    "background": "url('" + gitana.serverURL + this.attachment("background").getUri() + "') no-repeat"
+                                this.attachment('background').then(function() {
+                                    $('#fortune-cookie').css({
+                                        "background": "url('" + this.getDownloadUri() + "') no-repeat"
+                                    });
                                 });
                                 var branch = this.getBranch();
-                                branch.chain().trap(
-                                        function(error) {
-                                            if (error.http.status == 404) {
-                                                createFortuneCookieMessage(branch, messages);
-                                            }
-                                        }).readNode("theoffice:fortunecookie").then(function() {
+                                branch.chain().trap(function(error) {
+                                    if (error.http.status == 404) {
+                                        createFortuneCookieMessage(branch, messages);
+                                    }
+                                }).readNode("theoffice:fortunecookie").then(function() {
                                     updateFortuneCookieMessage(this, messages);
                                 });
                             });

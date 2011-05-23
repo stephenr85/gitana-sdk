@@ -17,9 +17,6 @@
         "promotion_price":{
             "readonly":true
         },
-        "photos":{
-            "readonly":true
-        },
         "stores":{
             "readonly":true
         }

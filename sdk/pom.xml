@@ -31,8 +31,8 @@
                             <jsSourceFiles>
                                 <param>../js_src/thirdparty/base.js</param>
                                 <param>../js_src/SDK.js</param>
-                                <param>../js_src/Connector.js</param>
                                 <param>../js_src/example/example.js</param>
+                                <param>../js_src/general/Defaults.js</param>
                             </jsSourceFiles>
                             <cssSourceDir>css</cssSourceDir>
                             <cssSourceFiles>
@@ -59,7 +59,6 @@
                             <jsSourceFiles>
                                 <param>../js_src/thirdparty/jquery.tmpl.js</param>
                                 <param>../js_src/general/jQueryTemplateEngine.js</param>
-                                <param>../js_src/general/Defaults.js</param>
                             </jsSourceFiles>
                             <jsFinalFile>gitana-sdk-general-${project.version}.js</jsFinalFile>
                             <linebreak>-1</linebreak>
@@ -82,6 +81,69 @@
                                 <param>../js_src/general/Defaults.js</param>
                             </jsSourceFiles>
                             <jsFinalFile>gitana-sdk-alpaca-${project.version}.js</jsFinalFile>
+                            <linebreak>-1</linebreak>
+                            <nomunge>false</nomunge>
+                            <verbose>true</verbose>
+                            <preserveAllSemiColons>false</preserveAllSemiColons>
+                            <disableOptimizations>false</disableOptimizations>
+                            <bufferSize>4096</bufferSize>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>minify-social-graph</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <jsSourceDir>js</jsSourceDir>
+                            <jsSourceFiles>
+                                <param>../js_src/socialgraph/SocialGraph.js</param>
+                            </jsSourceFiles>
+                            <cssSourceDir>css</cssSourceDir>
+                            <cssSourceFiles>
+                                <param>../css_src/site.css</param>
+                                <param>../css_src/SocialGraph.css</param>
+                            </cssSourceFiles>
+                            <jsFinalFile>gitana-sdk-socialgraph-${project.version}.js</jsFinalFile>
+                            <cssFinalFile>gitana-sdk-socialgraph-${project.version}.css</cssFinalFile>
+                            <linebreak>-1</linebreak>
+                            <nomunge>false</nomunge>
+                            <verbose>true</verbose>
+                            <preserveAllSemiColons>false</preserveAllSemiColons>
+                            <disableOptimizations>false</disableOptimizations>
+                            <bufferSize>4096</bufferSize>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>minify-ratchet</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <jsSourceDir>js</jsSourceDir>
+                            <jsSourceFiles>
+                                <param>../js_src/ratchet/Defaults.js</param>
+                                <param>../js_src/ratchet/gadgets/LatestPromotion.js</param>
+                                <param>../js_src/ratchet/gadgets/FrontPageProducts.js</param>
+                                <param>../js_src/ratchet/gadgets/SearchForm.js</param>
+                                <param>../js_src/ratchet/gadgets/SearchResults.js</param>
+                                <param>../js_src/ratchet/gadgets/ProductDetails.js</param>
+                                <param>../js_src/ratchet/gadgets/PromotionDetails.js</param>
+                                <param>../js_src/ratchet/gadgets/RelatedProducts.js</param>
+                                <param>../js_src/ratchet/gadgets/ProductsByCategory.js</param>
+                                <param>../js_src/ratchet/gadgets/Products.js</param>
+                                <param>../js_src/ratchet/gadgets/Promotions.js</param>
+                                <param>../js_src/ratchet/gadgets/Stores.js</param>
+                            </jsSourceFiles>
+                            <cssSourceDir>css</cssSourceDir>
+                            <cssSourceFiles>
+                                <param>../css_src/example.css</param>
+                                <param>../css_src/site.css</param>
+                            </cssSourceFiles>
+                            <jsFinalFile>gitana-sdk-ratchet-${project.version}.js</jsFinalFile>
+                            <cssFinalFile>gitana-sdk-ratchet-${project.version}.css</cssFinalFile>
                             <linebreak>-1</linebreak>
                             <nomunge>false</nomunge>
                             <verbose>true</verbose>
@@ -155,18 +217,6 @@
 				</executions>
 				<configuration>
 					<target>
-                        <copy
-                            todir="${project.build.directory}/${project.build.finalName}/js/general/samples">
-                            <fileset dir="src/main/webapp/js_src/general/samples">
-                                <include name="*.js" />
-                            </fileset>
-                        </copy>
-                        <copy
-                            todir="${project.build.directory}/${project.build.finalName}/js/alpaca/samples">
-                            <fileset dir="src/main/webapp/js_src/alpaca/samples">
-                                <include name="*.js" />
-                            </fileset>
-                        </copy>
                         <copy
                             todir="${project.build.directory}/${project.build.finalName}/js/alpaca/tools">
                             <fileset dir="src/main/webapp/js_src/alpaca/tools">

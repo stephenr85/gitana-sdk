@@ -1,0 +1,22 @@
+{
+    "name":"Cougar",
+    "details":"The cougar (Puma concolor), also known as puma, mountain lion, mountain cat, catamount or panther, depending on the region, is a mammal of the family Felidae, native to the Americas. This large, solitary cat has the greatest range of any large wild terrestrial mammal in the Western Hemisphere, extending from Yukon in Canada to the southern Andes of South America. An adaptable, generalist species, the cougar is found in every major American habitat type. It is the second heaviest cat in the Western Hemisphere, after the jaguar. Although large, the cougar is most closely related to smaller felines.",
+    "trophicLevel":"Tertiary Consumer",
+    "lifeExpectancy":30,
+    "attackHumans": true,
+    "classification":{
+        "Kingdom":     "Animalia",
+        "Phylum":     "Chordata",
+        "Class":     "Mammalia",
+        "Order":     "Carnivora",
+        "Family":     "Felidae",
+        "Genus":     "Puma",
+        "Species":     "Puma concolor"
+    },
+    "range":[
+        "USA",
+        "Canada",
+        "Mexico",
+        "Brazil"
+    ]
+}

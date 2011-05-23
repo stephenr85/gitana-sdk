@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Gitana SDK - Node</title>
+    <title></title>
     <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
-          rel="stylesheet">
+          rel="stylesheet"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -31,24 +31,38 @@
             <h4>Attachments.</h4>
 
             <div id="field1">
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="node-id">Node Id</label>
+                            <div class="field">
+                                <input type="text" id="node-id" size="60" value="theoffice:wilsonjonesbinder"/>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="find-attachments">Find</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="results" id="attachments"></div>
+                <div class="error"></div>
             </div>
 
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var errorHandler = function(error) {
-                            $('#field1').html("Error message: " + error.msg);
-                        };
-                        var gitana = new Gitana();
-                        gitana.authenticate("admin", "admin").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
-                            this.readBranch('master').readNode('theoffice:wilsonjonesbinder').then(function() {
-                                this.listAttachments().count(function(count) {
-                                    $('#field1').append("<div>Total "+count+" attachments.</div>");
-                                }).each(function(){
-                                    $('#field1').append('<div>'+this.getId()+'</div><a href="'+this.getDownloadUri()+'">'+this.getFilename()+'('+this.getContentType()+' '+this.getLength()+')'+'</a>');
+                        $('#find-attachments').click(function(){
+                            var defaults = Gitana.SDK.defaults;
+                            new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                                this.readBranch('master').readNode($('#node-id').val()).then(function() {
+                                    this.listAttachments().count(function(count) {
+                                        $('#attachments').empty().append('<div class="total-results">Total ' + count + ' attachments.</div>');
+                                    }).each(function(key,attachment,index){
+                                        //TODO: We can't get index here. Seems like a bug.
+                                        $('#attachments').append('<div class="result-item"><div class="item-title" id="' + this.getId() + '">' + (index + 1)
+                                                + '.  <a href="'+ this.getDownloadUri() +'">' + this.getFilename() + '</a></div><div class="item-description">'
+                                                + this.getContentType()+' ( '+this.getLength() + ' )</div></div>');
+                                    });
                                 });
                             });
                         });
