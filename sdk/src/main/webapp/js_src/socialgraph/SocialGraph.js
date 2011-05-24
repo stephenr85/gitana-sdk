@@ -145,17 +145,6 @@
                         });
                         // Build the right column relations list.
                         // This is done by traversing the clicked node connections.
-                        /*
-                         var html = "<h4>" + node.name + "</h4><b> connections:</b><ul><li>",
-                         list = [];
-                         node.eachAdjacency(function(adj) {
-                         if (adj.getData('alpha')) list.push(adj.nodeTo.name);
-                         });
-                         */
-                        //append connections information
-                        /*
-                         $jit.id('social-details').innerHTML = html + list.join("</li><li>") + "</li></ul>";
-                         */
                         var detailsElem = $('#social-details');
                         detailsElem.empty();
                         var userId = node.id;
@@ -166,7 +155,9 @@
                                 "firstName": user.getFirstName(),
                                 "lastName": user.getLastName(),
                                 "email": user.getEmail(),
-                                "attachments": {}
+                                "attachments": {
+                                    "avatar" : user.attachment('avatar').getDownloadUri()
+                                }
                             },
                             "personNode" : {
                                 "currentPosition": personNode.get('currentPosition'),
@@ -174,53 +165,53 @@
                                 "biography": personNode.get('biography')
                             }
                         };
-                        user.chain().attachment().each(function() {
-                            data.user.attachments[this.getId()] = this.getDownloadUri();
-                        });
-                        personNode.chain().traverse({
+
+                        var supervisors = [];
+                        var subordinates = [];
+                        var relationships = [];
+                        var personNodeId = personNode.getId();
+
+                        personNode.traverse({
                             "associations": {
                                 "theoffice:isManager": "BOTH",
                                 "theoffice:hasRelation": "BOTH"
                             },
                             "depth": 1
-                        }).then(function() {
-                            var nodes = this.object.nodes;
-                            var associations = this.object.associations;
-                            var supervisors = [];
-                            var subordinates = [];
-                            var relationships = [];
-                            var personNodeId = personNode.getId();
-                            for (var key in associations) {
-                                var type = associations[key]["_type"];
-                                var direction = associations[key]["direction"];
-                                var sourceId = associations[key]["source"];
-                                var targetId = associations[key]["target"];
-                                var targetNode = nodes[associations[key]["target"]];
-                                var sourceNode = nodes[associations[key]["source"]];
-                                if (type == 'theoffice:isManager') {
-                                    if (personNodeId == sourceId) {
+                        }).associations().each(function(){
+                            //TODO: Miss get method for association type
+                            //TODO: Direction in the associations list is always OUTGOING.
+                            if (this.get('_type') == 'theoffice:isManager') {
+                                if (personNodeId == this.getSourceNodeId()) {
+                                    this.readTargetNode().then(function(){
                                         subordinates.push({
-                                            "userId": targetNode["userId"]
+                                            "userId": this.get("userId")
                                         });
-                                    }
-                                    if (personNodeId == targetId) {
-                                        supervisors.push({
-                                            "userId": sourceNode["userId"]
-                                        });
-                                    }
+                                    });
                                 }
-                                if (type == 'theoffice:hasRelation') {
-                                    var relationship = {};
-                                    if (personNodeId == sourceId) {
-                                        relationship.userId = targetNode["userId"];
-                                    }
-                                    if (personNodeId == targetId) {
-                                        relationship.userId = sourceNode["userId"];
-                                    }
-                                    relationship.type = associations[key].details.type;
-                                    relationships.push(relationship);
+                                if (personNodeId == this.getTargetNodeId()) {
+                                    this.readSourceNode().then(function(){
+                                        supervisors.push({
+                                            "userId": this.get("userId")
+                                        });
+                                    });
                                 }
                             }
+                            if (this.get('_type') ==  'theoffice:hasRelation') {
+                                var relationship = {};
+                                if (personNodeId == this.getSourceNodeId()) {
+                                    this.readTargetNode().then(function(){
+                                        relationship.userId = this.get("userId");
+                                    });
+                                }
+                                if (personNodeId == this.getTargetNodeId()) {
+                                    this.readSourceNode().then(function(){
+                                        relationship.userId = this.get("userId");
+                                    });
+                                }
+                                relationship.type = this.get("details").type;
+                                relationships.push(relationship);
+                            }
+                        }).then(function() {
                             data.supervisors = supervisors;
                             data.subordinates = subordinates;
                             data.relationships = relationships;
@@ -233,7 +224,7 @@
                                 "postRender": function(renderedField) {
                                     $('.supervisor,.subordinate,.relationship', detailsElem).each(function(index) {
                                         var userId = $(this).attr('id');
-                                        $(this).html(userListJson[userId].getFirstName() + ' ' + userListJson[userId].getLastName());
+                                        $(this).html(userListJson[userId].getFirstName() + ' ' + userListJson[userId].getLastName()+$(this).html());
                                         $(this).click(function() {
                                             $('div#' + userId + '>span.name').click();
                                         });
@@ -306,9 +297,7 @@
                                 if (personNode.get('gender') && personNode.get('gender') == 'female') {
                                     userSocialGraphNode.data.$color = '#008B8B';
                                 }
-                                user.chain().attachment().each(function() {
-                                    userSocialGraphNode.data[this.getId()] = this.getDownloadUri();
-                                });
+                                userSocialGraphNode.data.avatar = user.attachment('avatar').getDownloadUri();
                                 json.push(userSocialGraphNode);
                                 helperMap[personNode.getId()] = json.length - 1;
                                 var employeeItem = $('<li><a href="#">' + userSocialGraphNode.name + '</a></li>');

@@ -23,7 +23,7 @@
             };
             connector.connect(function() {
                 //TODO: filter doesn't seem to work.
-                connector.branch.chain().searchNodes(key).filter(function(){
+                connector.branch.searchNodes(key).filter(function(){
                     return (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion');
                 }).count(function(count) {
                     result.count = count;

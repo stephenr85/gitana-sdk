@@ -55,7 +55,7 @@
 
                         // Render reviews
                         var renderReviews = function (nodeId) {
-                            promotionNode.chain().reload().traverse({
+                            promotionNode.reload().traverse({
                                 "associations": {
                                     "theoffice:hasReview": "OUTGOING"
                                 },
@@ -70,7 +70,7 @@
                                         "data": this.object,
                                         "postRender": function (renderedReviews) {
                                             $('span.stars').stars();
-                                            _this.chain().associations().each( function() {
+                                            _this.associations().each( function() {
                                             var associationNode = this;
                                             var association = this.object;
                                             var reviewIndicator = $('<div id="' + association.target + '-indicator"></div>');
@@ -149,7 +149,7 @@
                             if (reviewMatricsNode != null) {
                                 renderReviewMetrics (reviewMatricsNode.object);
                             } else {
-                               promotionNode.chain().traverse({
+                               promotionNode.traverse({
                                     "associations": {
                                        "theoffice:hasReviewMetrics": "BOTH"
                                    },
@@ -243,6 +243,7 @@
                                                                         updateReviewMetrics(reviewVal);
                                                                         // refresh the review list
                                                                         renderReviews();
+                                                                        editDialog.dialog('close');
                                                                     });
                                                                 });
                                                             }

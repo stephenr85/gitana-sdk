@@ -10,7 +10,7 @@
 
         index: function(el) {
             connector.connect(function() {
-                connector.branch.chain().queryNodes({
+                connector.branch.queryNodes({
                     "_type" : "theoffice:promotion"
                 }).then(function() {
                     var data = {

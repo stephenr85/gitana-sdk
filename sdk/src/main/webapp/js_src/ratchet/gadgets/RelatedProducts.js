@@ -14,7 +14,7 @@
 
             connector.connect(function() {
                 var relatedProducts = [];
-                connector.branch.chain().readNode(id).traverse({
+                connector.branch.readNode(id).traverse({
                     "associations": {
                         "theoffice:isRelatedTo": "BOTH"
                     },

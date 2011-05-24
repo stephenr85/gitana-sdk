@@ -11,7 +11,7 @@
         index: function(el) {
             var id = el.tokens["id"];
             connector.connect(function() {
-                connector.branch.chain().queryNodes({
+                connector.branch.queryNodes({
                     "_type" : "theoffice:product",
                     "categories" : id
                 }).then(function() {
