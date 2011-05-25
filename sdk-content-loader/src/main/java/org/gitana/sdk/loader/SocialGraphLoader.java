@@ -89,7 +89,7 @@ public class SocialGraphLoader extends AbstractLoader {
                 Node sourceNode = this.getSecurityPrincipalNode(associationObj.get("source"));
                 Node targetNode = this.getSecurityPrincipalNode(associationObj.get("target"));
                 Directionality directionality = Directionality.UNDIRECTED;
-                if (associationObj.get("direction") != null) {
+                if (associationObj.get("directionality") != null) {
                     directionality = Directionality.valueOf(associationObj.get("directionality").getTextValue());
                 }
                 if (sourceNode != null && targetNode != null) {

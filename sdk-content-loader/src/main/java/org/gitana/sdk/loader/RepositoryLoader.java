@@ -406,7 +406,7 @@ public class RepositoryLoader extends AbstractLoader {
                 String sourceQnameStr = associationObj.get("source").getTextValue();
                 String targetQnameStr = associationObj.get("target").getTextValue();
                 Directionality directionality = Directionality.UNDIRECTED;
-                if (associationObj.get("direction") != null) {
+                if (associationObj.get("directionality") != null) {
                     directionality = Directionality.valueOf(associationObj.get("directionality").getTextValue());
                 }
                 Node sourceNode = branch.readNode(sourceQnameStr);
