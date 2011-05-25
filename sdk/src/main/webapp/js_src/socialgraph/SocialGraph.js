@@ -173,8 +173,8 @@
 
                         personNode.traverse({
                             "associations": {
-                                "theoffice:isManager": "BOTH",
-                                "theoffice:hasRelation": "BOTH"
+                                "theoffice:isManager": "ANY",
+                                "theoffice:hasRelation": "ANY"
                             },
                             "depth": 1
                         }).associations().each(function(){
@@ -313,7 +313,7 @@
                         }).each(
                                 function() {
                                     var associationNode = this;
-                                    if ((associationNode.get('direction') == 'OUTGOING' || associationNode.get('direction') == 'BOTH') && !Alpaca.startsWith(associationNode.get('_type'), "a:")) {
+                                    if (!Alpaca.startsWith(associationNode.getTypeQName(), "a:")) {
 
                                         //Prepare Initial Json for social graph
                                         var associationSocialGraphNode = {
@@ -324,39 +324,39 @@
                                                 "$type": "circle",
                                                 "$dim": 6,
                                                 "isAssociation": true,
-                                                "associationType": associationNode.get('_type'),
+                                                "associationType": associationNode.getTypeQName(),
                                                 "details": associationNode.get('details')
                                             },
                                             "id": associationNode.getId(),
                                             "name": ""
                                         };
 
-                                        var itemIndex = helperMap[associationNode.get('source')];
-                                        if (itemIndex != null && personNodeUserMap[associationNode.get('target')] != null) {
+                                        var itemIndex = helperMap[associationNode.getSourceNodeId()];
+                                        if (itemIndex != null && personNodeUserMap[associationNode.getTargetNodeId()] != null) {
                                             associationSocialGraphNode.data.sourceUser = json[itemIndex].name;
-                                            associationSocialGraphNode.data.targetUser = json[helperMap[associationNode.get('target')]].name;
+                                            associationSocialGraphNode.data.targetUser = json[helperMap[associationNode.getTargetNodeId()]].name;
                                             var associationSocialGraphEdgeNodeA = {
                                                 "nodeTo": associationSocialGraphNode.id,
-                                                "nodeFrom": personNodeUserMap[associationNode.get('source')],
+                                                "nodeFrom": personNodeUserMap[associationNode.getSourceNodeId()],
                                                 "data": {
                                                     "$type": "arrow",
-                                                    "$direction": [personNodeUserMap[associationNode.get('source')], associationSocialGraphNode.id]
+                                                    "$direction": [personNodeUserMap[associationNode.getSourceNodeId()], associationSocialGraphNode.id]
                                                 }
                                             };
-                                            if (associationNode.get('direction') == 'BOTH') {
+                                            if (associationNode.getDirectionality() == 'UNDIRECTED') {
                                                 associationSocialGraphEdgeNodeA.data.$type = "line";
                                                 associationSocialGraphEdgeNodeA.data.$color = "#00FF66";
                                             }
                                             json[itemIndex].adjacencies.push(associationSocialGraphEdgeNodeA);
                                             var associationSocialGraphEdgeNodeB = {
-                                                "nodeTo": personNodeUserMap[associationNode.get('target')],
+                                                "nodeTo": personNodeUserMap[associationNode.getTargetNodeId()],
                                                 "nodeFrom": associationSocialGraphNode.id,
                                                 "data": {
                                                     "$type": "arrow",
-                                                    "$direction": [associationSocialGraphNode.id, personNodeUserMap[associationNode.get('target')]]
+                                                    "$direction": [associationSocialGraphNode.id, personNodeUserMap[associationNode.getTargetNodeId()]]
                                                 }
                                             };
-                                            if (associationNode.get('direction') == 'BOTH') {
+                                            if (associationNode.getDirectionality() == 'UNDIRECTED') {
                                                 associationSocialGraphEdgeNodeB.data.$type = "line";
                                                 associationSocialGraphEdgeNodeB.data.$color = "#00FF66";
                                             }

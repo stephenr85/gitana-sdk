@@ -59,8 +59,8 @@
                                         userSocialDetails.personNode = this.object;
                                         this.traverse({
                                             "associations": {
-                                                "theoffice:isManager": "BOTH",
-                                                "theoffice:hasRelation": "BOTH"
+                                                "theoffice:isManager": "ANY",
+                                                "theoffice:hasRelation": "ANY"
                                             },
                                             "depth": 1
                                         }).then(function() {

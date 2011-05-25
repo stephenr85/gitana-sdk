@@ -16,7 +16,7 @@
                 var relatedProducts = [];
                 connector.branch.readNode(id).traverse({
                     "associations": {
-                        "theoffice:isRelatedTo": "BOTH"
+                        "theoffice:isRelatedTo": "ANY"
                     },
                     "depth": 1
                 }).nodes().each(function() {

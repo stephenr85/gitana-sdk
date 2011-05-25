@@ -151,7 +151,7 @@
                             } else {
                                promotionNode.traverse({
                                     "associations": {
-                                       "theoffice:hasReviewMetrics": "BOTH"
+                                       "theoffice:hasReviewMetrics": "MUTUAL"
                                    },
                                     "depth": 1
                                 }).nodes().count( function(count) {
@@ -160,10 +160,7 @@
                                             "_type" : "theoffice:reviewmetrics",
                                             "totalReviews" : 0,
                                             "averageRating" : 0
-                                        }).associate(promotionNodeId, {
-                                            "_type" : "theoffice:hasReviewMetrics",
-                                            "direction" : "BOTH"
-                                        }).then(function() {
+                                        }).associate(promotionNodeId, "theoffice:hasReviewMetrics",true).then(function() {
                                             renderReviewMetrics(this.object);
                                             reviewMatricsNode = this;
                                         });
@@ -235,10 +232,7 @@
                                                                 var reviewVal = renderedNewFieldControl.getValue();
                                                                 reviewVal._type = "theoffice:review";
                                                                 connector.branch.chain().createNode(reviewVal).then(function(){
-                                                                    promotionNode.chain().associate(this.getId(), {
-                                                                        "_type" : "theoffice:hasReview",
-                                                                        "direction" : "OUTGOING"
-                                                                    }).then(function(status) {
+                                                                    promotionNode.chain().associate(this.getId(), "theoffice:hasReview").then(function(status) {
                                                                         // refresh the indicators
                                                                         updateReviewMetrics(reviewVal);
                                                                         // refresh the review list

@@ -117,7 +117,7 @@
                         "title": "Find all nodes of any depth away from the source code with theoffice:isEatenBy association.",
                         "traverse":{
                             "associations": {
-                                "theoffice:isEatenBy": "BOTH"
+                                "theoffice:isEatenBy": "ANY"
                             }
                         }
                     },
@@ -132,8 +132,8 @@
                         "title": "Find all nodes of depth 1 away from the source code with either theoffice:isEatenBy or a:updated association.",
                         "traverse":{
                             "associations": {
-                                "theoffice:isEatenBy": "BOTH",
-                                "a:updated":"BOTH"
+                                "theoffice:isEatenBy": "ANY",
+                                "a:updated":"ANY"
                             },
                             "depth":1
                         }

@@ -105,16 +105,24 @@
                                             };
 
                                             $('#eats').empty().append('<div class="list-title">EATS</div>');
-                                            selectedNode.incomingAssociations().each(function() {
-                                                if (this.getTypeQName() == 'theoffice:isEatenBy') {
+                                            selectedNode.incomingAssociations('theoffice:isEatenBy').each(function() {
+                                                if (this.getDirectionality()=='UNDIRECTED' && this.getSourceNodeId() == selectedNode.getId()) {
+                                                    this.readTargetNode().then(function(){
+                                                        displayCreature($('#eats'), this);
+                                                    });
+                                                } else {
                                                     this.readSourceNode().then(function(){
                                                         displayCreature($('#eats'), this);
                                                     });
                                                 }
                                             });
                                             $('#is-eaten-by').empty().append('<div  class="list-title">IS EATEN BY</div>');
-                                            selectedNode.outgoingAssociations().each(function() {
-                                                if (this.getTypeQName() == 'theoffice:isEatenBy') {
+                                            selectedNode.outgoingAssociations('theoffice:isEatenBy').each(function() {
+                                                if (this.getDirectionality()=='UNDIRECTED' && this.getTargetNodeId() == selectedNode.getId()) {
+                                                    this.readSourceNode().then(function(){
+                                                        displayCreature($('#is-eaten-by'), this);
+                                                    });
+                                                } else {
                                                     this.readTargetNode().then(function(){
                                                         displayCreature($('#is-eaten-by'), this);
                                                     });
