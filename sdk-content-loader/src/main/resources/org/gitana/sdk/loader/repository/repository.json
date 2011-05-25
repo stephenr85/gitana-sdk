@@ -632,37 +632,37 @@
                 "associationType" : "theoffice:isRelatedTo",
                 "source":"theoffice:papermateballpointstickpens",
                 "target":"theoffice:hammermillcopypluspaper",
-                "direction":"BOTH"
+                "directionality":"UNDIRECTED"
             },
             {
                 "associationType" : "theoffice:isRelatedTo",
                 "source":"theoffice:papermateballpointstickpens",
                 "target":"theoffice:wilsonjonesbinder",
-                "direction":"BOTH"
+                "directionality":"UNDIRECTED"
             },
             {
                 "associationType" : "theoffice:isRelatedTo",
                 "source":"theoffice:topssecondaaturepad",
                 "target":"theoffice:sharpieaccenthighlighters",
-                "direction":"BOTH"
+                "directionality":"UNDIRECTED"
             },
             {
                 "associationType" : "theoffice:isRelatedTo",
                 "source":"theoffice:mediumbinderclips",
                 "target":"theoffice:swinglinestapler",
-                "direction":"BOTH"
+                "directionality":"UNDIRECTED"
             },
             {
                 "associationType" : "theoffice:isRelatedTo",
                 "source":"theoffice:mediumbinderclips",
                 "target":"theoffice:hammermillcopypluspaper",
-                "direction":"BOTH"
+                "directionality":"UNDIRECTED"
             },
             {
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:jackrabbit",
                 "target":"theoffice:coyote",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Coyote eats Jackrabbit",
                     "favorite": 7
@@ -672,7 +672,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:squirrel",
                 "target":"theoffice:ringtail",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Ringtail sometimes eats squirrel",
                     "favorite": 5
@@ -682,7 +682,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:beetle",
                 "target":"theoffice:pika",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Pika sometimes eats beetle",
                     "favorite": 5
@@ -692,7 +692,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:beetle",
                 "target":"theoffice:nuthatch",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Nuthatch sometimes eats beetle",
                     "favorite": 4
@@ -702,7 +702,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:beetle",
                 "target":"theoffice:treefrog",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Tree Frog sometimes eats beetle",
                     "favorite": 3
@@ -712,7 +712,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:pika",
                 "target":"theoffice:ringtail",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Ringtail sometimes eats pika",
                     "favorite": 3
@@ -722,7 +722,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:pika",
                 "target":"theoffice:marten",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Marten sometimes eats pika",
                     "favorite": 5
@@ -732,7 +732,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:nuthatch",
                 "target":"theoffice:marten",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Marten sometimes eats nuthatch",
                     "favorite": 2
@@ -742,7 +742,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:treefrog",
                 "target":"theoffice:ringtail",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Ringtail sometimes eats tree frog",
                     "favorite": 3
@@ -752,7 +752,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:muledeer",
                 "target":"theoffice:coyote",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Coyote sometimes eats mule deer",
                     "favorite": 6
@@ -762,7 +762,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:muledeer",
                 "target":"theoffice:cougar",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Cougar sometimes eats mule deer",
                     "favorite": 6
@@ -772,7 +772,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:muledeer",
                 "target":"theoffice:bobcat",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Bobcat sometimes eats mule deer",
                     "favorite": 4
@@ -782,7 +782,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:ringtail",
                 "target":"theoffice:bobcat",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Bobcat sometimes eats ringtail",
                     "favorite": 8
@@ -792,7 +792,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:whiptail",
                 "target":"theoffice:coyote",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Coyote sometimes eats whiptail",
                     "favorite": 9
@@ -802,7 +802,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:marten",
                 "target":"theoffice:cougar",
-                "direction":"OUTGOING",
+                "directionality":"DIRECTED",
                 "associationDetails": {
                     "title":"Cougar sometimes eats marten",
                     "favorite": 5
@@ -812,7 +812,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:bobcat",
                 "target":"theoffice:cougar",
-                "direction":"BOTH",
+                "directionality":"UNDIRECTED",
                 "associationDetails": {
                     "title":"Bobcat and cougar eat each other",
                     "favorite": 5
@@ -822,7 +822,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:coyote",
                 "target":"theoffice:cougar",
-                "direction":"BOTH",
+                "directionality":"UNDIRECTED",
                 "associationDetails": {
                     "title":"Cougar and coyote eat each other",
                     "favorite": 5
@@ -832,7 +832,7 @@
                 "associationType" : "theoffice:isEatenBy",
                 "source":"theoffice:coyote",
                 "target":"theoffice:bobcat",
-                "direction":"BOTH",
+                "directionality":"UNDIRECTED",
                 "associationDetails": {
                     "title":"Bobcat and coyote eat each other",
                     "favorite": 5

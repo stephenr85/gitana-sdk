@@ -4,15 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
-import org.gitana.repo.association.Direction;
+import org.gitana.repo.association.Directionality;
 import org.gitana.repo.client.Branch;
 import org.gitana.repo.client.Repository;
-
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.gitana.repo.client.SecurityPrincipal;
 import org.gitana.repo.client.SecurityUser;
 import org.gitana.repo.client.nodes.Association;
 import org.gitana.repo.client.nodes.Node;
@@ -21,6 +15,10 @@ import org.gitana.repo.namespace.QName;
 import org.gitana.repo.query.QueryBuilder;
 import org.gitana.util.ClasspathUtil;
 import org.gitana.util.JsonUtil;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Loader for setting up users.
@@ -407,15 +405,15 @@ public class RepositoryLoader extends AbstractLoader {
                 QName typeQname = QName.create(typeQnameStr);
                 String sourceQnameStr = associationObj.get("source").getTextValue();
                 String targetQnameStr = associationObj.get("target").getTextValue();
-                Direction direction = Direction.BOTH;
+                Directionality directionality = Directionality.UNDIRECTED;
                 if (associationObj.get("direction") != null) {
-                    direction = Direction.valueOf(associationObj.get("direction").getTextValue());
+                    directionality = Directionality.valueOf(associationObj.get("directionality").getTextValue());
                 }
                 Node sourceNode = branch.readNode(sourceQnameStr);
                 Node targetNode = branch.readNode(targetQnameStr);
                 if (sourceNode != null && targetNode != null) {
-                    Association association = sourceNode.associate(targetNode, typeQname, direction);
-                    logger.info("Create " + typeQnameStr + " Association :: " + sourceQnameStr + "<=>" + targetQnameStr + " (" + direction + ")");
+                    Association association = sourceNode.associate(targetNode, typeQname, directionality);
+                    logger.info("Create " + typeQnameStr + " Association :: " + sourceQnameStr + "<=>" + targetQnameStr + " (" + directionality + ")");
                     JsonNode associationDetailsObj = associationObj.get("associationDetails");
                     if (associationDetailsObj != null) {
                         Iterator<String> it = associationDetailsObj.getFieldNames();

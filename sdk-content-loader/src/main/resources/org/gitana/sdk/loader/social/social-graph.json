@@ -106,7 +106,7 @@
                 "id":"mscott_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -121,7 +121,7 @@
                 "id":"dschrute_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -136,7 +136,7 @@
                 "id":"phalpert_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -151,7 +151,7 @@
                 "id":"jhalpert_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -166,7 +166,7 @@
                 "id":"phalpert_theoffice"
             },
             "associationType" : "theoffice:hasRelation",
-            "direction":"BOTH",
+            "directionality":"UNDIRECTED",
             "associationDetails": {
                 "type" : "Married",
                 "startDate" : "2/2/2002"
@@ -182,7 +182,7 @@
                 "id":"amartin_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -197,7 +197,7 @@
                 "id":"kmalone_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -212,7 +212,7 @@
                 "id":"omartinez_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -227,7 +227,7 @@
                 "id":"abernard_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -242,7 +242,7 @@
                 "id":"plapinvance_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -257,7 +257,7 @@
                 "id":"shudson_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -272,7 +272,7 @@
                 "id":"cbratton_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -287,7 +287,7 @@
                 "id":"mpalmer_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -302,7 +302,7 @@
                 "id":"kkapoor_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -317,7 +317,7 @@
                 "id":"ehannon_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -332,7 +332,7 @@
                 "id":"kfilippelli_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }
@@ -347,7 +347,7 @@
                 "id":"hflax_theoffice"
             },
             "associationType" : "theoffice:isManager",
-            "direction":"OUTGOING",
+            "directionality":"DIRECTED",
             "associationDetails": {
                 "startDate" : "10/10/2006"
             }

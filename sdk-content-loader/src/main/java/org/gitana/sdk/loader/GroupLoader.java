@@ -131,7 +131,8 @@ public class GroupLoader extends AbstractLoader {
 
             // Makes sure we actually update/create it
             logger.info("Finished loading group " + groupId);
-            group = gitanaGroups.get(groupId);
+            //group = gitanaGroups.get(groupId);
+            group = this.server.readGroup(groupId);
             logger.info("Updated group name  :: " + group.getTitle());
             logger.info("Updated group description  :: " + group.getDescription());
             for (SecurityPrincipal child : group.listPrincipals()) {

@@ -4,17 +4,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
-import org.gitana.repo.association.Direction;
+import org.gitana.repo.association.Directionality;
 import org.gitana.repo.client.Branch;
 import org.gitana.repo.client.Repository;
-
-import java.util.Iterator;
-import java.util.Map;
-
 import org.gitana.repo.client.SecurityUser;
 import org.gitana.repo.client.nodes.Association;
 import org.gitana.repo.client.nodes.Node;
 import org.gitana.repo.namespace.QName;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Loader for setting up users.
@@ -89,13 +88,13 @@ public class SocialGraphLoader extends AbstractLoader {
                 QName typeQname = QName.create(typeQnameStr);
                 Node sourceNode = this.getSecurityPrincipalNode(associationObj.get("source"));
                 Node targetNode = this.getSecurityPrincipalNode(associationObj.get("target"));
-                Direction direction = Direction.BOTH;
+                Directionality directionality = Directionality.UNDIRECTED;
                 if (associationObj.get("direction") != null) {
-                    direction = Direction.valueOf(associationObj.get("direction").getTextValue());
+                    directionality = Directionality.valueOf(associationObj.get("directionality").getTextValue());
                 }
                 if (sourceNode != null && targetNode != null) {
-                    Association association = sourceNode.associate(targetNode, typeQname,direction);
-                    logger.info("Create " + typeQnameStr + " Association :: " + sourceNode.getQName() + "<=>" + targetNode.getQName() + " (" + direction + ")");
+                    Association association = sourceNode.associate(targetNode, typeQname, directionality);
+                    logger.info("Create " + typeQnameStr + " Association :: " + sourceNode.getQName() + "<=>" + targetNode.getQName() + " (" + directionality + ")");
                     logger.info("Updated Association ::" + association.toJSONString(true));
                     JsonNode associationDetailsObj = associationObj.get("associationDetails");
 
