@@ -28,7 +28,7 @@
                 }).count(function(count) {
                     result.count = count;
                 }).each(function() {
-                    if (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion') {
+                    //if (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion') {
                         var searchResult = this.object;
                         this.listAttachments().then(function() {
                             searchResult.attachments = {};
@@ -38,7 +38,7 @@
                                 result.list.push(searchResult);
                             });
                         });
-                    }
+                    //}
                 }).then(function() {
                     el.transform({
                         "view" : {
