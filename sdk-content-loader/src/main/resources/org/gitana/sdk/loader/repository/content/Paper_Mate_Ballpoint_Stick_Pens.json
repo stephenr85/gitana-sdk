@@ -11,5 +11,15 @@
     ],
     "tags":[
         "Front Page"
+    ],
+    "manufacturers":[
+        {
+            "company": "ABC Ltd.",
+            "country": "USA"
+        },
+        {
+            "company": "Shanghai Office Products Ltd.",
+            "country": "China"
+        }
     ]
 }
