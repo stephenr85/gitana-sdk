@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="../../css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <style type="text/css" title="currentStyle">
+        @import "http://www.datatables.net/release-datatables/media/css/demo_page.css";
+        @import "http://www.datatables.net/release-datatables/media/css/demo_table_jui.css";
+        @import "http://www.datatables.net/release-datatables/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css";
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana.js">
+    </script>
+    <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
+    </script>
+    <script type="text/javascript" language="javascript"
+            src="http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js">
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header' id='node-audit-records-2'>
+        <h2>Node</h2>
+    </div>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case'>
+            <h3>Node Audit Records</h3>
+            <h4>Node audit records with server side sorting and pagination.</h4>
+
+            <div id="field1">
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label for="node-id">Node Id</label>
+
+                            <div class="field">
+                                <input type="text" id="node-id" size="60" value="theoffice:wilsonjonesbinder"/>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="audit-button">Get Audit Records</button>
+                        </li>
+                    </ul>
+                </div>
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="audit-records"></table>
+                <div class="error"></div>
+            </div>
+
+            <script type="text/javascript" id="field1-script">
+                $(function() {
+                    $(document).ready(function() {
+                        var totalRecords = 0;
+                        var fields = ['scope','action','principal','method','handler','timestamp'];
+                        var getAuditRecords = function (nodeId, branch) {
+                            $('#audit-records').dataTable({
+                                "aoColumns": [
+                                    { "sTitle": "Scope" },
+                                    { "sTitle": "Action" },
+                                    { "sTitle": "Principal ID" },
+                                    { "sTitle": "Method" },
+                                    { "sTitle": "Handler" },
+                                    { "sTitle": "Timestamp" }
+                                ],
+                                "bJQueryUI": true,
+                                "sPaginationType": "full_numbers",
+                                "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                                    $('td', nRow).attr('nowrap', 'nowrap');
+                                    return nRow;
+                                },
+                                "bDestroy":true,
+                                "bProcessing": true,
+                                "bServerSide": true,
+                                "sAjaxSource": '#',
+                                "fnServerData" : function (sSource, aoData, fnCallback) {
+                                    var simpleMap = {};
+                                    for (var i = 0; i < aoData.length; i++) {
+                                        var entry = aoData[i];
+                                        simpleMap[entry.name] = entry.value;
+                                    }
+                                    var sEcho = simpleMap["sEcho"];
+                                    var records = [];
+                                    var listingConfigs = {"skip":simpleMap["iDisplayStart"], "limit":simpleMap["iDisplayLength"]};
+                                    if (simpleMap['iSortingCols'] > 0) {
+                                        listingConfigs['sort'] = {};
+                                        for (var i = 0 ; i < simpleMap['iSortingCols'] ; i++) {
+                                            var colId = simpleMap['iSortCol_'+i];
+                                            var direction = simpleMap['sSortDir_'+i];
+                                            listingConfigs['sort'][fields[colId]] = (direction=='asc') ? 1 : -1;
+                                        }
+                                    }
+                                    branch.readNode(nodeId).listAuditRecords(listingConfigs).each(
+                                            function() {
+                                                records.push([this.getScope(),this.getAction(),this.getPrincipalId(),this.getMethod(),this.getHandler(),this.getSystemMetadata().getModifiedOn()['timestamp']]);
+                                            }).then(function() {
+                                        var json = {"sEcho": sEcho,"aaData" : records};
+                                        if (totalRecords == 0) {
+                                            if (records.length == simpleMap["iDisplayLength"]) {
+                                                json.iTotalRecords = simpleMap["iDisplayStart"] + simpleMap["iDisplayLength"] * 2;
+                                                json.iTotalDisplayRecords = simpleMap["iDisplayStart"] + simpleMap["iDisplayLength"] * 2;
+                                            } else {
+                                                totalRecords = simpleMap["iDisplayStart"] + records.length;
+                                                json.iTotalRecords = totalRecords;
+                                                json.iTotalDisplayRecords = totalRecords;
+                                            }
+                                        } else {
+                                            json.iTotalRecords = totalRecords;
+                                            json.iTotalDisplayRecords = totalRecords;
+                                        }
+                                        fnCallback(json);
+                                    });
+                                }
+                            });
+                        };
+                        var defaults = Gitana.SDK.defaults;
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                            this.readBranch('master').then(function() {
+                                var branch = this;
+                                $('#audit-button').click(function() {
+                                    getAuditRecords($('#node-id').val(), branch);
+                                });
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>
+</div>
+</body>
+</html>
