@@ -8,14 +8,7 @@
     <name>Gitana SDK Parent Project</name>
     <packaging>pom</packaging>
     <modules>
-
-        <!-- SDK content loader -->
-        <module>sdk-content-loader</module>
-
-        <!-- SDK sample site -->
-        <module>sdk-sample-site</module>
         <module>sdk</module>
-
     </modules>
     <organization>
         <name>Gitana Software, Inc</name>
@@ -30,6 +23,16 @@
         </license>
     </licenses>
     <developers>
+        <developer>
+            <id>drq</id>
+            <name>Yong Qu</name>
+            <roles>
+                <role>Founder</role>
+                <role>Developer</role>
+            </roles>
+            <organization>Gitana, Inc</organization>
+            <organizationUrl>http://www.gitanasoftware.com</organizationUrl>
+        </developer>
         <developer>
             <id>uzi</id>
             <name>Michael Uzquiano</name>

@@ -64,12 +64,10 @@
                             },
                             "view" : "VIEW::WEB_EDIT_LIST",
                             "postRender" : function (form) {
-                                var server;
                                 var loginButton = $('#login-button').button().click(function() {
                                     var value = form.getValue();
                                     var gitana = new Gitana();
                                     gitana.authenticate(value.username, value.password).trap(Gitana.SDK.defaults.errorHandler).then(function() {
-                                        server = this;
                                         $('#form').hide();
                                         $('#status').empty().html("Authenticated as " + gitana.authenticatedUsername + " with ticket " + gitana.ticket);
                                         loginButton.hide();
@@ -77,12 +75,11 @@
                                     });
                                 });
                                 var logoutButton = $('#logout-button').button().hide().click(function() {
-                                    server.trap(Gitana.SDK.defaults.errorHandler).logout().then(function(){
-                                        $('#form').show();
-                                        $('#status').empty();
-                                        loginButton.show();
-                                        logoutButton.hide();
-                                    });
+                                    //TODO: add logout.
+                                    $('#form').show();
+                                    $('#status').empty();
+                                    loginButton.show();
+                                    logoutButton.hide();
                                 });
                             }
                         });

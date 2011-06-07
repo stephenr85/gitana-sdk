@@ -80,12 +80,12 @@
                 $(function() {
                     $(document).ready(function() {
                         //TODO: Also does incomingAssociations and outgoingAssociations returns association with BOTH direction?
-                        //TODO: The traverse around theoffice:bobcat doesn't seem to return correct results for theoffice:isEatenBy association with BOTH direction.
+                        //TODO: The traverse around theoffice:bobcat doesn't seem to return correct results for creatures:eats association with BOTH direction.
                         var defaults = Gitana.SDK.defaults;
                         var nodeLookup = {};
                         new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
                             this.readBranch('master').queryNodes({
-                                "_type" : "theoffice:creature"
+                                "_type" : "creatures:creature"
                             }).each(function() {
                                 $('#creature-id').append('<option value="' + this.getId() + '">' + this.get('name') + '</option>');
                                 nodeLookup[this.getId()] = this;
@@ -105,7 +105,7 @@
                                             };
 
                                             $('#eats').empty().append('<div class="list-title">EATS</div>');
-                                            selectedNode.incomingAssociations('theoffice:isEatenBy').each(function() {
+                                            selectedNode.incomingAssociations('creatures:eats').each(function() {
                                                 if (this.getDirectionality()=='UNDIRECTED' && this.getSourceNodeId() == selectedNode.getId()) {
                                                     this.readTargetNode().then(function(){
                                                         displayCreature($('#eats'), this);
@@ -117,7 +117,7 @@
                                                 }
                                             });
                                             $('#is-eaten-by').empty().append('<div  class="list-title">IS EATEN BY</div>');
-                                            selectedNode.outgoingAssociations('theoffice:isEatenBy').each(function() {
+                                            selectedNode.outgoingAssociations('creatures:eats').each(function() {
                                                 if (this.getDirectionality()=='UNDIRECTED' && this.getTargetNodeId() == selectedNode.getId()) {
                                                     this.readSourceNode().then(function(){
                                                         displayCreature($('#is-eaten-by'), this);

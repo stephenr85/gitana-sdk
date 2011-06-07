@@ -27,7 +27,7 @@ $(function() {
                     "examples": [
                         {
                             "id":"security-login",
-                            "title":"Login and Logout",
+                            "title":"Login",
                             "link":"../../html/general/Login.html"
                         },
                         {
@@ -107,11 +107,6 @@ $(function() {
                             "id":"node-audit-records",
                             "title":"Node Audit Records",
                             "link":"../../html/general/NodeAuditRecords.html"
-                        },
-                        {
-                            "id":"node-audit-records-2",
-                            "title":"Node Audit Records (Server-Side)",
-                            "link":"../../html/general/NodeAuditRecords2.html"
                         }
                     ]
                 },

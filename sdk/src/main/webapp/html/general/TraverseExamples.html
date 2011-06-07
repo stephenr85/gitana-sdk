@@ -105,34 +105,34 @@
                         }
                     },
                     "example3" :{
-                        "title": "Find all nodes of depth 2 away from the source code with INCOMING theoffice:isEatenBy association.",
+                        "title": "Find all nodes of depth 2 away from the source code with INCOMING creatures:eats association.",
                         "traverse":{
                             "associations": {
-                                "theoffice:isEatenBy": "INCOMING"
+                                "creatures:eats": "INCOMING"
                             },
                             "depth": 2
                         }
                     },
                     "example4" :{
-                        "title": "Find all nodes of any depth away from the source code with theoffice:isEatenBy association.",
+                        "title": "Find all nodes of any depth away from the source code with creatures:eats association.",
                         "traverse":{
                             "associations": {
-                                "theoffice:isEatenBy": "ANY"
+                                "creatures:eats": "ANY"
                             }
                         }
                     },
                     "example5" :{
-                        "title": "Find all nodes of depth 1 away from the source code with type 'theoffice:creature'.",
+                        "title": "Find all nodes of depth 1 away from the source code with type 'creatures:creature'.",
                         "traverse":{
-                            "types":["theoffice:creature"],
+                            "types":["creatures:creature"],
                             "depth":1
                         }
                     },
                     "example6" :{
-                        "title": "Find all nodes of depth 1 away from the source code with either theoffice:isEatenBy or a:updated association.",
+                        "title": "Find all nodes of depth 1 away from the source code with either creatures:eats or a:updated association.",
                         "traverse":{
                             "associations": {
-                                "theoffice:isEatenBy": "ANY",
+                                "creatures:eats": "ANY",
                                 "a:updated":"ANY"
                             },
                             "depth":1

@@ -263,14 +263,8 @@
                 var server = this;
 
                 var json = [];
-                this.listUsers({"sort":{"lastName": 1}}).each(function() {
-                    var userId = this.getId();
+                this.listUsers().each(function() {
                     userListJson[this.getId()] = this;
-                    var employeeItem = $('<li><a href="#">' + this.getFirstName() + ' '+ this.getLastName() + '</a></li>');
-                    employeeItem.appendTo($('#employee_list'));
-                    employeeItem.click(function() {
-                        $('div#' + userId + '>span.name').click();
-                    });
                 });
 
                 this.queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
@@ -306,6 +300,11 @@
                                 userSocialGraphNode.data.avatar = user.attachment('avatar').getDownloadUri();
                                 json.push(userSocialGraphNode);
                                 helperMap[personNode.getId()] = json.length - 1;
+                                var employeeItem = $('<li><a href="#">' + userSocialGraphNode.name + '</a></li>');
+                                employeeItem.appendTo($('#employee_list'));
+                                employeeItem.click(function() {
+                                    $('div#' + userId + '>span.name').click();
+                                });
                             }
                         });
                         this.queryNodes({
