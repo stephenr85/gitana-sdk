@@ -51,7 +51,7 @@
                 $(function() {
                     $(document).ready(function() {
                         new Gitana().authenticate(Gitana.SDK.defaults.userName, Gitana.SDK.defaults.password).trap(Gitana.SDK.defaults.errorHandler).then(function() {
-                            $('#query').val(JSON.stringify(Gitana.SDK.defaults.repositoryQuery, null, ' '));
+                            $('#query').val(JSON.stringify(Gitana.SDK.defaults.theOfficeRepositoryQuery, null, ' '));
                             var server = this;
                             $('#query-button').click(function() {
                                 server.queryRepositories(JSON.parse($('#query').val())).count(function(count) {

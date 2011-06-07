@@ -53,7 +53,7 @@
                     $(document).ready(function() {
                         $('#find-attachments').click(function(){
                             var defaults = Gitana.SDK.defaults;
-                            new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                            new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                                 this.readBranch('master').readNode($('#node-id').val()).then(function() {
                                     this.listAttachments().count(function(count) {
                                         $('#attachments').empty().append('<div class="total-results">Total ' + count + ' attachments.</div>');

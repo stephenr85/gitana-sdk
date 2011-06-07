@@ -60,7 +60,7 @@
 $(function() {
     $(document).ready(function() {
         var defaults = Gitana.SDK.defaults;
-        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.creaturesRepositoryQuery).keepOne().then(function() {
             this.readBranch('master').then(function() {
                 var branch = this;
                 $('#query-button').click(function() {

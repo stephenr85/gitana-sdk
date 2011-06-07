@@ -54,7 +54,7 @@
                     $(document).ready(function() {
                         //TODO: Add pagination and sorting.
                         var defaults = Gitana.SDK.defaults;
-                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                             this.readBranch('master').then(function() {
                                 var branch = this;
                                 $('#search-button').click(function() {

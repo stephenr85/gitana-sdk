@@ -49,7 +49,7 @@
                 $(function() {
                     $(document).ready(function() {
                         var defaults = Gitana.SDK.defaults;
-                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                             var repo = this;
                             $('#query').val(JSON.stringify({
                                 "title" : "Michael's Secret Branch"

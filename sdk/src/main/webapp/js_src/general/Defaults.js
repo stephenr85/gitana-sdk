@@ -5,9 +5,18 @@
     Gitana.SDK.defaults = {
         userName : "admin",
         password : "admin",
-        repositoryQuery : {
-            "title" : "Dunder Mifflin sample repository",
-            "tags":["Demo","The office"]
+
+        theOfficeRepositoryQuery: {
+            "sdk_version": "0.1",
+            "sdk_bundle": "theoffice"
+        },
+        creaturesRepositoryQuery: {
+            "sdk_version": "0.1",
+            "sdk_bundle": "creatures"
+        },
+        fortuneCookieRepositoryQuery: {
+            "sdk_version": "0.1",
+            "sdk_bundle": "fortunecookie"
         },
         errorHandler : function(error) {
             $('.error').html("Error message: " + error.message);

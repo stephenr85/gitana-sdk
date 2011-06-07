@@ -83,7 +83,7 @@
                         //TODO: The traverse around theoffice:bobcat doesn't seem to return correct results for creatures:eats association with BOTH direction.
                         var defaults = Gitana.SDK.defaults;
                         var nodeLookup = {};
-                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.creaturesRepositoryQuery).keepOne().then(function() {
                             this.readBranch('master').queryNodes({
                                 "_type" : "creatures:creature"
                             }).each(function() {

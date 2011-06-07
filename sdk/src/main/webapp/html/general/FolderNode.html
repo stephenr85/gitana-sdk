@@ -89,7 +89,7 @@
                             });
                         };
                         var gitana = new Gitana();
-                        gitana.authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                        gitana.authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                             this.readBranch('master').readNode('theoffice:root').then(function() {
                                 findChildren(this, $('#folders'));
                             });

@@ -44,7 +44,7 @@
                         var templateId = "../../templates/FrontPageProducts";
                         var el = $('#products');
                         var defaults = Gitana.SDK.defaults;
-                        gitana.authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                        gitana.authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keep(1).each(function() {
                             this.readBranch('master').queryNodes({
                                 "_type" : "theoffice:product",
                                 "tags" : "Front Page"

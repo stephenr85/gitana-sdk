@@ -60,10 +60,7 @@
                         };
                         var gitana = new Gitana();
                         var repo = null;
-                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).queryRepositories({
-                            "title" : "Dunder Mifflin sample repository",
-                            "tags":["Demo","The office"]
-                        }).keep(1).each(function() {
+                        gitana.authenticate("mscott_theoffice", "password").trap(errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                             repo = this;
                             this.listBranches().each(function() {
                                 $('#branch-id').append('<option value="' + this.getId() + '">' + this.get('title') + '</option>');

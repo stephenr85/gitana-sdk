@@ -67,7 +67,7 @@
 
                         var randomInteger = function (M, N) {
                             return Math.floor(M + (1 + N - M) * Math.random());
-                        }
+                        };
 
                         var generateLuckyNumbers = function () {
                             var luckNumbers = [];
@@ -75,7 +75,7 @@
                                 luckNumbers.push(randomInteger(1, 100));
                             }
                             return luckNumbers;
-                        }
+                        };
 
                         var updateFortuneCookieMessage = function(node, messages) {
                             node.object['message'] = messages[randomInteger(0, messages.length - 1)];
@@ -87,8 +87,8 @@
 
                         var createFortuneCookieMessage = function(branch, messages) {
                             branch.createNode({
-                                "_qname" : "theoffice:fortunecookie",
-                                "title" : "My Fouturn Cookie",
+                                "_qname" : "fortunecookie:cookie",
+                                "title" : "My Fortune Cookie",
                                 "message" : messages[randomInteger(0, messages.length - 1)],
                                 "luckNumbers" : generateLuckyNumbers()
                             }).then(function() {
@@ -117,10 +117,10 @@
                         };
 
                         var defaults = Gitana.SDK.defaults;
-                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
-                            this.readBranch('master').readNode('theoffice:fortunecookiemessages').then(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.fortuneCookieRepositoryQuery).keepOne().then(function() {
+                            this.readBranch('master').readNode('fortunecookie:messages').then(function() {
                                 var messages = this.get('messages');
-                                this.attachment('background').then(function() {
+                                this.attachment('cookie').then(function() {
                                     $('#fortune-cookie').css({
                                         "background": "url('" + this.getDownloadUri() + "') no-repeat"
                                     });
@@ -130,7 +130,7 @@
                                     if (error.http.status == 404) {
                                         createFortuneCookieMessage(branch, messages);
                                     }
-                                }).readNode("theoffice:fortunecookie").then(function() {
+                                }).readNode("fortunecookie:cookie").then(function() {
                                     updateFortuneCookieMessage(this, messages);
                                 });
                             });

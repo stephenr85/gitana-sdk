@@ -53,7 +53,7 @@
                                     });
                                 });
 
-                                server.queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                                server.queryRepositories(defaults.theOfficeRepositoryQuery).keep(1).each(function() {
                                     this.readBranch('master').readPerson("jhalpert_theoffice").then(function() {
                                         var personNodeId = this.getId();
                                         userSocialDetails.personNode = this.object;
