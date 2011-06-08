@@ -48,7 +48,7 @@
                             // Add avatar image
                             $('.user-avatar').append('<img src="' + this.attachment('avatar').getDownloadUri() + '"/>');
                             // Load additional person information from person node.
-                            this.getServer().queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                            this.getServer().queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                                 this.readBranch('master').readPerson("mscott_theoffice").then(function() {
                                     $('.user-info').append('<div class="user-position">' + this.get('currentPosition') + '</div>')
                                             .append('<div class="user-nickname">(' + this.get('nickname') + ')</div>')

@@ -2,7 +2,7 @@
     {{each(index, item) data.list}}
     <div class="front-page-product">
         <div class="front-page-product-image">
-            <img src="${item.attachments.image_thumbnail}" alt="${item.product}"/>
+            <img src="${item.attachments.thumbnail}" alt="${item.product}"/>
         </div>
         <div class="front-page-product-title"><a href="#/product/${item._qname}">${item.product}</a></div>
         <div class="front-page-product-details">${item.details}</div>

@@ -67,7 +67,7 @@
                             this.readBranch('master').then(function() {
                                 var branch = this;
                                 $('#search-button').click(function() {
-                                    branch.readNode($('#source-node').val()).search({
+                                    branch.readNode($('#source-node').val()).find({
                                         "search": $('#keyword').val(),
                                         "traverse": {
                                             "depth": parseInt($('#depth').val())

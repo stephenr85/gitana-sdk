@@ -53,14 +53,14 @@
                                     });
                                 });
 
-                                server.queryRepositories(defaults.theOfficeRepositoryQuery).keep(1).each(function() {
+                                server.queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                                     this.readBranch('master').readPerson("jhalpert_theoffice").then(function() {
                                         var personNodeId = this.getId();
                                         userSocialDetails.personNode = this.object;
                                         this.traverse({
                                             "associations": {
-                                                "theoffice:isManager": "ANY",
-                                                "theoffice:hasRelation": "ANY"
+                                                "theoffice:manages": "ANY",
+                                                "theoffice:inRelationshipWith": "ANY"
                                             },
                                             "depth": 1
                                         }).then(function() {
@@ -76,27 +76,27 @@
                                                 var targetId = associations[key]["target"];
                                                 var targetNode = nodes[targetId];
                                                 var sourceNode = nodes[sourceId];
-                                                if (type == 'theoffice:isManager') {
+                                                if (type == 'theoffice:manages') {
                                                     if (personNodeId == sourceId) {
                                                         userSocialDetails.subordinates.push({
-                                                            "userId": targetNode["userId"]
+                                                            "userId": targetNode["principal-id"]
                                                         });
                                                     }
                                                     if (personNodeId == targetId) {
                                                         userSocialDetails.supervisors.push({
-                                                            "userId": sourceNode["userId"]
+                                                            "userId": sourceNode["principal-id"]
                                                         });
                                                     }
                                                 }
-                                                if (type == 'theoffice:hasRelation') {
+                                                if (type == 'theoffice:inRelationshipWith') {
                                                     if (personNodeId == sourceId) {
                                                         userSocialDetails.relationships.push({
-                                                            "userId": targetNode["userId"]
+                                                            "userId": targetNode["principal-id"]
                                                         });
                                                     }
                                                     if (personNodeId == targetId) {
                                                         userSocialDetails.relationships.push({
-                                                            "userId": sourceNode["userId"]
+                                                            "userId": sourceNode["principal-id"]
                                                         });
                                                     }
                                                 }

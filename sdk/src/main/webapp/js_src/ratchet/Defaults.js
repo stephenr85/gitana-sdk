@@ -2,10 +2,7 @@
     var connector = new Alpaca.Connectors.GitanaConnector('gitana', {
         "userName": "admin",
         "password": "admin",
-        "repositoryId" : {
-            "title" : "Dunder Mifflin sample repository",
-            "tags":["Demo","The office"]
-        }
+        "repositoryId" : Gitana.SDK.defaults.theOfficeRepositoryQuery
     });
 
     $.connector = window.connector = connector;

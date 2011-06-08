@@ -173,39 +173,39 @@
 
                         personNode.traverse({
                             "associations": {
-                                "theoffice:isManager": "ANY",
-                                "theoffice:hasRelation": "ANY"
+                                "theoffice:manages": "ANY",
+                                "theoffice:inRelationshipWith": "ANY"
                             },
                             "depth": 1
                         }).associations().each(function(){
                             //TODO: Miss get method for association type
                             //TODO: Direction in the associations list is always OUTGOING.
-                            if (this.get('_type') == 'theoffice:isManager') {
+                            if (this.get('_type') == 'theoffice:manages') {
                                 if (personNodeId == this.getSourceNodeId()) {
                                     this.readTargetNode().then(function(){
                                         subordinates.push({
-                                            "userId": this.get("userId")
+                                            "userId": this.get("principal-id")
                                         });
                                     });
                                 }
                                 if (personNodeId == this.getTargetNodeId()) {
                                     this.readSourceNode().then(function(){
                                         supervisors.push({
-                                            "userId": this.get("userId")
+                                            "userId": this.get("principal-id")
                                         });
                                     });
                                 }
                             }
-                            if (this.get('_type') ==  'theoffice:hasRelation') {
+                            if (this.get('_type') ==  'theoffice:inRelationshipWith') {
                                 var relationship = {};
                                 if (personNodeId == this.getSourceNodeId()) {
                                     this.readTargetNode().then(function(){
-                                        relationship.userId = this.get("userId");
+                                        relationship.userId = this.get("principal-id");
                                     });
                                 }
                                 if (personNodeId == this.getTargetNodeId()) {
                                     this.readSourceNode().then(function(){
-                                        relationship.userId = this.get("userId");
+                                        relationship.userId = this.get("principal-id");
                                     });
                                 }
                                 relationship.type = this.get("details").type;
@@ -267,14 +267,14 @@
                     userListJson[this.getId()] = this;
                 });
 
-                this.queryRepositories(defaults.repositoryQuery).keep(1).each(function() {
+                this.queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                     this.readBranch('master').then(function() {
                         branch = this;
                         this.queryNodes({
                             "_type" : "n:person"
                         }).each(function() {
                             var personNode = this;
-                            var userId = personNode.getUserId();
+                            var userId = personNode.getPrincipalId();
                             personNodeListJson[userId] = personNode;
                             personNodeUserMap[personNode.getId()] = userId;
                             var user = userListJson[userId];
