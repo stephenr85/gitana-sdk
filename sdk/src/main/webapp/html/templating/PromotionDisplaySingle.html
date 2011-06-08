@@ -40,7 +40,7 @@
                 $(function() {
                     $(document).ready(function() {
                         var defaults = Gitana.SDK.defaults;
-                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keep(1).each(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.theOfficeRepositoryQuery).keepOne().then(function() {
                             this.readBranch('master').readNode('theoffice:binderpromotion').then(function() {
                                 var data = this.object;
                                 this.listAttachments().then(function() {

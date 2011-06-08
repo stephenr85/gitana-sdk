@@ -87,7 +87,7 @@
                             this.readBranch('master').queryNodes({
                                 "_type" : "creatures:creature"
                             }).each(function() {
-                                $('#creature-id').append('<option value="' + this.getId() + '">' + this.get('name') + '</option>');
+                                $('#creature-id').append('<option value="' + this.getId() + '">' + this.getTitle() + '</option>');
                                 nodeLookup[this.getId()] = this;
                             }).then(function() {
                                 $("#creature-id").change(function () {
@@ -97,34 +97,34 @@
                                             var selectedNode = nodeLookup[val];
                                             var displayCreature = function(div, node) {
                                                 div.append('<div class="list-item"><img class="creature-photo" src="' + node.attachment("photo").getDownloadUri() + '"/>'
-                                                        + '<div id="' + node.getId() + '" class="item-title">' + node.get('name') + '</div>'
+                                                        + '<div id="' + node.getId() + '" class="item-title">' + node.getTitle() + '</div>'
                                                         + '<div class="item-details">' + node.get('details') + '</div><div class="clear"></div></div>');
                                                 $('#' + node.getId(), div).click(function() {
                                                     $('#creature-id').val($(this).attr('id')).change();
                                                 });
                                             };
 
-                                            $('#eats').empty().append('<div class="list-title">EATS</div>');
+                                            $('#is-eaten-by').empty().append('<div class="list-title">EATS</div>');
                                             selectedNode.incomingAssociations('creatures:eats').each(function() {
                                                 if (this.getDirectionality()=='UNDIRECTED' && this.getSourceNodeId() == selectedNode.getId()) {
                                                     this.readTargetNode().then(function(){
-                                                        displayCreature($('#eats'), this);
+                                                        displayCreature($('#is-eaten-by'), this);
                                                     });
                                                 } else {
                                                     this.readSourceNode().then(function(){
-                                                        displayCreature($('#eats'), this);
+                                                        displayCreature($('#is-eaten-by'), this);
                                                     });
                                                 }
                                             });
-                                            $('#is-eaten-by').empty().append('<div  class="list-title">IS EATEN BY</div>');
+                                            $('#eats').empty().append('<div  class="list-title">IS EATEN BY</div>');
                                             selectedNode.outgoingAssociations('creatures:eats').each(function() {
                                                 if (this.getDirectionality()=='UNDIRECTED' && this.getTargetNodeId() == selectedNode.getId()) {
                                                     this.readSourceNode().then(function(){
-                                                        displayCreature($('#is-eaten-by'), this);
+                                                        displayCreature($('#eats'), this);
                                                     });
                                                 } else {
                                                     this.readTargetNode().then(function(){
-                                                        displayCreature($('#is-eaten-by'), this);
+                                                        displayCreature($('#eats'), this);
                                                     });
                                                 }
                                             });
