@@ -24,245 +24,279 @@
 </head>
 <body>
 <div class='gitana-example-container'>
-    <div class='gitana-example-header' id='user-reviews'>
-        <h2>User Reviews</h2>
+<div class='gitana-example-header' id='user-reviews'>
+    <h2>User Reviews</h2>
+</div>
+<div class='gitana-example-body'>
+<div class='gitana-example-case'>
+<h3>User Reviews</h3>
+<h4>User Reviews.</h4>
+
+<div id="field1">
+    <div id="promotion">
     </div>
-    <div class='gitana-example-body'>
-        <div class='gitana-example-case'>
-            <h3>User Reviews</h3>
-            <h4>User Reviews.</h4>
-
-            <div id="field1">
-                <div id="promotion">
-                </div>
-                <div class="user-reviews-summary">
-                    <div id="review_metrics" class="user-reviews-metrics">
-                    </div>
-                    <div id="review_button" class="user-reviews-button">
-                    </div>
-                </div>
-                <div id="user_reviews">
-                </div>
-            </div>
-            <script type="text/javascript" id="field1-script">
-                $(function() {
-                    $(document).ready(function() {
-                        var promotionNodeId = "theoffice:binderpromotion";
-                        var promotionNode;
-                        var reviewMatricsNode = null;
-                        var el = $('#promotion');
-                        var connector = Gitana.SDK.defaults.gitanaConnector;
-
-                        // Render reviews
-                        var renderReviews = function (nodeId) {
-                            promotionNode.reload().traverse({
-                                "associations": {
-                                    "theoffice:hasReview": "OUTGOING"
-                                },
-                                "depth": 1
-                            }).then(function(){
-                                var _this = this;
-                                this.nodes().then(function() {
-                                    $('#user_reviews').empty().alpaca({
-                                      "view" : {
-                                         "globalTemplate": '../../templates/UserReviews.html'
-                                        },
-                                        "data": this.object,
-                                        "postRender": function (renderedReviews) {
-                                            $('span.stars').stars();
-                                            _this.associations().each( function() {
-                                            var associationNode = this;
-                                            var association = this.object;
-                                            var reviewIndicator = $('<div id="' + association.target + '-indicator"></div>');
-                                            reviewIndicator.prependTo($('#' + association.target+' .user-review-indicators'));
-                                            reviewIndicator.alpaca({
-                                                "view" : {
-                                                    "globalTemplate": '../../templates/UserReviewIndicators.html'
-                                                },
-                                                "data": association,
-                                                "postRender" : function(renderedReviewIndicatorsField) {
-                                                    var renderedReviewIndicators = renderedReviewIndicatorsField.data;
-                                                    var helpfulButton = $('.helpfulbutton', renderedReviewIndicatorsField.container);
-                                                    helpfulButton.click(function() {
-                                                        if (Alpaca.isEmpty(association.helpfulCounter)) {
-                                                            association.helpfulCounter = 1;
-                                                            association.totalCounter = 1;
-                                                        } else {
-                                                            association.helpfulCounter++;
-                                                            association.totalCounter++;
-                                                        }
-                                                        associationNode.chain().update().reload().then(function() {
-                                                            $('.helpfulindicator', renderedReviewIndicatorsField.container).html(this.get('helpfulCounter') + ' out of ' + this.get('totalCounter') + ' people found this review helpful.');
-                                                            associationNode = this;
-                                                            association = this.object;
-                                                        });
-                                                    });
-                                                    var unhelpfulButton = $('.unhelpfulbutton', renderedReviewIndicatorsField.container);
-                                                    unhelpfulButton.click(function() {
-                                                        if (Alpaca.isEmpty(association.helpfulCounter)) {
-                                                            association.helpfulCounter = 1;
-                                                            association.totalCounter = 1;
-                                                        } else {
-                                                            association.totalCounter++;
-                                                        }
-                                                        associationNode.chain().update().reload().then(function() {
-                                                            $('.helpfulindicator', renderedReviewIndicatorsField.container).html(this.get('helpfulCounter') + ' out of ' + this.get('totalCounter') + ' people found this review helpful.');
-                                                            associationNode = this;
-                                                            association = this.object;
-                                                        });
-                                                    });
-                                                    var spamIndicatorButton = $('.spambutton', renderedReviewIndicatorsField.container);
-                                                    spamIndicatorButton.click(function() {
-                                                        if (Alpaca.isEmpty(association.spamCounter)) {
-                                                            association.spamCounter = 1;
-                                                        } else {
-                                                            association.spamCounter++;
-                                                        }
-                                                        associationNode.chain().update().reload().then(function(stats) {
-                                                            $('.spamindicator', renderedReviewIndicatorsField.container).html(this.get('spamCounter') + ' people marked this review as inappropriate.');
-                                                            associationNode = this;
-                                                            association = this.object;
-                                                        });
-                                                    });
-                                                }
-                                            });
-                                        });
-                                    }
-                                });
-                                });
-                            });
-                        };
-
-                        var renderReviewMetrics = function (data) {
-                            $('#review_metrics').empty().alpaca({
-                                "view" : {
-                                    "globalTemplate": '../../templates/UserReviewMetrics.html'
-                                },
-                                "data": data,
-                                "postRender": function(renderedField) {
-                                    $('span.stars').stars();
-                                }
-                            });
-                        };
-
-                        var displayReviewMetrics = function () {
-                            if (reviewMatricsNode != null) {
-                                renderReviewMetrics (reviewMatricsNode.object);
-                            } else {
-                               promotionNode.traverse({
-                                    "associations": {
-                                       "theoffice:hasReviewMetrics": "MUTUAL"
-                                   },
-                                    "depth": 1
-                                }).nodes().count( function(count) {
-                                    if (count == 0) {
-                                        connector.branch.chain().createNode({
-                                            "_type" : "theoffice:reviewmetrics",
-                                            "totalReviews" : 0,
-                                            "averageRating" : 0
-                                        }).associate(promotionNodeId, "theoffice:hasReviewMetrics",true).then(function() {
-                                            renderReviewMetrics(this.object);
-                                            reviewMatricsNode = this;
-                                        });
-                                    }
-                                }).keep(1).each(function() {
-                                    renderReviewMetrics(this.object);
-                                    reviewMatricsNode = this;
-                                });
-                            }
-                        };
-
-                        var updateReviewMetrics = function (reviewVal) {
-                            var totalReviews = reviewMatricsNode.get('totalReviews');
-                            var averageRating = reviewMatricsNode.get('averageRating');
-                            reviewMatricsNode.object.averageRating = (averageRating * totalReviews + reviewVal.rating) / (totalReviews + 1);
-                            reviewMatricsNode.object.totalReviews ++;
-                            reviewMatricsNode.chain().update().reload().then(function() {
-                                renderReviewMetrics(this.object);
-                            });
-                        };
-
-                            el.alpaca({
-                                "view" : {
-                                    "globalTemplate": '../../templates/LatestPromotion.html'
-                                },
-                                "data": promotionNodeId,
-                                "connector" : connector,
-                                "postRender": function (renderedField) {
-                                    promotionNode = connector.getGitanaNode(renderedField.data);
-                                    var gitanaDriver = connector.gitanaDriver;
-
-                                    renderReviews();
-
-                                    displayReviewMetrics();
-
-                                    var editButton = $("<button>Write a review</button>").button(({
-                                        icons: {
-                                            primary: "ui-icon-pencil"
-                                        }
-                                    }));
-                                    editButton.click(function() {
-                                        editButton.removeClass("ui-state-focus ui-state-hover");
-                                        var editDialog = $('<div id="alpaca-edit-form" title="Write a review"></div>');
-                                        var _this = this;
-                                            editDialog.alpaca({
-                                                "options": "five_star",
-                                                "schema": "theoffice:review",
-                                                "view":{
-                                                    "parent" : "VIEW::WEB_EDIT_LIST",
-                                                    "type": "create",
-                                                    "styles": {
-                                                        ".alpaca-controlfield-label": {
-                                                        "width": "200px"
-                                                        }
-                                                    }
-                                                },
-                                                "connector": connector,
-                                                "postRender": function(renderedNewFieldControl) {
-                                                    var saveButton = renderedNewFieldControl.form.saveButton;
-                                                    saveButton.hide();
-                                                    editDialog.dialog({
-                                                        resizable: true,
-                                                        height: 550,
-                                                        width: 650,
-                                                        modal: true,
-                                                        buttons: {
-                                                            "Create": function() {
-                                                                // Do the actual work
-                                                                var reviewVal = renderedNewFieldControl.getValue();
-                                                                reviewVal._type = "theoffice:review";
-                                                                connector.branch.chain().createNode(reviewVal).then(function(){
-                                                                    promotionNode.chain().associate(this.getId(), "theoffice:hasReview").then(function(status) {
-                                                                        // refresh the indicators
-                                                                        updateReviewMetrics(reviewVal);
-                                                                        // refresh the review list
-                                                                        renderReviews();
-                                                                        editDialog.dialog('close');
-                                                                    });
-                                                                });
-                                                            }
-                                                        }
-                                                    });
-                                                    $('.ui-dialog').css("overflow", "hidden");
-                                                    $('.ui-dialog-buttonpane').css("overflow", "hidden");
-                                                }
-                                            });
-                                    });
-                                    $('#review_button').append(editButton);
-                                }
-                            });
-
-                    });
-                });
-            </script>
+    <div class="user-reviews-summary">
+        <div id="review_metrics" class="user-reviews-metrics">
+        </div>
+        <div id="review_button" class="user-reviews-button">
         </div>
     </div>
-    <div class="clear"></div>
-    <div class="gitana-example-footer">
-        <center class="copyright">
-            Copyright &copy; 2011 Gitana Software | All Rights Reserved
-        </center>
+    <div id="user_reviews">
     </div>
+    <div id="user_reviews_page_bar">
+    </div>
+</div>
+<script type="text/javascript" id="field1-script">
+$(function() {
+    $(document).ready(function() {
+        var promotionNodeId = "theoffice:binderpromotion";
+        var promotionNode;
+        var reviewMatricsNode = null;
+        var el = $('#promotion');
+        var connector = Gitana.SDK.defaults.gitanaConnector;
+        var pageSize = 5;
+        var currentPage = 0;
+        var pageButtons;
+
+        var getHelpfulStats = function (commentNode) {
+            var helpfulCounter = 0;
+            var unhelpfulCounter = 0;
+            if (commentNode.object['stats']) {
+                if (commentNode.object['stats']['a:deems_helpful']) {
+                    helpfulCounter = commentNode.object['stats']['a:deems_helpful'];
+                }
+                if (commentNode.object['stats']['a:deems_unhelpful']) {
+                    unhelpfulCounter = commentNode.object['stats']['a:deems_unhelpful'];
+                }
+            }
+            return helpfulCounter + ' out of ' + (helpfulCounter + unhelpfulCounter) + ' people found this review helpful.'
+        };
+
+        var getSpamStats = function (commentNode) {
+            if (commentNode.object['stats'] && commentNode.object['stats']['a:deems_spam']) {
+                return commentNode.object['stats']['a:deems_spam'] + ' people marked this review as inappropriate.';
+            } else {
+                return '';
+            }
+        };
+
+        var renderPageBar = function (totalItems) {
+            var pageBarContainer = $('#user_reviews_page_bar');
+            pageBarContainer.empty();
+            pageButtons = [];
+            var pageBarDiv = $('<span class="page-bar"></span>');
+            var totalNumberOfPages = totalItems % pageSize == 0 ? totalItems/pageSize : totalItems/pageSize;
+            for (var i = 0 ; i < totalNumberOfPages ; i++) {
+               var pageButton = $('<button page="'+i+'">'+(i+1)+'</button>').button();
+                pageButton.click(function() {
+                   var clickedPage = $(this).attr('page');
+                   renderReviews($(this).attr('page'));
+               }).appendTo(pageBarContainer);
+               pageButtons.push(pageButton);
+            }
+            pageBarDiv.buttonset().appendTo(pageBarContainer);
+        };
+        // Render reviews
+        var renderReviews = function (pageNumber) {
+            var userReviewsDiv = $('#user_reviews');
+            userReviewsDiv.empty().append('<div class="user-reviews-title">Customer Reviews:</div>');
+            var branch = promotionNode.getBranch();
+            var currentUserId = promotionNode.getDriver().authenticatedUsername;
+            branch.readPerson(currentUserId).then(function() {
+                var personNode = this;
+                promotionNode.reload().outgoingAssociations("a:has_comment",{
+                    "skip": pageNumber * pageSize,
+                    "limit": pageSize,
+                    "sort": {
+                       'timestamp.ms': -1
+                    }
+                }).count(function(count){
+                    renderPageBar(this.object.total_rows);
+                    pageButtons[pageNumber].button( "disable" );
+                }).each(function() {
+                    var associationNode = this;
+                    associationNode.readTargetNode().then(function() {
+                        var commentNode = this;
+                        var userReviewDiv = $("<div id='" + commentNode.getId() + "'  class='user-review'>");
+                        userReviewsDiv.append(userReviewDiv);
+                        userReviewDiv.alpaca({
+                            "view" : {
+                                "globalTemplate": '../../templates/UserReview.html'
+                            },
+                            "data": commentNode.object,
+                            "postRender": function (renderedReviews) {
+                                $('.user-review-timestamp', userReviewDiv).html(commentNode.getSystemMetadata().getModifiedOn().getTimestamp());
+                                $('.user-review-user', userReviewDiv).html(commentNode.getSystemMetadata().getModifiedBy());
+                                $('span.stars').stars();
+                                var reviewIndicator = $('<div id="' + associationNode.getTargetNodeId() + '-indicator"></div>');
+                                reviewIndicator.prependTo($('#' + associationNode.getTargetNodeId() + ' .user-review-indicators'));
+                                reviewIndicator.alpaca({
+                                    "view" : {
+                                        "globalTemplate": '../../templates/UserReviewIndicators.html'
+                                    },
+                                    "data": associationNode.object,
+                                    "postRender" : function(renderedReviewIndicatorsField) {
+                                        var renderedReviewIndicators = renderedReviewIndicatorsField.data;
+
+                                        $('.helpfulindicator', renderedReviewIndicatorsField.container).html(getHelpfulStats(commentNode));
+                                        $('.spamindicator', renderedReviewIndicatorsField.container).html(getSpamStats(commentNode));
+
+                                        var helpfulButton = $('.helpfulbutton', renderedReviewIndicatorsField.container);
+                                        helpfulButton.click(function() {
+                                            personNode.associate(commentNode, 'a:deems_helpful').then(function() {
+                                                commentNode.reload().then(function() {
+                                                    $('.helpfulindicator', renderedReviewIndicatorsField.container).html(getHelpfulStats(this));
+                                                });
+                                            });
+                                        });
+                                        var unhelpfulButton = $('.unhelpfulbutton', renderedReviewIndicatorsField.container);
+                                        unhelpfulButton.click(function() {
+                                            personNode.associate(commentNode, 'a:deems_unhelpful').then(function() {
+                                                commentNode.reload().then(function() {
+                                                    $('.helpfulindicator', renderedReviewIndicatorsField.container).html(getHelpfulStats(this));
+                                                });
+                                            });
+                                        });
+                                        var spamIndicatorButton = $('.spambutton', renderedReviewIndicatorsField.container);
+                                        spamIndicatorButton.click(function() {
+                                            personNode.associate(commentNode, 'a:deems_spam').then(function() {
+                                                commentNode.reload().then(function() {
+                                                    $('.spamindicator', renderedReviewIndicatorsField.container).html(getSpamStats(this));
+                                                });
+                                            });
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+            });
+        };
+
+        var displayReviewMetrics = function () {
+            var stats = promotionNode.object['stats'];
+            $('#review_metrics').empty().alpaca({
+                "view" : {
+                    "globalTemplate": '../../templates/UserReviewMetrics.html'
+                },
+                "data": {
+                    "averageRating":stats.ratingAverageValue,
+                    "totalReviews": stats.ratingTotalCount
+                },
+                "postRender": function(renderedField) {
+                    $('span.stars').stars();
+                }
+            });
+        };
+        el.alpaca({
+            "view" : {
+                "globalTemplate": '../../templates/LatestPromotion.html'
+            },
+            "data": promotionNodeId,
+            "connector" : connector,
+            "postRender": function (renderedField) {
+                promotionNode = connector.getGitanaNode(renderedField.data);
+                var gitanaDriver = connector.gitanaDriver;
+
+                renderReviews(0);
+
+                displayReviewMetrics();
+
+                var editButton = $("<button>Write a review</button>").button(({
+                    icons: {
+                        primary: "ui-icon-pencil"
+                    }
+                }));
+                editButton.click(function() {
+                    editButton.removeClass("ui-state-focus ui-state-hover");
+                    var editDialog = $('<div id="alpaca-edit-form" title="Write a review"></div>');
+                    var _this = this;
+                    editDialog.alpaca({
+                        "options": "./forms/review_five_star.json",
+                        "schema": "./schemas/review.json",
+                        "view":{
+                            "parent" : "VIEW::WEB_EDIT_LIST",
+                            "type": "create",
+                            "styles": {
+                                ".alpaca-controlfield-label": {
+                                    "width": "200px"
+                                }
+                            }
+                        },
+                        "connector": connector,
+                        "postRender": function(renderedNewFieldControl) {
+                            var saveButton = renderedNewFieldControl.form.saveButton;
+                            saveButton.hide();
+                            editDialog.dialog({
+                                resizable: true,
+                                height: 550,
+                                width: 650,
+                                modal: true,
+                                buttons: {
+                                    "Create": function() {
+                                        // Do the actual work
+                                        var reviewVal = renderedNewFieldControl.getValue();
+                                        reviewVal._type = "n:comment";
+                                        promotionNode.getBranch().createNode(reviewVal).then(function() {
+                                            var commentNode = this;
+                                                this.reload().associateOf(promotionNode,"a:has_comment").then(function(status) {
+                                                    this.subchain(promotionNode).reload().then(function(){
+                                                        // refresh the indicators
+                                                        displayReviewMetrics();
+                                                        // refresh the review list
+                                                        renderReviews(0);
+                                                        editDialog.dialog('close');
+                                                    });
+                                                });
+                                            /*
+                                            if (!promotionNode.object['stats']['ratingAverageValue']) {
+                                                promotionNode.object['stats']['ratingTotalCount'] = 0;
+                                                promotionNode.object['stats']['ratingTotalValue'] = 0;
+                                                promotionNode.object['stats']['ratingAverageValue'] = 0;
+                                                promotionNode.chain().update().reload().then(function() {
+                                                    this.associate(commentNode, "a:has_comment").then(function(status) {
+                                                        // refresh the indicators
+                                                        displayReviewMetrics();
+                                                        // refresh the review list
+                                                        renderReviews(0);
+                                                        editDialog.dialog('close');
+                                                    });
+                                                });
+                                            } else {
+                                                promotionNode.getBranch().chain().associate(promotionNode, this, "a:has_comment").then(function(status) {
+                                                    // refresh the indicators
+                                                    displayReviewMetrics();
+                                                    // refresh the review list
+                                                    renderReviews(0);
+                                                    editDialog.dialog('close');
+                                                });
+                                            }
+                                            */
+                                        });
+                                    }
+                                }
+                            });
+                            $('.ui-dialog').css("overflow", "hidden");
+                            $('.ui-dialog-buttonpane').css("overflow", "hidden");
+                        }
+                    });
+                });
+                $('#review_button').append(editButton);
+            }
+        });
+
+    });
+});
+</script>
+</div>
+</div>
+<div class="clear"></div>
+<div class="gitana-example-footer">
+    <center class="copyright">
+        Copyright &copy; 2011 Gitana Software | All Rights Reserved
+    </center>
+</div>
 </div>
 </body>
 </html>

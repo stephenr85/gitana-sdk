@@ -104,7 +104,7 @@
                                                 });
                                             };
 
-                                            $('#is-eaten-by').empty().append('<div class="list-title">EATS</div>');
+                                            $('#is-eaten-by').empty().append('<div class="list-title">IS EATEN BY</div>');
                                             selectedNode.incomingAssociations('creatures:eats').each(function() {
                                                 if (this.getDirectionality()=='UNDIRECTED' && this.getSourceNodeId() == selectedNode.getId()) {
                                                     this.readTargetNode().then(function(){
@@ -116,7 +116,7 @@
                                                     });
                                                 }
                                             });
-                                            $('#eats').empty().append('<div  class="list-title">IS EATEN BY</div>');
+                                            $('#eats').empty().append('<div  class="list-title">EATS</div>');
                                             selectedNode.outgoingAssociations('creatures:eats').each(function() {
                                                 if (this.getDirectionality()=='UNDIRECTED' && this.getTargetNodeId() == selectedNode.getId()) {
                                                     this.readSourceNode().then(function(){

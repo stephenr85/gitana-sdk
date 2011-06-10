@@ -21,34 +21,36 @@
                 "count":0,
                 "list":[]
             };
-            connector.connect(function() {
-                //TODO: filter doesn't seem to work.
-                connector.branch.searchNodes(key).filter(function(){
-                    return (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion');
-                }).count(function(count) {
-                    result.count = count;
-                }).each(function() {
-                    //if (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion') {
+            var gitanaContext = Ratchet.renditionEngine.connector.gitanaContext;
+            gitanaContext.getBranch().searchNodes(key).filter(
+                    function() {
+                        return (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion');
+                    }).count(
+                    function(count) {
+                        result.count = count;
+                    }).each(
+                    function() {
+                        //if (this.get('_type') == 'theoffice:product' || this.get('_type') == 'theoffice:promotion') {
                         var searchResult = this.object;
                         this.listAttachments().then(function() {
                             searchResult.attachments = {};
-                            this.each(function() {
-                                searchResult.attachments[this.getId()] = this.getDownloadUri();
-                            }).then(function() {
+                            this.each(
+                                    function() {
+                                        searchResult.attachments[this.getId()] = this.getDownloadUri();
+                                    }).then(function() {
                                 result.list.push(searchResult);
                             });
                         });
-                    //}
-                }).then(function() {
-                    el.transform({
-                        "view" : {
-                            "globalTemplate": '../../templates/SearchResults.html'
-                        }
-                    }, {
-                        "data": result
-                    }, function() {
-                        el.swap();
-                    });
+                        //}
+                    }).then(function() {
+                el.transform({
+                    "view" : {
+                        "globalTemplate": '../../templates/SearchResults.html'
+                    }
+                }, {
+                    "data": result
+                }, function() {
+                    el.swap();
                 });
             });
         }

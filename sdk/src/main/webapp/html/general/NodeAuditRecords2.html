@@ -60,8 +60,7 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        var totalRecords = 0;
-                        var fields = ['scope','action','principal','method','handler','timestamp'];
+                        var fields = ['scope','action','principal','method','handler','_system.modified_on.ms'];
                         var getAuditRecords = function (nodeId, branch) {
                             $('#audit-records').dataTable({
                                 "aoColumns": [
@@ -104,19 +103,10 @@
                                                 records.push([this.getScope(),this.getAction(),this.getPrincipalId(),this.getMethod(),this.getHandler(),this.getSystemMetadata().getModifiedOn()['timestamp']]);
                                             }).then(function() {
                                         var json = {"sEcho": sEcho,"aaData" : records};
-                                        if (totalRecords == 0) {
-                                            if (records.length == simpleMap["iDisplayLength"]) {
-                                                json.iTotalRecords = simpleMap["iDisplayStart"] + simpleMap["iDisplayLength"] * 2;
-                                                json.iTotalDisplayRecords = simpleMap["iDisplayStart"] + simpleMap["iDisplayLength"] * 2;
-                                            } else {
-                                                totalRecords = simpleMap["iDisplayStart"] + records.length;
-                                                json.iTotalRecords = totalRecords;
-                                                json.iTotalDisplayRecords = totalRecords;
-                                            }
-                                        } else {
+                                        var totalRecords = this.object['total_rows'];
                                             json.iTotalRecords = totalRecords;
                                             json.iTotalDisplayRecords = totalRecords;
-                                        }
+
                                         fnCallback(json);
                                     });
                                 }

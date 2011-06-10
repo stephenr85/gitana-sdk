@@ -9,35 +9,34 @@
         },
 
         index: function(el) {
-            connector.connect(function() {
-                connector.branch.queryNodes({
-                    "_type" : "theoffice:promotion"
-                }).then(function() {
-                    var data = {
-                        "list" : []
-                    };
-                    this.each(
-                            function() {
-                                var node = this.object;
-                                this.listAttachments().then(function() {
-                                    node.attachments = {};
-                                    this.each(
-                                            function() {
-                                                node.attachments[this.getId()] = this.getDownloadUri();
-                                            }).then(function() {
-                                        data.list.push(node);
-                                    });
+            var gitanaContext = Ratchet.renditionEngine.connector.gitanaContext;
+            gitanaContext.getBranch().queryNodes({
+                "_type" : "theoffice:promotion"
+            }).then(function() {
+                var data = {
+                    "list" : []
+                };
+                this.each(
+                        function() {
+                            var node = this.object;
+                            this.listAttachments().then(function() {
+                                node.attachments = {};
+                                this.each(
+                                        function() {
+                                            node.attachments[this.getId()] = this.getDownloadUri();
+                                        }).then(function() {
+                                    data.list.push(node);
                                 });
-                            }).then(function() {
-                        el.transform({
-                            "view" : {
-                                "globalTemplate": '../../templates/Promotions.html'
-                            }
-                        }, {
-                            "data": data
-                        }, function() {
-                            el.swap();
-                        });
+                            });
+                        }).then(function() {
+                    el.transform({
+                        "view" : {
+                            "globalTemplate": '../../templates/Promotions.html'
+                        }
+                    }, {
+                        "data": data
+                    }, function() {
+                        el.swap();
                     });
                 });
             });

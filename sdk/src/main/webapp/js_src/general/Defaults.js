@@ -21,15 +21,6 @@
         errorHandler : function(error) {
             $('.error').html("Error message: " + error.message);
         },
-        gitanaConnector : new Alpaca.Connectors.GitanaConnector('gitana', {
-            "userName": "admin",
-            "password": "admin",
-            "repositoryId": {
-                "title" : "Dunder Mifflin sample repository",
-                "tags":["Demo",
-                    "The office"]
-            }
-        }),
         sourceViewer : function(object) {
             var sourceViewDialog = $('<div id="node-json" title="View Source"></div>');
             var _this = this;
@@ -54,5 +45,20 @@
             });
         }
     };
+
+    Gitana.SDK.defaults.theOfficeGitanaContext = new Gitana.GitanaContext({
+        "user":{
+            "userName" : "admin",
+            "password" : "admin"
+        },
+        "repository": Gitana.SDK.defaults.theOfficeRepositoryQuery,
+        "error" : function(error) {
+
+        }
+    });
+
+    Gitana.SDK.defaults.gitanaConnector = new Alpaca.Connectors.GitanaConnector('gitana', {
+        "gitanaContext" : Gitana.SDK.defaults.theOfficeGitanaContext
+    });
 
 })(window);

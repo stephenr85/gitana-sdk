@@ -208,7 +208,7 @@
                                         relationship.userId = this.get("principal-id");
                                     });
                                 }
-                                relationship.type = this.get("details").type;
+                                //relationship.type = this.get("details").type;
                                 relationships.push(relationship);
                             }
                         }).then(function() {

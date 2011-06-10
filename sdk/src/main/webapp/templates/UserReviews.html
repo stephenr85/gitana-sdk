@@ -2,7 +2,7 @@
     <div class="user-reviews">
         <div class="user-reviews-title">Customer Reviews:</div>
         {{each data.rows}}
-        {{if _type == 'theoffice:review'}}
+        {{if _type == 'n:comment'}}
         <div id="${_doc}"  class="user-review">
             <div class="user-review-left">
                 <div class="user-review-timestamp">${_system.modified_on.timestamp}</div>
@@ -13,8 +13,8 @@
                 </div>
             </div>
             <div class="user-review-right">
-                <div class="user-review-title">${reviewTitle}</div>
-                <div class="user-review-details">${reviewDetails}</div>
+                <div class="user-review-title">${title}</div>
+                <div class="user-review-details">${description}</div>
                 <div class="user-review-indicators">
                 </div>
             </div>

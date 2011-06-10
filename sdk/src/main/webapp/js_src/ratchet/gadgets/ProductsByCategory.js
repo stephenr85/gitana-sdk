@@ -10,8 +10,8 @@
 
         index: function(el) {
             var id = el.tokens["id"];
-            connector.connect(function() {
-                connector.branch.queryNodes({
+            var gitanaContext = Ratchet.renditionEngine.connector.gitanaContext;
+            gitanaContext.getBranch().queryNodes({
                     "_type" : "theoffice:product",
                     "categories" : id
                 }).then(function() {
@@ -43,8 +43,7 @@
                         });
                     });
                 });
-            });
-        }
+            }
     });
 
     Ratchet.GadgetRegistry.register("main_content_gadget", ProductsByCategory);

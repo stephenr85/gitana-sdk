@@ -1,6 +1,6 @@
 <script id="socialGraphTipTemplate" type="text/x-jquery-tmpl">
     {{if data.isAssociation}}
-        {{if data.associationType == "theoffice:isManager"}}
+        {{if data.associationType == "theoffice:manages"}}
             <div class='tip-title'>Manage</div>
             <div class='tip-text'>
                 <span class='sub-title'>Supervisor:</span>
@@ -10,20 +10,20 @@
                 <span class='sub-title'>Subordinate:</span>
                 <span class='sub-text'>${data.targetUser}</span>
             </div>
-            {{if data.details.startDate}}
+            {{if data.startDate}}
                 <div class='tip-text'>
                     <span class='sub-title'>Start Date:</span>
-                    <span class='sub-text'>${data.details.startDate}</span>
+                    <span class='sub-text'>${data.startDate}</span>
                 </div>
             {{/if}}
-            {{if data.details.endDate}}
+            {{if data.endDate}}
                 <div class='tip-text'>
                     <span class='sub-title'>End Date:</span>
-                    <span class='sub-text'>${data.details.endDate}</span>
+                    <span class='sub-text'>${data.endDate}</span>
                 </div>
             {{/if}}
         {{/if}}
-        {{if data.associationType == "theoffice:hasRelation"}}
+        {{if data.associationType == "theoffice:inRelationshipWith"}}
             <div class='tip-title'>Relation</div>
             <div class='tip-text'>
                 <span class='sub-title'>Party A:</span>
@@ -33,22 +33,22 @@
                 <span class='sub-title'>Party B:</span>
                 <span class='sub-text'>${data.targetUser}</span>
             </div>
-            {{if data.details.type}}
+            {{if data.type}}
                 <div class='tip-text'>
                     <span class='sub-title'>Type:</span>
-                    <span class='sub-text'>${data.details.type}</span>
+                    <span class='sub-text'>${data.type}</span>
                 </div>
             {{/if}}
-            {{if data.details.startDate}}
+            {{if data.startDate}}
                 <div class='tip-text'>
                     <span class='sub-title'>Start Date:</span>
-                    <span class='sub-text'>${data.details.startDate}</span>
+                    <span class='sub-text'>${data.startDate}</span>
                 </div>
             {{/if}}
-            {{if data.details.endDate}}
+            {{if data.endDate}}
                 <div class='tip-text'>
                     <span class='sub-title'>End Date:</span>
-                    <span class='sub-text'>${data.details.endDate}</span>
+                    <span class='sub-text'>${data.endDate}</span>
                 </div>
             {{/if}}
         {{/if}}

@@ -107,6 +107,11 @@ $(function() {
                             "id":"node-audit-records",
                             "title":"Node Audit Records",
                             "link":"../../html/general/NodeAuditRecords.html"
+                        },
+                        {
+                            "id":"node-audit-records",
+                            "title":"Node Audit Records with Pagination and Sorting",
+                            "link":"../../html/general/NodeAuditRecords2.html"
                         }
                     ]
                 },
