@@ -86,10 +86,10 @@ $(function() {
             }
         },
         "example2" :{
-            "title": "Find all nodes with type 'creatures:creature' and title 'Creature Squirrel'",
+            "title": "Find all nodes with type 'creatures:creature' and title 'Douglas Squirrel'",
             "query":{
                 "_type" : "creatures:creature",
-                "title" : "Creature Squirrel"
+                "title" : "Douglas Squirrel"
             }
         },
         "example3" :{
@@ -209,7 +209,7 @@ $(function() {
             "query":{
                 "_type": "creatures:creature",
                 "title": {
-                    "$regex" : "^([a-zA-Z]{8} Coyote)?$"
+                    "$regex" : "^([a-zA-Z]{7} Squirrel)?$"
                 }
             }
         },

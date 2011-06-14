@@ -109,7 +109,7 @@ $(function() {
                             "link":"../../html/general/NodeAuditRecords.html"
                         },
                         {
-                            "id":"node-audit-records",
+                            "id":"node-audit-records-2",
                             "title":"Node Audit Records with Pagination and Sorting",
                             "link":"../../html/general/NodeAuditRecords2.html"
                         }
