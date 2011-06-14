@@ -112,7 +112,9 @@ $(function() {
                     }
                 }).count(function(count){
                     renderPageBar(this.object.total_rows);
-                    pageButtons[pageNumber].button( "disable" );
+                    if (pageButtons[pageNumber]) {
+                        pageButtons[pageNumber].button( "disable" );
+                    }
                 }).each(function() {
                     var associationNode = this;
                     associationNode.readTargetNode().then(function() {
@@ -175,18 +177,20 @@ $(function() {
         };
 
         var displayReviewMetrics = function () {
-            var stats = promotionNode.object['stats'];
-            $('#review_metrics').empty().alpaca({
-                "view" : {
-                    "globalTemplate": '../../templates/UserReviewMetrics.html'
-                },
-                "data": {
-                    "averageRating":stats.ratingAverageValue,
-                    "totalReviews": stats.ratingTotalCount
-                },
-                "postRender": function(renderedField) {
-                    $('span.stars').stars();
-                }
+            promotionNode.reload().then(function(){
+                var stats = this.object['stats'];
+                $('#review_metrics').empty().alpaca({
+                    "view" : {
+                        "globalTemplate": '../../templates/UserReviewMetrics.html'
+                    },
+                    "data": {
+                        "averageRating":stats.ratingAverageValue,
+                        "totalReviews": stats.ratingTotalCount
+                    },
+                    "postRender": function(renderedField) {
+                        $('span.stars').stars();
+                    }
+                });
             });
         };
         el.alpaca({
@@ -240,39 +244,15 @@ $(function() {
                                         reviewVal._type = "n:comment";
                                         promotionNode.getBranch().createNode(reviewVal).then(function() {
                                             var commentNode = this;
-                                                this.reload().associateOf(promotionNode,"a:has_comment").then(function(status) {
-                                                    this.subchain(promotionNode).reload().then(function(){
-                                                        // refresh the indicators
-                                                        displayReviewMetrics();
-                                                        // refresh the review list
-                                                        renderReviews(0);
-                                                        editDialog.dialog('close');
-                                                    });
-                                                });
-                                            /*
-                                            if (!promotionNode.object['stats']['ratingAverageValue']) {
-                                                promotionNode.object['stats']['ratingTotalCount'] = 0;
-                                                promotionNode.object['stats']['ratingTotalValue'] = 0;
-                                                promotionNode.object['stats']['ratingAverageValue'] = 0;
-                                                promotionNode.chain().update().reload().then(function() {
-                                                    this.associate(commentNode, "a:has_comment").then(function(status) {
-                                                        // refresh the indicators
-                                                        displayReviewMetrics();
-                                                        // refresh the review list
-                                                        renderReviews(0);
-                                                        editDialog.dialog('close');
-                                                    });
-                                                });
-                                            } else {
-                                                promotionNode.getBranch().chain().associate(promotionNode, this, "a:has_comment").then(function(status) {
+                                            this.reload().associateOf(promotionNode, "a:has_comment").then(function(status) {
+                                                this.subchain(promotionNode).reload().then(function() {
                                                     // refresh the indicators
                                                     displayReviewMetrics();
                                                     // refresh the review list
                                                     renderReviews(0);
                                                     editDialog.dialog('close');
                                                 });
-                                            }
-                                            */
+                                            });
                                         });
                                     }
                                 }
