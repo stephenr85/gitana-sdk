@@ -630,13 +630,13 @@ span.stars span {
     font-weight: bold;
 }
 
-.address-title  {
+.address-title {
     font-size: 1.2em;
     font-weight: bold;
     padding: 0px 0 10px 0;
 }
 
-.hours-title  {
+.hours-title {
     font-size: 1.2em;
     font-weight: bold;
     padding: 10px 0 10px 0;
@@ -645,5 +645,31 @@ span.stars span {
 .store .store-label {
     font-weight: bold;
     min-width: 70px;
-    display:inline-block;
+    display: inline-block;
+}
+
+.front-page-items {
+    display: block;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.front-page-item-title {
+    padding: 4px;
+    font-size: 1.2em;
+    padding-left: 10px;
+}
+
+.front-page-item-image {
+    display: inline-block;
+    width: 120px;
+    margin: 20px;
+    vertical-align:top;
+}
+
+.front-page-item-description {
+    display: inline-block;
+    width: 550px;
+    margin: 10px;
 }

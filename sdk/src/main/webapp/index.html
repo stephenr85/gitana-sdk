@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Dunder Mifflin Paper Company, Inc.</title>
+    <title>Gitana SDK</title>
     <link type="text/css"
           href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
           rel="stylesheet">
     <link type="text/css" href="./alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
-    <link type="text/css" href="./css/sdk-sample-site-${project.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="./css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
     </script>
     <script type="text/javascript"
@@ -21,188 +21,101 @@
     </script>
     <script type="text/javascript" src="./js/gitana.js">
     </script>
-    <script type="text/javascript" src="./js/sdk-sample-site-${project.version}.js">
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(document.body).ratchet().run("/");
-        });
-    </script>
 </head>
 <body>
-<div id="container">
-
-<!-- Start of Page Header -->
-
-<div id="page_header">
-
-    <div id="page_heading">
-        <h1><span class="hidden">Hardware Store</span></h1>
-
-        <h2><span class="hidden">Your punchline here</span></h2>
+<div class='gitana-example-container'>
+    <div class='gitana-example-header'>
+        <h2>Software Development Kit</h2>
     </div>
-
-    <div id="page_headerlinks">
-
-        <ul>
-            <li><a href="#">Account Wish</a></li>
-            <li><a href="#">List Order</a></li>
-            <li><a href="#">Status</a></li>
-            <li class="last"><a href="#">Shopping Cart</a></li>
-        </ul>
-
-    </div>
-
-    <div gadget="search_form_gadget" id="page_headersearch">
-    </div>
-
-    <div class="clearthis">&nbsp;</div>
-
-</div>
-
-<!-- End of Page Header -->
-
-
-<!-- Start of Page Menu -->
-
-<div id="page_menu">
-
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="#/products">Products</a></li>
-        <li><a href="#/promotions">Promotions</a></li>
-        <li><a href="#">Stores</a></li>
-        <li><a href="#">Company</a></li>
-        <li class="last"><a href="#">Contact</a></li>
-    </ul>
-
-</div>
-
-<!-- End of Page Menu -->
-
-
-<!-- Start of Left Sidebar -->
-
-<div id="left_sidebar">
-
-
-    <!-- Start of Newsletter Signup Form -->
-
-    <div id="newsletter">
-        <h2>Newsletter Signup!</h2>
-
-        <form action="#">
-            <div>
-                <input type="text"/>
-                <input type="image" src="images/button_ok.gif" class="button"/>
-
-                <div class="clearthis">&nbsp;</div>
-
-            </div>
-        </form>
-
-        <div id="link_cancel">
-            <a href="#">Cancel Subscription</a>
+    <div class='gitana-example-body'>
+        <div class='gitana-example-case front-page-items'>
+            <ul style="list-style:none;">
+                <li>
+                    <div class="ui-widget" style="margin:10px">
+                        <div class="ui-widget-header  ui-corner-top front-page-item-title">Gitana Basics
+                        </div>
+                        <div class="ui-widget-content">
+                            <div class="front-page-item-image">
+                                <img src="images/logos/gitana-logo.png" alt="Image description" title="Image title"/>
+                            </div>
+                            <div class="front-page-item-description">
+                                Examples for Key Gitana Features such as authentication, auditing, association, query, traversal etc.
+                                <p><a href="html/general/Login.html">Get Started...</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ui-widget" style="margin:10px">
+                        <div class="ui-widget-header  ui-corner-top front-page-item-title">Gitana with jQuery Templating
+                        </div>
+                        <div class="ui-widget-content">
+                            <div class="front-page-item-image">
+                                <img src="images/logos/jquery.png" alt="Image description" title="Image title"/>
+                            </div>
+                            <div class="front-page-item-description">
+                                Examples that render Gitana content using jQuery Templating engine.
+                                <p><a href="html/templating/PromotionDisplaySingle.html">Get Started...</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ui-widget" style="margin:10px">
+                        <div class="ui-widget-header  ui-corner-top front-page-item-title">Gitana with Alpaca
+                        </div>
+                        <div class="ui-widget-content">
+                            <div class="front-page-item-image">
+                                <img src="images/logos/Alpaca-logo.png" alt="Image description" title="Image title"/>
+                            </div>
+                            <div class="front-page-item-description">
+                                Examples that retrieve, render, create or edit Gitana content using Alpaca form engine.
+                                <p><a href="html/alpaca/PromotionInContextEditingFullForm.html">Get Started...</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ui-widget" style="margin:10px">
+                        <div class="ui-widget-header  ui-corner-top front-page-item-title">Social Graph Sample Site
+                        </div>
+                        <div class="ui-widget-content">
+                            <div class="front-page-item-image">
+                                <img src="images/logos/social.png" alt="Image description" title="Image title"/>
+                            </div>
+                            <div class="front-page-item-description">
+                                Sample site that visualizes Gitana-driven social graph using JavaScript InfoVis Toolkit.
+                                <p><a href="html/socialgraph/SocialGraph.html" target="_socialgraph_">Visit Social Graph Sample Site...</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ui-widget" style="margin:10px">
+                        <div class="ui-widget-header  ui-corner-top front-page-item-title">Rachet Sample Site
+                        </div>
+                        <div class="ui-widget-content">
+                            <div class="front-page-item-image">
+                                <img src="images/logos/ratchet-logo.png" alt="Image description" title="Image title"/>
+                            </div>
+                            <div class="front-page-item-description">
+                                Sample site built upon Gitana Ratchet, a JavaScript MVC framework.
+                                <p><a href="html/ratchet/index.html" target="_ratchet_">Visit Ratchet Sample Site...</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
-
-    <!-- End of Newsletter Signup Form -->
-
-
-    <!-- Start of Categories Box -->
-
-    <div id="categories">
-        <div id="categories_header">
-            <h2>Categories</h2>
-        </div>
-
-        <ul>
-            <li><a href="#">Cables</a></li>
-            <li><a href="#">Cameras</a></li>
-            <li><a href="#">Input Devices</a></li>
-            <li><a href="#">Memory</a></li>
-            <li><a href="#">Printers</a></li>
-            <li><a href="#">Scanners</a></li>
-            <li><a href="#">Server Accessories</a></li>
-            <li><a href="#">Speakers &amp; Audio</a></li>
-            <li class="last"><a href="#">Wireless</a></li>
-        </ul>
-
-        <div class="clearthis">&nbsp;</div>
-    </div>
-
-    <!-- End of Categories Box -->
-
-
-    <!-- Start of Special Offer Box -->
-
-    <div id="specialoffer">
-
-        <div id="specialoffer_text">
-            <h2><span class="hidden">Get Special Offer <strong>Up to 25% off</strong></span></h2>
-        </div>
-
-        <div id="specialoffer_link">
-            <a href="#">...Go</a>
-        </div>
-
-        <div class="clearthis">&nbsp;</div>
-
-    </div>
-
-    <!-- End of Special Offer Box -->
-
-</div>
-
-<!-- End of Left Sidebar -->
-
-
-<!-- Start of Main Content Area -->
-
-<div gadget="main_content_gadget" id="main_content">
-    <!-- Start of Latest Promotion -->
-    <div gadget="lastest_promotion_gadget" id="lastest_promotion">
-    </div>
-    <!-- End of Latest Promotion -->
-
-
-    <!-- End of Sub Item Descriptions -->
-
-
-    <div class="h_divider">&nbsp;</div>
-
-</div>
-
-<!-- End of Main Content Area -->
-
-
-<div class="clearthis">&nbsp;</div>
-
-
-<!-- Start of Page Footer -->
-
-<div id="page_footer">
-
-    <div id="product_brands">
-
-        <ul>
-            <li class="gitana"><span class="hidden">Gitana</span></li>
-            <li class="alpaca"><span class="hidden">Alpaca</span></li>
-            <li class="ratchet"><span class="hidden">Ratchet</span></li>
-        </ul>
-
-    </div>
-
-    <div id="powered_by">
-        Copyright &copy; 2011 Gitana Software | All Rights Reserved</a>
-    </div>
-
-    <div class="clearthis">&nbsp;</div>
-</div>
-
-<!-- End of Page Footer -->
-
-</div>
-
+    <div class="clear"></div>
+    <div class="gitana-example-footer">
+        <center class="copyright">
+            Copyright &copy; 2011 Gitana Software | All Rights Reserved
+        </center>
+    </div>    
+</div>    
 </body>
 </html>
