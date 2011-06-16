@@ -73,13 +73,16 @@
             <name>Apache snapshot repository</name>
             <url>https://repository.apache.org/content/repositories/snapshots/</url>
         </repository>
-
-        <!-- needed for now to resolve tuckey url rewrite filter 3.2.0 -->
         <repository>
             <id>carbonfive</id>
             <name>carbonfive</name>
             <url>http://mvn.carbonfive.com/nexus/content/groups/public</url>
         </repository>
+		<repository>
+			<id>cloudcms-public</id>
+			<name>cloudcms-public</name>
+			<url>http://http://maven.cloudcms.com/public</url>
+		</repository>
     </repositories>
     <build>
         <plugins>
