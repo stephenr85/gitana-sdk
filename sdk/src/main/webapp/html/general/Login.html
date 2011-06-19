@@ -19,21 +19,24 @@
     </script>
     <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
     </script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css"/>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
 </head>
 <body>
 <div class='gitana-example-container'>
     <div class='gitana-example-header' id='security-login'>
-        <h2>Security</h2>
     </div>
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
-            <h3>Login</h3>
-            <h4>Login.</h4>
-
             <div id="field1">
                 <div id="form"></div>
                 <div id="status"></div>
-                <div>
+                <div id="button-bar">
                     <button id="login-button">Login</button>
                     <button id="logout-button">Logout</button>
                 </div>
@@ -43,12 +46,12 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        // TODO: Need to add real logout.
-                        // TODO: Improve Alpaca to make it easier to add buttons (without adding form stuff).
-                        // TODO: trap doesn't seem to catch invalid password.
+                        var gitana = new Gitana();
+                        var server;
                         $('#form').alpaca({
                             "data" : {
-                                "username" : "mscott_theoffice"
+                                "username" : "mscott_theoffice",
+                                "password" : "password"
                             },
                             "schema": {
                                 "type" : "object",
@@ -66,16 +69,19 @@
                             "postRender" : function (form) {
                                 var loginButton = $('#login-button').button().click(function() {
                                     var value = form.getValue();
-                                    var gitana = new Gitana();
-                                    gitana.authenticate(value.username, value.password).trap(Gitana.SDK.defaults.errorHandler).then(function() {
+                                    gitana.authenticate(value.username, value.password,function (http) {
+                                       Gitana.SDK.defaults.errorHandler(JSON.parse(http.responseText));
+                                    }).trap(Gitana.SDK.defaults.errorHandler).then(function() {
+                                        server = this;
                                         $('#form').hide();
-                                        $('#status').empty().html("Authenticated as " + gitana.authenticatedUsername + " with ticket " + gitana.ticket);
+                                        $('#status').empty().html("<div style='margin:10px;font-size:1.2em'>Authenticated as " + gitana.authenticatedUsername + " with ticket " + gitana.ticket+".</div>");
                                         loginButton.hide();
                                         logoutButton.show();
                                     });
                                 });
+
                                 var logoutButton = $('#logout-button').button().hide().click(function() {
-                                    //TODO: add logout.
+                                    server.logout();
                                     $('#form').show();
                                     $('#status').empty();
                                     loginButton.show();

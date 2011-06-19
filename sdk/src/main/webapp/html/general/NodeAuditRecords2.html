@@ -27,17 +27,20 @@
     <script type="text/javascript" language="javascript"
             src="http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js">
     </script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css"/>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
 </head>
 <body>
 <div class='gitana-example-container'>
     <div class='gitana-example-header' id='node-audit-records-2'>
-        <h2>Node</h2>
     </div>
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
-            <h3>Node Audit Records</h3>
-            <h4>Node audit records with server side sorting and pagination.</h4>
-
             <div id="field1">
                 <div class="form">
                     <ul>
@@ -100,7 +103,7 @@
                                     }
                                     branch.readNode(nodeId).listAuditRecords(listingConfigs).each(
                                             function() {
-                                                records.push([this.getScope(),this.getAction(),this.getPrincipalId(),this.getMethod(),this.getHandler(),this.getSystemMetadata().getModifiedOn()['timestamp']]);
+                                                records.push([this.getScope(),this.getAction(),this.getPrincipalId(),this.getMethod(),this.getHandler(),this.getSystemMetadata().getModifiedOn()['timestamp'] ? this.getSystemMetadata().getModifiedOn()['timestamp'] : ""]);
                                             }).then(function() {
                                         var json = {"sEcho": sEcho,"aaData" : records};
                                         var totalRecords = this.object['total_rows'];

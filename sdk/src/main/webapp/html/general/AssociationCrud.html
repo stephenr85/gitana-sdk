@@ -44,16 +44,20 @@
     </script>
     <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
     </script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css"/>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
 </head>
 <body>
 <div class='gitana-example-container'>
     <div class='gitana-example-header' id='association-crud'>
-        <h2>Association</h2>
     </div>
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
-            <h3>Association</h3>
-            <h4>Assocation.</h4>
             <div id="field1">
                 <div class="form">
                     <ul>
@@ -79,8 +83,6 @@
             <script type="text/javascript" id="field1-script">
                 $(function() {
                     $(document).ready(function() {
-                        //TODO: Also does incomingAssociations and outgoingAssociations returns association with BOTH direction?
-                        //TODO: The traverse around theoffice:bobcat doesn't seem to return correct results for creatures:eats association with BOTH direction.
                         var defaults = Gitana.SDK.defaults;
                         var nodeLookup = {};
                         new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).queryRepositories(defaults.creaturesRepositoryQuery).keepOne().then(function() {

@@ -123,6 +123,17 @@ pre code {
     display: block;
 }
 
+.code-block {
+    font-size: 12px;
+    padding: 0;
+    border: 1px solid #ccc;
+    line-height: 20px;
+    overflow: auto;
+    overflow-Y: hidden;
+    width: 800px;
+    margin: -10px 0px 0px 5px;
+}
+
 #social-details {
     font-size: 1.0em;
     text-align: left;
@@ -232,6 +243,7 @@ pre code {
 .error {
     font-weight: bold;
     color: #ff0000;
+    margin: 10px 0;
 }
 
 .result-item {
@@ -665,11 +677,15 @@ span.stars span {
     display: inline-block;
     width: 120px;
     margin: 20px;
-    vertical-align:top;
+    vertical-align: top;
 }
 
 .front-page-item-description {
     display: inline-block;
     width: 550px;
     margin: 10px;
+}
+
+a.get-started:before {
+    content: "\00bb  ";
 }

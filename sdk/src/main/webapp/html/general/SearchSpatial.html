@@ -19,17 +19,20 @@
     </script>
     <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
     </script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css"/>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
 </head>
 <body>
 <div class='gitana-example-container'>
     <div class='gitana-example-header' id='search-spatial'>
-        <h2>Search</h2>
     </div>
     <div class='gitana-example-body'>
         <div class='gitana-example-case'>
-            <h3>Traversal Search</h3>
-            <h4>Traversal Search</h4>
-
             <div id="field1">
                     <div class="form">
                         <ul>
@@ -73,12 +76,12 @@
                                             "depth": parseInt($('#depth').val())
                                         }
                                     }).count(function(count) {
-                                                $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
+                                        $('#search-results').empty().append('<div class="total-results">Total ' + count + ' search results.</div>');
                                     }).each(function(key, node, index) {
-                                                var title = node.get('title') ? node.get('title') : node.getId();
-                                                var description = node.get('description') ? node.get('description') : "";
-                                                $('#search-results').append('<div class="result-item"><div class="item-title" id="' + this.getQName() + '">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>');
-                                            }).then(function() {
+                                        var title = node.get('title') ? node.get('title') : node.getId();
+                                        var description = node.get('description') ? node.get('description') : "";
+                                        $('#search-results').append('<div class="result-item"><div class="item-title" id="' + this.getQName() + '">' + (index + 1) + '. ' + title + '</div><div class="item-description">' + description + '</div></div>');
+                                    }).then(function() {
                                         $('.item-title').click(function() {
                                             $('#source-node').val($(this).attr('id'));
                                         });
