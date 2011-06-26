@@ -114,7 +114,6 @@ pre {
     line-height: 20px;
     overflow: auto;
     overflow-Y: hidden;
-    width: 800px;
 }
 
 pre code {
@@ -660,9 +659,16 @@ span.stars span {
     display: inline-block;
 }
 
-.front-page-items {
-    display: block;
-    width: 800px;
+.front-page-items-left {
+    display: inline-block;
+    width: 675px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.front-page-items-right {
+    display: inline-block;
+    width: 675px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -676,16 +682,38 @@ span.stars span {
 .front-page-item-image {
     display: inline-block;
     width: 120px;
-    margin: 20px;
+    margin: 20px 10px;
     vertical-align: top;
 }
 
 .front-page-item-description {
     display: inline-block;
-    width: 550px;
+    width: 400px;
     margin: 10px;
 }
 
 a.get-started:before {
     content: "\00bb  ";
+}
+
+a.get-started:link {
+    text-decoration: none;
+}
+
+a.get-started:visited {
+    text-decoration: none;
+    color: #000000;
+}
+
+a.get-started:active {
+    text-decoration: none;
+}
+
+a.get-started:hover {
+    text-decoration: underline;
+}
+
+.list-item-header {
+    width: 50px;
+    font-weight:bold;
 }

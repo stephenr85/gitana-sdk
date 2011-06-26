@@ -181,7 +181,7 @@ $(function() {
             ]
         },
         {
-            "title":"Gitana + jQuery Templating",
+            "title":"Gitana + jQuery Template",
             "examples" : [
                 {
                     "title": "Content Display",
@@ -316,7 +316,7 @@ $(function() {
                     itemBar.addClass('ui-state-highlight');
                     $('title').html('Gitana SDK - ' + item.title);
                     $('.gitana-example-case').prepend('<h2>'+item.title+'</h2>'+'<h4>'+item.description+'</h4>');
-                    $('.gitana-example-header').html('<h2><a href="../../index.html">SDK</a><span> :: </span><span> '+sectionTitle+' </span></h2>');
+                    $('.gitana-example-header').html('<h2><a href="../../index.html">SDK</a><span> > </span><span> '+sectionTitle+' </span></h2>');
                 }
                 itemBar.hover(function() {
                     $(this).addClass('ui-state-hover');

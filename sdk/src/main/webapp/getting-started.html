@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Gitana SDK > Getting Started</title>
+    <meta name="keywords" content="gitana,cloud cms, skd, guide"/>
+    <meta name="description" content="Gitana SDK Getting Started Guide"/>
+    <meta name="author" content="Gitana Software Inc."/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+    <link type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/themes/base/jquery.ui.all.css"
+          rel="stylesheet">
+    <link type="text/css" href="./alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="./css/gitana-sdk-${project.version}.css" rel="stylesheet"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/${jquery.version}/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript"
+            src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css"/>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet"
+          type="text/css"/>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
+</head>
+<body>
+<div class='gitana-example-container'>
+<div class='gitana-example-header'>
+    <h2>Getting Started</h2>
+</div>
+<div class='gitana-example-body'
+     style='display:inline-block;width:800px;margin-left:50px;margin-right:auto;width:850px'>
+<h2>What is Gitana SDK?</h2>
+
+<p>
+    Gitana SDK is a set of examples and sample sites which help you get started with writing Gitana Cloud CMS
+    client application.
+    Gitana Cloud CMS is an infrastructure cloud service aimed at providing all the back-end
+    capabilities that developers need to build powerful, next-generation mobile and web applications. It
+    delivers the easiest and most cost-effective way for developers to incorporate scalable, enterprise-class
+    content services into multi-device HTML5 applications.
+</p>
+
+<h2>Start by checking out hosted demos</h2>
+
+<p>
+    To get a feel for what Gitana SDK is about, check out <a
+        href="http://code.cloudcms.com/sdk/index.html">the
+    hosted demos</a>.
+
+    In the demos, the left-side navigation lists basic feature examples under Gitana section, examples for
+    using Gitana with jQuery Template engine under Gitana + jQuery Template section, examples for using Gitana
+    with Alpaca forms engine under Gitana + Alpaca section and links to Social Graph site and sample Ratchet site under
+    Sample Applications section.
+    Each demo comes with a short description and allows you to view
+    source code by clicking on "Source Code" button.
+</p>
+
+<h2>Download Gitana SDK</h2>
+
+<p>
+    Check out download section of <a href='./index.html'>Gitana SDK front page</a> for links to individual SDK
+    components.
+    You can also just download Gitana SDK examples zip, a self-contained file which includes
+    everything you need to run Gitana SDK examples locally.
+</p>
+
+<h2>Intro to writing Gitana client application</h2>
+
+
+<p>
+    Use your favorite text editor to create an empty html file. You will first need
+    to include Gitana JavaScript library. You can either use local JS file you downloaded or just use hosted
+    one.
+    It is recommended to use minified version for production and uncompressed version for development.
+</p>
+
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/gitana-javascript-driver/1.0.0-SNAPSHOT/gitana.min.js"&gt;
+                &lt;/script&gt;
+        </pre>
+
+<p>
+    Now include other Gitana SDK components only if they are needed.
+</p>
+
+<p><b>Alpaca Library</b></p>
+
+<p>
+    You will need Alpaca for content rendition or form service. To use Alpaca, you will first need
+    to include jQuery library (1.5 or later) and jQuery UI library (1.8.8 or later). jQuery UI library is
+    not required for running Alpaca but highly recommended.
+</p>
+
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/alpaca/js/alpaca-${project.version}.min.js"&gt;
+                &lt;/script&gt;
+                &lt;link type="text/css" href="http://code.cloudcms.com/alpaca/css/alpaca-${project.version}.min.css"
+                rel="stylesheet"/&gt;
+        </pre>
+
+<p>
+    Then include link to minified Alpaca JavaScript library and minified Alpaca stylesheet in its head section
+</p>
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/alpaca/js/alpaca-${project.version}.min.js"&gt;
+                &lt;/script&gt;
+                &lt;link type="text/css" href="http://code.cloudcms.com/alpaca/css/alpaca-${project.version}.min.css"
+                rel="stylesheet"/&gt;
+        </pre>
+
+<p><b>jQuery Template Engine</b></p>
+
+<p>
+    jQuery Template engine can be used for rendering Gitana content. You can either download it from <a
+        href="http://github.com/jquery/jquery-tmpl">its
+    website</a>. Or you can use the convenient wrapper JavaScript class that Gitana SDK provides for jQuery Template
+    engine.
+</p>
+
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/sdk/js/gitana-sdk-jquery-template-${project.version}.min.js"&gt;
+                &lt;/script&gt;
+        </pre>
+
+<p><b>Ratchet MVC</b></p>
+
+<p>
+    To use Ratchet MVC for your application, you will first need to include Ratchet MVC JavaScript library.
+</p>
+
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/ratchet/${project.version}/ratchet-${project.version}.min.js"&gt;
+                &lt;/script&gt;
+        </pre>
+<p>And then include either jQuery Template Plugin</p>
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/ratchet/${project.version}/plugins/jQueryTemplateEngine.js"&gt;
+                &lt;/script&gt;
+        </pre>
+<p>Or Alpaca Plugin</p>
+        <pre class="brush: js; toolbar: false;">
+                &lt;script type="text/javascript" src="http://code.cloudcms.com/ratchet/${project.version}/plugins/AlpacaEngine.js"&gt;
+                &lt;/script&gt;
+        </pre>
+
+<p><b>Setting up proxy</b></p>
+
+<p>
+    Since Gitana SKD examples interact with Gitana Cloud CMS through REST services, it is required to run the examples
+    either in a web server (such as Apache Web Server ) or a web application server (such as Tomcat or Jetty).
+</p>
+
+<p>
+    Because we are using Gitana JavaScript driver for SDK examples, we will have to set up a web proxy to forward
+    cross-Domain XMLHttpRequest calls to endpoint "http://api.cloudcms.com:80".
+</p>
+
+<p>For web application servers, you can follow <a
+        href="https://github.com/gitana/sdk/blob/master/sdk/src/main/webapp/WEB-INF/web.xml">the setup in Gitana SDK</a>
+    for instruction of using Gitana proxy servlet which you can download from Gitana maven repository.
+</p>
+        <pre class="brush: js; toolbar: false;">
+		    &lt;!-- Gitana Maven repository --&gt;
+			&lt;id&gt;cloudcms-public&lt;/id&gt;
+			&lt;name&gt;cloudcms-public&lt;/name&gt;
+			&lt;url&gt;http://maven.cloudcms.com/public&lt;/url&gt;
+
+	        &lt;!-- Gitana Proxy Servlet --&gt;
+            &lt;groupId&gt;org.gitana&lt;/groupId&gt;
+            &lt;artifactId&gt;gitana-servlets&lt;/artifactId&gt;
+            &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+        </pre>
+<p>
+    Or you can also use other web proxy servlets such as <a
+        href="http://docs.codehaus.org/display/JETTY/Asynchronous+Proxy+Servlet">Jetty Asynchronous Proxy
+    Servlet</a>.
+</p>
+
+<p>
+    Please note that if you are not running your webb application as root web app. You will need to initialize Gitana
+    driver
+    with serverURL parameter such as
+</p>
+            <pre class="brush: js; toolbar: false;">
+                var gitana = new Gitana({
+                    "serverURL" :"/YOUR_WEBAPP_NAME/proxy"
+                });
+            </pre>
+<p>For web servers, you need to setup a similar reverse proxy that will forward requests to
+    "http://api.cloudcms.com:80". As default, the requests will first be sent to endpoint "/proxy". If you don't want to
+    use
+    the default, you will then need to provide the serverURL parameter when you initialize Gitana driver such as
+</p>
+            <pre class="brush: js; toolbar: false;">
+                var gitana = new Gitana({
+                    "serverURL" :"/YOUR_CUSTOM_PROXY_NAME"
+                });
+            </pre>
+<p>
+    Here is a sample configuration for setting <a href="http://httpd.apache.org/docs/2.2/mod/mod_proxy.html">Apache
+    proxy</a>
+            <pre class="brush: js; toolbar: false;">
+        ProxyRequests Off
+
+        ProxyPass /proxy http://api.cloudcms.com:80
+        ProxyPassReverse /proxy http://api.cloudcms.com:80
+            </pre>
+</p>
+
+<p>
+    Now setup a <a href="http://www.gitanasoft.com">Gitana account</a> and add a simple test to the body section of your
+    test html
+</p>
+        <pre class="brush: js; toolbar: false;">
+                &lt;div id="field1"&gt;
+                &lt;/div&gt;
+                &lt;script type="text/javascript"&gt;
+                $(function() {
+                    new Gitana().authenticate('YOUR_USER_NAME','YOUR_PASSWORD').then(function() {
+                        $("#field1").html('Hello '+this.authenticatedUsername+' Welcome to Gitana Cloud CMS!');
+                    });
+                });
+                &lt;/script&gt;
+        </pre>
+<p>
+    Save the html file and open it in a browser. You should get a welcome message.
+</p>
+
+<h2>Build Gitana SDK from source</h2>
+
+<p>
+    All Alpaca source code is kept under Git revision control, which you can <a
+        href="https://github.com/gitana/sdk">browse online</a>.
+</p>
+
+<p>
+    If you have access to Git, you can connect to the repository here:
+<pre class="brush: js; toolbar: false;">git@github.com:sdk/sdk.git</pre>
+</p>
+
+<p>
+    Once you clone the SDK repository to your local machine and have Maven 3.0 or later installed, You can
+    build SDK and run SDK examples using following Maven command
+<pre class="brush: js; toolbar: false;">mvn clean install jetty:run-exploded</pre>
+</p>
+<p>
+    Wait till Maven finishes the build process and brings up embedded Jetty server, you should now be able to
+    check out all Alpaca examples from this URL
+<pre class="brush: js; toolbar: false;">http://localhost:18180/sdk/index.html</pre>
+</p>
+<h2>Where can I get help?</h2>
+
+<p>
+    Alpaca library is developed and maintained by <a href="http://www.gitanasoft.com">Gitana Software</a>.
+</p>
+</div>
+<div class="gitana-example-footer">
+    <center class="copyright">
+        Copyright &copy; 2011 Gitana Software | All Rights Reserved
+    </center>
+</div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $('.gitana-example-header h2').prepend('<a href="./index.html">Gitana SDK</a><span> > </span>');
+    });
+</script>
+</body>
+</html>

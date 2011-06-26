@@ -10,30 +10,32 @@
 
         index: function(el) {
             var gitanaContext = Ratchet.renditionEngine.connector.gitanaContext;
-            gitanaContext.getBranch().queryNodes({
-                "_type" : "theoffice:product",
-                "tags" : "Front Page"
-            }).then(function() {
-                var data = {
-                    "list" : []
-                };
-                this.each( function() {
-                    var node = this.object;
-                    node.attachments = {};
-                    this.listAttachments().each(function() {
-                        node.attachments[this.getId()] = this.getDownloadUri();
-                    }).then(function() {
-                        data.list.push(node);
-                    });
+            gitanaContext.then(function(){
+                this.branch().queryNodes({
+                    "_type" : "theoffice:product",
+                    "tags" : "Front Page"
                 }).then(function() {
-                    el.transform({
-                        "view" : {
-                            "globalTemplate": '../../templates/FrontPageProducts.html'
-                        }
-                    }, {
-                        "data": data
-                    }, function() {
-                        el.swap();
+                    var data = {
+                        "list" : []
+                    };
+                    this.each( function() {
+                        var node = this.object;
+                        node.attachments = {};
+                        this.listAttachments().each(function() {
+                            node.attachments[this.getId()] = this.getDownloadUri();
+                        }).then(function() {
+                            data.list.push(node);
+                        });
+                    }).then(function() {
+                        el.transform({
+                            "view" : {
+                                "globalTemplate": '../../templates/FrontPageProducts.html'
+                            }
+                        }, {
+                            "data": data
+                        }, function() {
+                            el.swap();
+                        });
                     });
                 });
             });

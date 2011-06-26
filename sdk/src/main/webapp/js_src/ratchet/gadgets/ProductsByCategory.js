@@ -11,7 +11,8 @@
         index: function(el) {
             var id = el.tokens["id"];
             var gitanaContext = Ratchet.renditionEngine.connector.gitanaContext;
-            gitanaContext.getBranch().queryNodes({
+            gitanaContext.then(function(){
+                this.branch().queryNodes({
                     "_type" : "theoffice:product",
                     "categories" : id
                 }).then(function() {
@@ -19,19 +20,17 @@
                         "category" : id,
                         "list" : []
                     };
-                    this.each(
-                            function() {
-                                var node = this.object;
-                                this.listAttachments().then(function() {
-                                    node.attachments = {};
-                                    this.each(
-                                            function() {
-                                                node.attachments[this.getId()] = this.getDownloadUri();
-                                            }).then(function() {
-                                        data.list.push(node);
-                                    });
-                                });
+                    this.each(function() {
+                        var node = this.object;
+                        this.listAttachments().then(function() {
+                            node.attachments = {};
+                            this.each(function() {
+                                node.attachments[this.getId()] = this.getDownloadUri();
                             }).then(function() {
+                                data.list.push(node);
+                            });
+                        });
+                    }).then(function() {
                         el.transform({
                             "view" : {
                                 "globalTemplate": '../../templates/ProductsByCategory.html'
@@ -43,7 +42,8 @@
                         });
                     });
                 });
-            }
+            });
+        }
     });
 
     Ratchet.GadgetRegistry.register("main_content_gadget", ProductsByCategory);

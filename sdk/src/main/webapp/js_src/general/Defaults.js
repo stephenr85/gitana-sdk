@@ -46,9 +46,9 @@
         }
     };
 
-    Gitana.SDK.defaults.theOfficeGitanaContext = new Gitana.GitanaContext({
+    Gitana.SDK.defaults.theOfficeGitanaContext = Gitana.Context.create({
         "user":{
-            "userName" : "admin",
+            "username" : "admin",
             "password" : "admin"
         },
         "repository": Gitana.SDK.defaults.theOfficeRepositoryQuery,

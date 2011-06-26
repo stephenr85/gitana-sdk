@@ -49,6 +49,29 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>minify-jquery-template</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <jsSourceDir>js</jsSourceDir>
+                            <jsSourceFiles>
+                                <param>../js_src/thirdparty/base.js</param>
+                                <param>../js_src/SDK.js</param>
+                                <param>../js_src/thirdparty/jquery.tmpl.js</param>
+                                <param>../js_src/general/jQueryTemplateEngine.js</param>
+                            </jsSourceFiles>
+                            <jsFinalFile>gitana-sdk-jquery-template-${project.version}.js</jsFinalFile>
+                            <linebreak>-1</linebreak>
+                            <nomunge>false</nomunge>
+                            <verbose>true</verbose>
+                            <preserveAllSemiColons>false</preserveAllSemiColons>
+                            <disableOptimizations>false</disableOptimizations>
+                            <bufferSize>4096</bufferSize>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>minify-general</id>
                         <phase>process-resources</phase>
                         <goals>
@@ -156,78 +179,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <!-- gitana javascript driver -->
-                                <artifactItem>
-                                    <groupId>org.gitana</groupId>
-                                    <artifactId>alpaca</artifactId>
-                                    <version>${alpaca.version}</version>
-                                    <type>war</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${basedir}/target/${project.build.finalName}
-                                    </outputDirectory>
-                                    <includes>alpaca/js/alpaca*.js,alpaca/css/alpaca*.css,alpaca/images/*.*</includes>
-                                </artifactItem>
-                                <!-- gitana javascript driver -->
-                                <artifactItem>
-                                    <groupId>org.gitana</groupId>
-                                    <artifactId>gitana-javascript-driver</artifactId>
-                                    <version>${gitana.driver.version}</version>
-                                    <type>war</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${basedir}/target/${project.build.finalName}
-                                    </outputDirectory>
-                                    <includes>js/gitana*.js</includes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.gitana</groupId>
-                                    <artifactId>ratchet</artifactId>
-                                    <version>${ratchet.version}</version>
-                                    <type>war</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${basedir}/target/${project.build.finalName}
-                                    </outputDirectory>
-                                    <includes>js/ratchet*.js,js/plugins/*.js</includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<id>license</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<target>
-                        <copy
-                            todir="${project.build.directory}/${project.build.finalName}/js/alpaca/tools">
-                            <fileset dir="src/main/webapp/js_src/alpaca/tools">
-                                <include name="*.js" />
-                            </fileset>
-                        </copy>
-                    </target>
-				</configuration>
-			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
                 <configuration>
@@ -237,6 +188,7 @@
                             <directory>src/main/webapp</directory>
                             <includes>
                                 <include>**/*.html</include>
+                                <include>**/web.xml</include>
                             </includes>
                         </resource>
                     </webResources>
@@ -283,5 +235,105 @@
         <gitana.driver.version>1.0.0-SNAPSHOT</gitana.driver.version>
         <spring.version>3.0.5.RELEASE</spring.version>
         <spring.security.version>3.1.0.RC1</spring.security.version>
+        <cloudcms.host>api.cloudcms.com</cloudcms.host>
+        <cloudcms.port>80</cloudcms.port>
+        <gitana.lib>http://code.cloudcms.com/gitana-javascript-driver/${gitana.driver.version}/gitana.min.js
+        </gitana.lib>
+        <alpaca.lib>http://code.cloudcms.com/alpaca/js/alpaca-${alpaca.version}.min.js</alpaca.lib>
+        <alpaca.css>http://code.cloudcms.com/alpaca/css/alpaca-${alpaca.version}.min.css</alpaca.css>
+        <ratchet.lib>http://code.cloudcms.com/ratchet/${ratchet.version}/ratchet-${ratchet.version}.min.js</ratchet.lib>
+        <ratchet.plugins>http://code.cloudcms.com/ratchet/${ratchet.version}/plugins</ratchet.plugins>
     </properties>
+    <profiles>
+        <profile>
+            <id>full</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assemble/examples.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <!-- gitana javascript driver -->
+                                        <artifactItem>
+                                            <groupId>org.gitana</groupId>
+                                            <artifactId>alpaca</artifactId>
+                                            <version>${alpaca.version}</version>
+                                            <type>war</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${basedir}/target/${project.build.finalName}
+                                            </outputDirectory>
+                                            <includes>alpaca/js/alpaca*.js,alpaca/css/alpaca*.css,alpaca/images/*.*
+                                            </includes>
+                                        </artifactItem>
+                                        <!-- gitana javascript driver -->
+                                        <artifactItem>
+                                            <groupId>org.gitana</groupId>
+                                            <artifactId>gitana-javascript-driver</artifactId>
+                                            <version>${gitana.driver.version}</version>
+                                            <type>war</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${basedir}/target/${project.build.finalName}
+                                            </outputDirectory>
+                                            <includes>js/gitana*.js</includes>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.gitana</groupId>
+                                            <artifactId>ratchet</artifactId>
+                                            <version>${ratchet.version}</version>
+                                            <type>war</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${basedir}/target/${project.build.finalName}
+                                            </outputDirectory>
+                                            <includes>js/ratchet*.js,js/plugins/*.js</includes>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <cloudcms.host>localhost</cloudcms.host>
+                <cloudcms.port>8080</cloudcms.port>
+                <gitana.lib>../../js/gitana.js</gitana.lib>
+                <alpaca.lib>../../alpaca/js/alpaca-${alpaca.version}.js</alpaca.lib>
+                <alpaca.css>../../alpaca/css/alpaca-${alpaca.version}.css</alpaca.css>
+                <ratchet.lib>../../js/ratchet-${ratchet.version}.js</ratchet.lib>
+                <ratchet.plugins>../../js/plugins</ratchet.plugins>
+            </properties>
+        </profile>
+    </profiles>
 </project>

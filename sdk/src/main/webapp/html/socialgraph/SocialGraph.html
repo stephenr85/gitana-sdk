@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Dunder Mifflin Paper Company, Inc. - Social Graph</title>
-    <link type="text/css" href="../../alpaca/css/alpaca-${alpaca.version}.css" rel="stylesheet"/>
+    <link type="text/css" href="${alpaca.css}" rel="stylesheet"/>
     <link type="text/css" href="../../css/gitana-sdk-socialgraph-${project.version}.css" rel="stylesheet"/>
     <style type="text/css">
     </style>
@@ -12,13 +12,9 @@
     <script type="text/javascript"
             src="http://ajax.googleapis.com/ajax/libs/jqueryui/${jquery.ui.version}/jquery-ui.min.js">
     </script>
-    <script type="text/javascript" src="../../alpaca/js/alpaca-${alpaca.version}.js">
+    <script type="text/javascript" src="${alpaca.lib}">
     </script>
-    <script type="text/javascript" src="../../js/ratchet-${ratchet.version}.js">
-    </script>
-    <script type="text/javascript" src="../../js/plugins/AlpacaEngine.js">
-    </script>
-    <script type="text/javascript" src="../../js/gitana.js">
+    <script type="text/javascript" src="${gitana.lib}">
     </script>
     <script type="text/javascript" src="../../js/gitana-sdk-${project.version}.js">
     </script>
@@ -42,11 +38,9 @@
             <h2><span class="hidden">Your punchline here</span></h2>
         </div>
 
-        <div id="page_headerlinks">
+        <div id="page_header_banner">
 
-            <ul>
-                <li class="last"><a href="../general/Login.html">SDK Home</a></li>
-            </ul>
+            <div>Gitana Social Graph</div>
 
         </div>
 
@@ -62,8 +56,8 @@
 
         <!-- Start of Employee Box -->
 
-        <div id="categories">
-            <div id="categories_header">
+        <div id="categories" class="side_bar">
+            <div class="side_bar_header">
                 <h2>Employees</h2>
             </div>
 
@@ -74,7 +68,15 @@
         </div>
 
         <!-- End of Employee Box -->
-
+        <div id="links" class="side_bar">
+            <div class="side_bar_header">
+                <h2>Links</h2>
+            </div>
+            <ul>
+                <li class="last"><a href="../../../index.html">SDK Home</a></li>
+            </ul>
+            <div class="clearthis">&nbsp;</div>
+        </div>
     </div>
 
     <!-- End of Left Sidebar -->
@@ -113,22 +115,7 @@
     <!-- Start of Page Footer -->
 
     <div id="page_footer">
-
-        <div id="product_brands">
-
-            <ul>
-                <li class="gitana"><span class="hidden">Gitana</span></li>
-                <li class="alpaca"><span class="hidden">Alpaca</span></li>
-                <li class="ratchet"><span class="hidden">Ratchet</span></li>
-            </ul>
-
-        </div>
-
-        <div id="powered_by">
             Copyright &copy; 2011 Gitana Software | All Rights Reserved</a>
-        </div>
-
-        <div class="clearthis">&nbsp;</div>
     </div>
 
     <!-- End of Page Footer -->
