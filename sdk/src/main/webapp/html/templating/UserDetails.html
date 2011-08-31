@@ -44,7 +44,7 @@
                 $(function() {
                     $(document).ready(function() {
                         var defaults = Gitana.SDK.defaults;
-                        new Gitana().authenticate("admin", "admin").trap(defaults.errorHandler).then(function() {
+                        new Gitana().authenticate(defaults.userName, defaults.password).trap(defaults.errorHandler).then(function() {
                             var userSocialDetails = {};
                             var server = this;
                             this.readUser("jhalpert_theoffice").then(function() {

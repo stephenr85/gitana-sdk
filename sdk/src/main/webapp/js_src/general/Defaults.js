@@ -4,7 +4,7 @@
 
     Gitana.SDK.defaults = {
         userName : "admin",
-        password : "admin",
+        password : "yonderboy*1",
 
         theOfficeRepositoryQuery: {
             "sdk_version": "0.1",
@@ -49,7 +49,7 @@
     Gitana.SDK.defaults.theOfficeGitanaContext = Gitana.Context.create({
         "user":{
             "username" : "admin",
-            "password" : "admin"
+            "password" : "yonderboy*1"
         },
         "repository": Gitana.SDK.defaults.theOfficeRepositoryQuery,
         "error" : function(error) {
